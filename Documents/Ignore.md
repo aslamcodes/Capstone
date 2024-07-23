@@ -4,6 +4,7 @@
 - [ ] Coupon codes (later)
 - [x] Course Objectives & Target audience
 - [x] Course can have sections
-- [ ] Learning Reminders & Mobile Notifications 
-- [ ] Searching the course content
-- [ ] Tier based pricing for coursess
+- [x] Learning Reminders & Mobile Notifications 
+- [x] Searching the course content
+- [ ] Tier based pricing for coursess (later)
+- [x] Category and Tags in their own schema

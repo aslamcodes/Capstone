@@ -1,5 +1,3 @@
-> [!INFO] What?
-> Instead having `orderId`, can we have `next_content id`? so that it is efficient and easy to rearrange
 # User Entity
 ```mermaid
 classDiagram
@@ -68,12 +66,23 @@ class Course {
 +TEXT description
 -UUID educator_id
 +DECIMAL price 
-+ENUM CourseCategory
-+ENUM[] tags
 + ENUM CourseLevel
 }
 ```
-# Course Objectives & Target Audience
+# CourseCategory and CourseSkills
+```mermaid
+classDiagram
+class CourseCategory {
+uuid courseId,
+uuid categoryId
+}
+class CourseSkills {
+uuid id,
+uuid skillId,
+uuid courseId
+}
+```
+# Course Objectives, Target Audience & Prerequisites
 ```mermaid
 classDiagram 
 class CourseObjectives {
@@ -223,3 +232,18 @@ TEXT answerText
 }
 ```
 
+# Course Category and Skills
+```mermaid
+classDiagram
+class Category {
+uuid id,
+text name,
+text icon
+}
+
+class skill {
+uuid id,
+text name,
+text icon
+}
+```

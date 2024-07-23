@@ -4,52 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "d545a03dd7cbc1e4",
+        "id": "4640d9576376f781",
         "type": "tabs",
         "children": [
           {
-            "id": "9f664674eec4ece9",
+            "id": "891e3877a60f4d4a",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ignore.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "e1a097645967e6ef",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Ignore.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "7d7027871c865ed9",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "User Stories.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "d99e64163ba9ae5c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "User Stories.md",
+                "file": "Specification.md",
                 "mode": "source",
                 "source": false
               }
@@ -121,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Ignore.md",
+                "file": "Specification.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -138,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Ignore.md",
+                "file": "Specification.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -161,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Ignore.md"
+                "file": "Specification.md"
               }
             }
           }
@@ -182,13 +146,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9f664674eec4ece9",
+  "active": "891e3877a60f4d4a",
   "lastOpenFiles": [
-    "User Stories.md",
-    "UML/Classes.md",
     "Ignore.md",
     "Specification.md",
     "UML/Enums.md",
+    "UML/Classes.md",
+    "User Stories.md",
     "ELearner Backend Specs.md",
     "UML"
   ]
