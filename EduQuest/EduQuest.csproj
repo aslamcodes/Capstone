@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>6973e676-124c-4d72-9635-35936263d27b</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>.</DockerfileContext>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Features\Admin\" />
+		<Folder Include="Features\Educator\" />
+		<Folder Include="Features\Content\" />
+		<Folder Include="Features\Article\" />
+		<Folder Include="Features\LearningPaths\" />
+		<Folder Include="Features\CourseCategory\" />
+		<Folder Include="Features\Skills\" />
+		<Folder Include="Features\QuestionAnswers\" />
+		<Folder Include="Features\Reviews\" />
+		<Folder Include="Features\Subscription\" />
+		<Folder Include="Features\Notes\" />
+		<Folder Include="Features\Video\" />
+		<Folder Include="Features\Student\" />
+	</ItemGroup>
+
+</Project>

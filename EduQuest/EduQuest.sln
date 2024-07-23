@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduQuest", "EduQuest.csproj", "{0D5B09D4-589D-434C-9025-5A6F4E50050E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduQuestTests", "..\EduQuestTests\EduQuestTests.csproj", "{65675355-C7DF-46D6-89D5-7698FF99D3A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D5B09D4-589D-434C-9025-5A6F4E50050E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5B09D4-589D-434C-9025-5A6F4E50050E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5B09D4-589D-434C-9025-5A6F4E50050E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5B09D4-589D-434C-9025-5A6F4E50050E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65675355-C7DF-46D6-89D5-7698FF99D3A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65675355-C7DF-46D6-89D5-7698FF99D3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65675355-C7DF-46D6-89D5-7698FF99D3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65675355-C7DF-46D6-89D5-7698FF99D3A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A89A0394-9029-484C-8A69-4A3CF30CCC18}
+	EndGlobalSection
+EndGlobal
