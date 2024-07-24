@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EduQuest.Features.Auth
 {
+
     public class TokenService : ITokenService
     {
         public readonly string _secretKey;
@@ -18,13 +19,29 @@ namespace EduQuest.Features.Auth
         {
 
             var claims = new List<Claim>(){
-                new("uid",user.Id.ToString())
+                new("uid",user.Id.ToString()),
+                new(ClaimTypes.Role, GetUserRole(user))
             };
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
             var myToken = new JwtSecurityToken(null, null, claims, expires: DateTime.Now.AddDays(2), signingCredentials: credentials);
             var token = new JwtSecurityTokenHandler().WriteToken(myToken);
 
             return token;
+        }
+        public string GetUserRole(User.User user)
+        {
+            if (user.IsEducator)
+            {
+                return "Educator";
+            }
+            else if (user.IsAdmin)
+            {
+                return "Admin";
+            }
+            else
+            {
+                return "Student";
+            }
         }
     }
 }

@@ -19,7 +19,6 @@ namespace EduQuest.Config
 
             CreateMap<Course, CourseDTO>();
 
-
             CreateMap<Content, ContentResponseDto>();
 
         }
