@@ -69,7 +69,7 @@ class Course {
 + ENUM CourseLevel
 }
 ```
-# CourseCategory and CourseSkills
+## CourseCategory and CourseSkills
 ```mermaid
 classDiagram
 class CourseCategory {
@@ -82,7 +82,7 @@ uuid skillId,
 uuid courseId
 }
 ```
-# Course Objectives, Target Audience & Prerequisites
+## Course Objectives, Target Audience & Prerequisites
 ```mermaid
 classDiagram 
 class CourseObjectives {
@@ -106,7 +106,7 @@ int order,
 text requiesite
 }
 ```
-# Section
+## Section
 - Groups of content, helps to organise courses effectively
 ```mermaid
 classDiagram 
