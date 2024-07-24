@@ -1,9 +1,11 @@
 ```mermaid
 erDiagram
-	User ||--o{ Content : Creates
-    User ||--o{ Note : Writes
-    User ||--o{ Review : Writes
-    User ||--o{ Question : Asks
+	Educator ||--o{ Course : Creates
+	User ||--|| Student : Is
+	User ||--|| Educator : Is
+    Student ||--o{ Note : Writes
+    Student ||--o{ Review : Writes
+    Student ||--o{ Question : Asks
     
 	Content ||--o| Video : Is
 	Content ||--o| Article : Is
