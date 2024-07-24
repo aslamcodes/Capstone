@@ -1,28 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import LoginPage from "./pages/login.tsx";
-import Apitest from "./pages/Apitest.tsx";
+import { pages } from "./pages/PagesConfig.tsx";
+import AuthContextProvider from "./contexts/auth/authProvider.tsx";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/api-test",
-    element: <Apitest />,
-  },
-]);
+const router = createBrowserRouter(pages);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
   </React.StrictMode>
 );
