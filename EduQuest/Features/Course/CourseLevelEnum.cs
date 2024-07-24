@@ -1,9 +1,9 @@
 ﻿namespace EduQuest.Features.Course
 {
-    public enum CourseLevel
+    public enum CourseLevelEnum
     {
         Beginner,
-        Intermdiate,
+        Intermediate,
         Advanced,
     }
 }

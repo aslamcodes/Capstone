@@ -12,6 +12,12 @@ namespace EduQuest.Features.Course
 
         public float Price { get; set; }
 
-        public CourseLevel Level { get; set; }
+        public CourseLevelEnum Level { get; set; }
+
+        public User.User Educator { get; set; }
+
+        public IEnumerable<User.User> Students { get; set; }
+
+        public IEnumerable<Sections.Section> Sections { get; set; }
     }
 }

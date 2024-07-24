@@ -1,6 +1,7 @@
 
 using EduQuest.Commons;
 using EduQuest.Features.Auth;
+using EduQuest.Features.Course;
 using EduQuest.Features.User;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -36,10 +37,13 @@ namespace EduQuest
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped<ICourseService, CourseService>();
             #endregion
 
             #region Repositories
             builder.Services.AddScoped<IRepository<int, User>, UserRepo>();
+            builder.Services.AddScoped<IRepository<int, Course>, CourseRepository>();
             #endregion
 
             var app = builder.Build();

@@ -23,6 +23,11 @@ namespace EduQuest.Features.User
         public UserStatusEnum Status { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public IEnumerable<Course.Course> CoursesEnrolled { get; set; }
+
+        public IEnumerable<Course.Course> CoursesCreated { get; set; }
+
     }
 }
 

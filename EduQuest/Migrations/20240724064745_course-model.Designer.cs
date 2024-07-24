@@ -4,6 +4,7 @@ using EduQuest.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduQuest.Migrations
 {
     [DbContext(typeof(EduQuestContext))]
-    partial class EduQuestContextModelSnapshot : ModelSnapshot
+    [Migration("20240724064745_course-model")]
+    partial class coursemodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,35 +38,6 @@ namespace EduQuest.Migrations
                     b.HasIndex("StudentsId");
 
                     b.ToTable("CourseUser");
-                });
-
-            modelBuilder.Entity("EduQuest.Features.Content.Content", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SectionId");
-
-                    b.ToTable("Contents");
                 });
 
             modelBuilder.Entity("EduQuest.Features.Course.Course", b =>
@@ -97,35 +71,6 @@ namespace EduQuest.Migrations
                     b.HasIndex("EducatorId");
 
                     b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("EduQuest.Features.Sections.Section", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("Sections");
                 });
 
             modelBuilder.Entity("EduQuest.Features.User.User", b =>
@@ -195,17 +140,6 @@ namespace EduQuest.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EduQuest.Features.Content.Content", b =>
-                {
-                    b.HasOne("EduQuest.Features.Sections.Section", "Section")
-                        .WithMany("Contents")
-                        .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Section");
-                });
-
             modelBuilder.Entity("EduQuest.Features.Course.Course", b =>
                 {
                     b.HasOne("EduQuest.Features.User.User", "Educator")
@@ -215,27 +149,6 @@ namespace EduQuest.Migrations
                         .IsRequired();
 
                     b.Navigation("Educator");
-                });
-
-            modelBuilder.Entity("EduQuest.Features.Sections.Section", b =>
-                {
-                    b.HasOne("EduQuest.Features.Course.Course", "Course")
-                        .WithMany("Sections")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("EduQuest.Features.Course.Course", b =>
-                {
-                    b.Navigation("Sections");
-                });
-
-            modelBuilder.Entity("EduQuest.Features.Sections.Section", b =>
-                {
-                    b.Navigation("Contents");
                 });
 
             modelBuilder.Entity("EduQuest.Features.User.User", b =>
