@@ -12,7 +12,7 @@ export const login = async (
 ) => {
   dispatch({ type: AUTH_REQUEST });
   try {
-    const { data } = await axios.post("/api/v1/users/login", {
+    const { data } = await axios.post("/api/Auth/login", {
       email,
       password,
     });
@@ -29,14 +29,14 @@ export const login = async (
 export const register = async (dispatch: React.Dispatch<any>, payload: any) => {
   dispatch({ type: AUTH_REQUEST });
   try {
-    const config = {
-      headers: { "content-type": "multipart/form-data" },
-    };
+    // const config = {
+    //   headers: { "content-type": "multipart/form-data" },
+    // };
 
     const { data } = await axios.post(
-      "/api/v1/users/register",
-      payload,
-      config
+      "/api/Auth/register",
+      payload
+      //   config
     );
     dispatch({ type: AUTH_SUCCESS, payload: data });
   } catch (error) {
