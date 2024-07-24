@@ -3,7 +3,7 @@
 namespace EduQuest.Features.User
 {
     [Serializable]
-    internal class UserNotFoundException : Exception
+    public class UserNotFoundException : Exception
     {
         public UserNotFoundException()
         {

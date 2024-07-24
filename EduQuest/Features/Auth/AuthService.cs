@@ -1,12 +1,11 @@
-﻿using EduQuest.Commons;
-using EduQuest.Features.Auth.DTOS;
+﻿using EduQuest.Features.Auth.DTOS;
 using EduQuest.Features.User;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace EduQuest.Features.Auth
 {
-    public class AuthService(IUserService userService, ITokenService tokenService, IRepository<int, User.User> userRepository) : IAuthService
+    public class AuthService(IUserService userService, ITokenService tokenService) : IAuthService
     {
 
         public async Task<User.User> Login(AuthRequestDto request)
@@ -28,14 +27,32 @@ namespace EduQuest.Features.Auth
 
         public async Task<User.User> Register(RegisterRequestDto request)
         {
+
             HMACSHA512 hMACSHA = new();
 
-            var existingUser = await userService.GetByEmailAsync(request.Email);
 
-            if (existingUser != null)
+            User.User existingUser;
+
+            try
             {
-                throw new UserAlreadyExistsException();
+                existingUser = await userService.GetByEmailAsync(request.Email);
+
+                if (existingUser != null)
+                {
+                    throw new UserAlreadyExistsException();
+                }
+
             }
+            catch (UserNotFoundException)
+            {
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
 
             var user = new User.User()
             {
@@ -46,7 +63,7 @@ namespace EduQuest.Features.Auth
                 Password = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
             };
 
-            user = await userRepository.Add(user);
+            user = await userService.AddAsync(user);
 
             return user;
 
