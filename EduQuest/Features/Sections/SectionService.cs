@@ -3,8 +3,13 @@ using EduQuest.Commons;
 
 namespace EduQuest.Features.Sections
 {
-    public class SectionService(IRepository<int, Section> sectionRepo, IMapper mapper) : BaseService<Section, SectionDto>(sectionRepo, mapper), ISectionService
+    public class SectionService(ISectionRepo sectionRepo, IMapper mapper) : BaseService<Section, SectionDto>(sectionRepo, mapper), ISectionService
     {
+        public async Task<IList<Section>> DeleteSectionsForCourse(int courseId)
+        {
+            return await sectionRepo.DeleteByCourse(courseId);
+        }
+
         public async Task<IList<SectionDto>> GetSectionForCourse(int courseId)
         {
             var sections = await sectionRepo.GetAll();

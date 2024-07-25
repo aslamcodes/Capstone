@@ -11,15 +11,15 @@ namespace EduQuest.Features.Sections
     [ApiController]
     public class SectionController(ISectionService sectionService, IContentService contentService, ControllerValidator validator) : Controller
     {
-        [HttpGet]
-        public async Task<ActionResult<SectionDto>> GetSectionsForCourse([FromQuery] int courseId)
+
+        [HttpGet("Contents")]
+        public async Task<ActionResult<List<ContentDto>>> GetContentsForSection([FromQuery] int sectionId)
         {
             try
             {
-                var sections = await sectionService.GetSectionForCourse(courseId);
+                var contents = await contentService.GetContentBySection(sectionId);
 
-                return Ok(sections);
-
+                return Ok(contents);
             }
             catch (Exception)
             {
@@ -27,6 +27,29 @@ namespace EduQuest.Features.Sections
                 throw;
             }
         }
+
+
+        [Authorize(Policy = "Educator")]
+        [HttpGet]
+        public async Task<ActionResult<SectionDto>> GetSection([FromQuery] int sectionId)
+        {
+            try
+            {
+                var section = await sectionService.GetById(sectionId);
+
+                return section;
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Course not found"));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         [Authorize(Policy = "Educator")]
         [HttpPost]
@@ -55,21 +78,65 @@ namespace EduQuest.Features.Sections
             }
         }
 
-
-        [HttpGet("/Contents")]
-        public async Task<ActionResult<List<ContentDto>>> GetContentsForSection(int sectionId)
+        [HttpPut]
+        [Authorize(Policy = "Educator")]
+        public async Task<ActionResult<SectionDto>> UpdateSection([FromBody] SectionDto section)
         {
+
             try
             {
-                var contents = await contentService.GetContentBySection(sectionId);
+                await validator.ValidateEducatorPrivilegeForSection(User.Claims, section.Id);
+                await validator.ValidateEducatorPrivilegeForCourse(User.Claims, section.CourseId);
 
-                return Ok(contents);
+                var updatedSection = await sectionService.Update(section);
+
+                return Ok(updatedSection);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (UnAuthorisedUserExeception)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, "Unauthorised"));
             }
             catch (Exception)
             {
 
                 throw;
             }
+
+        }
+
+        [Authorize(Policy = "Educator")]
+        [HttpDelete]
+        public async Task<ActionResult<SectionDto>> DeleteSection([FromQuery] int sectionId)
+        {
+
+            try
+            {
+                await validator.ValidateEducatorPrivilegeForSection(User.Claims, sectionId);
+
+                await contentService.DeleteBySection(sectionId);
+
+                var deletedId = await sectionService.DeleteById(sectionId);
+
+                return Ok(deletedId);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (UnAuthorisedUserExeception)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, "Unauthorised"));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
     }
 }
