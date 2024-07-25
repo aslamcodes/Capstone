@@ -96,9 +96,10 @@ namespace EduQuest
 
             #region Repositories
             builder.Services.AddScoped<IRepository<int, User>, UserRepo>();
+
             builder.Services.AddScoped<ISectionRepo, SectionRepository>();
             builder.Services.AddScoped<IContentRepo, ContentRepository>();
-            builder.Services.AddScoped<IRepository<int, Course>, CourseRepository>();
+            builder.Services.AddScoped<ICourseRepo, CourseRepository>();
             #endregion
 
 

@@ -36,7 +36,6 @@
 		<Folder Include="Features\Subscription\" />
 		<Folder Include="Features\Notes\" />
 		<Folder Include="Features\Video\" />
-		<Folder Include="Features\Student\" />
 		<Folder Include="Migrations\" />
 	</ItemGroup>
 

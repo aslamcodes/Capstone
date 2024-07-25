@@ -11,7 +11,11 @@ namespace EduQuest.Features.Course
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseController(ICourseService courseService, ISectionService sectionService, IContentService contentService, ControllerValidator validator, IMapper mapper) : ControllerBase
+    public class CourseController(ICourseService courseService,
+                                  ISectionService sectionService,
+                                  IContentService contentService,
+                                  ControllerValidator validator,
+                                  IMapper mapper) : Controller
     {
         [HttpPost]
         [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
@@ -135,5 +139,34 @@ namespace EduQuest.Features.Course
             }
         }
 
+        [HttpGet("Student-Courses")]
+        public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCoursesForStudent([FromQuery] int studentId)
+        {
+            try
+            {
+                var courses = await courseService.GetCoursesForStudent(studentId);
+
+                return Ok(courses);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("Educator-Courses")]
+        public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCoursesForEducator([FromQuery] int educatorId)
+        {
+            try
+            {
+                var courses = await courseService.GetCoursesForEducator(educatorId);
+
+                return Ok(courses);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

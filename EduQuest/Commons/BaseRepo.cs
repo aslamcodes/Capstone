@@ -26,7 +26,7 @@ namespace EduQuest.Commons
             return entity;
         }
 
-        public async Task<List<T>> GetAll()
+        public virtual async Task<List<T>> GetAll()
         {
             return await context.Set<T>().AsNoTracking().ToListAsync();
 
