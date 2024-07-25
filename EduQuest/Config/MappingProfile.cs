@@ -19,6 +19,7 @@ namespace EduQuest.Config
                 .ForMember(d => d.Level, opt => opt.MapFrom((s) => MapLevel(s.Level)));
 
             CreateMap<Course, CourseDTO>();
+            CreateMap<CourseRequestDTO, CourseDTO>();
 
             CreateMap<Content, ContentDto>();
             CreateMap<ContentDto, Content>();

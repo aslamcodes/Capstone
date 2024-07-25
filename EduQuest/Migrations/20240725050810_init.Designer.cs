@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduQuest.Migrations
 {
     [DbContext(typeof(EduQuestContext))]
-    [Migration("20240724073019_section-content-props")]
-    partial class sectioncontentprops
+    [Migration("20240725050810_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

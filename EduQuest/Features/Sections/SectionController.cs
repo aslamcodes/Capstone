@@ -1,5 +1,7 @@
 ﻿using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
+using EduQuest.Features.Content;
+using EduQuest.Features.Content.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +9,7 @@ namespace EduQuest.Features.Sections
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SectionController(ISectionService sectionService, ControllerValidator validator) : Controller
+    public class SectionController(ISectionService sectionService, IContentService contentService, ControllerValidator validator) : Controller
     {
         [HttpGet]
         public async Task<ActionResult<SectionDto>> GetSectionsForCourse([FromQuery] int courseId)
@@ -53,5 +55,21 @@ namespace EduQuest.Features.Sections
             }
         }
 
+
+        [HttpGet("/Contents")]
+        public async Task<ActionResult<List<ContentDto>>> GetContentsForSection(int sectionId)
+        {
+            try
+            {
+                var contents = await contentService.GetContentBySection(sectionId);
+
+                return Ok(contents);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

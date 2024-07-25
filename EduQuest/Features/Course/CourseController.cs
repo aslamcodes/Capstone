@@ -1,4 +1,5 @@
-﻿using EduQuest.Commons;
+﻿using AutoMapper;
+using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Features.Course.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -8,18 +9,19 @@ namespace EduQuest.Features.Course
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseController(ICourseService courseService, ControllerValidator validator) : ControllerBase
+    public class CourseController(ICourseService courseService, ControllerValidator validator, IMapper mapper) : ControllerBase
     {
         [HttpPost]
         [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(ErrorModel))]
         [Authorize(Policy = "Educator")]
-        public async Task<ActionResult<Course>> CreateCourse([FromBody] CourseDTO request)
+        public async Task<ActionResult<Course>> CreateCourse([FromBody] CourseRequestDTO request)
         {
             try
             {
-                validator.ValidateUserPrivilegeForEducator(User.Claims, request.EducatorId);
-                var course = await courseService.Add(request);
+                await validator.ValidateEducatorPrevilege(User.Claims, request.EducatorId);
+
+                var course = await courseService.Add(mapper.Map<CourseDTO>(request));
 
                 return Ok(course);
             }

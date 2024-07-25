@@ -9,6 +9,7 @@ namespace EduQuest.Commons
             await context.AddAsync(entity);
 
             await context.SaveChangesAsync();
+            context.Entry(entity).State = EntityState.Detached;
 
             return entity;
         }
@@ -20,6 +21,7 @@ namespace EduQuest.Commons
             context.Set<T>().Remove(entity);
 
             await context.SaveChangesAsync();
+            context.Entry(entity).State = EntityState.Detached;
 
             return entity;
         }
@@ -35,6 +37,8 @@ namespace EduQuest.Commons
             var entity = await context.Set<T>()
                                       .SingleOrDefaultAsync(entity => entity.Id.Equals(key)) ?? throw new EntityNotFoundException($"{typeof(T).Name} with key {key} not found!!!");
 
+            context.Entry(entity).State = EntityState.Detached;
+
             return entity;
         }
 
@@ -43,6 +47,7 @@ namespace EduQuest.Commons
             context.Update(entity);
 
             await context.SaveChangesAsync();
+            context.Entry(entity).State = EntityState.Detached;
 
             return entity;
         }
