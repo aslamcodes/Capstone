@@ -4,6 +4,7 @@ using EduQuest.Features.Content;
 using EduQuest.Features.Content.Dto;
 using EduQuest.Features.Course;
 using EduQuest.Features.Course.Dto;
+using EduQuest.Features.Sections;
 using EduQuest.Features.User;
 
 namespace EduQuest.Config
@@ -19,7 +20,11 @@ namespace EduQuest.Config
 
             CreateMap<Course, CourseDTO>();
 
-            CreateMap<Content, ContentResponseDto>();
+            CreateMap<Content, ContentDto>();
+            CreateMap<ContentDto, Content>();
+
+            CreateMap<SectionDto, Section>();
+            CreateMap<Section, SectionDto>();
 
         }
         public static CourseLevelEnum MapLevel(string level)

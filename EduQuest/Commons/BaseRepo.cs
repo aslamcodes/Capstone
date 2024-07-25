@@ -7,15 +7,20 @@ namespace EduQuest.Commons
         public async Task<T> Add(T entity)
         {
             await context.AddAsync(entity);
+
             await context.SaveChangesAsync();
+
             return entity;
         }
 
         public async Task<T> Delete(K key)
         {
             var entity = await GetByKey(key);
+
             context.Set<T>().Remove(entity);
+
             await context.SaveChangesAsync();
+
             return entity;
         }
 
@@ -27,16 +32,16 @@ namespace EduQuest.Commons
 
         public async Task<T> GetByKey(K key)
         {
-            var entity = await context.Set<T>().SingleOrDefaultAsync(entity => entity.Id.Equals(key));
-            if (entity == null)
-                throw new KeyNotFoundException($"{typeof(T).Name} with key {key} not found!!!");
-            context.Entry(entity).State = EntityState.Detached;
+            var entity = await context.Set<T>()
+                                      .SingleOrDefaultAsync(entity => entity.Id.Equals(key)) ?? throw new EntityNotFoundException($"{typeof(T).Name} with key {key} not found!!!");
+
             return entity;
         }
 
         public async Task<T> Update(T entity)
         {
             context.Update(entity);
+
             await context.SaveChangesAsync();
 
             return entity;

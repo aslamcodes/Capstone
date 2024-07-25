@@ -1,6 +1,6 @@
 ﻿namespace EduQuest.Features.Content.Dto
 {
-    public class ContentResponseDto
+    public class ContentDto
     {
         public string Title { get; set; }
         public int SectionId { get; set; }

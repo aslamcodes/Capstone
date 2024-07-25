@@ -1,13 +1,14 @@
 
 using EduQuest.Commons;
 using EduQuest.Features.Auth;
+using EduQuest.Features.Content;
 using EduQuest.Features.Course;
+using EduQuest.Features.Sections;
 using EduQuest.Features.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Diagnostics;
 using System.Text;
 
 namespace EduQuest
@@ -75,8 +76,6 @@ namespace EduQuest
             #region Context
             builder.Services.AddDbContext<EduQuestContext>(options =>
             {
-                Console.WriteLine("\n\n\n\n" + builder.Configuration.GetConnectionString("Default") + "\n\n\n\n");
-                Debug.WriteLine("\n\n\n\n" + builder.Configuration.GetConnectionString("Default") + "\n\n\n\n");
                 options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
             });
 
@@ -90,11 +89,15 @@ namespace EduQuest
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddScoped<IContentService, ContentService>();
             builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<ISectionService, SectionService>();
             #endregion
 
             #region Repositories
             builder.Services.AddScoped<IRepository<int, User>, UserRepo>();
+            builder.Services.AddScoped<IRepository<int, Section>, SectionRepository>();
+            builder.Services.AddScoped<IContentRepo, ContentRepository>();
             builder.Services.AddScoped<IRepository<int, Course>, CourseRepository>();
             #endregion
 

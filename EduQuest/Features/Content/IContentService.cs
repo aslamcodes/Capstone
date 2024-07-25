@@ -3,8 +3,8 @@ using EduQuest.Features.Content.Dto;
 
 namespace EduQuest.Features.Content
 {
-    public interface IContentService : IBaseService<Content, ContentResponseDto>
+    public interface IContentService : IBaseService<Content, ContentDto>
     {
-        Task<IEnumerable<ContentResponseDto>> GetContentBySection(int sectionId);
+        Task<IEnumerable<ContentDto>> GetContentBySection(int sectionId);
     }
 }

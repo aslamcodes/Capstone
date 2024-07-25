@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EduQuest.Features.Content.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Content
 {
@@ -7,11 +8,11 @@ namespace EduQuest.Features.Content
     public class ContentController(IContentService contentService) : Controller
     {
         [HttpGet]
-        public async Task<ActionResult<List<Content>>> GetContentsForSection()
+        public async Task<ActionResult<List<ContentDto>>> GetContentsForSection(int sectionId)
         {
             try
             {
-                var contents = await contentService.GetAll();
+                var contents = await contentService.GetContentBySection(sectionId);
 
                 return Ok(contents);
             }
@@ -21,5 +22,22 @@ namespace EduQuest.Features.Content
                 throw;
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ContentDto>> CreateContentForSection([FromBody] ContentDto request)
+        {
+            try
+            {
+                var content = await contentService.Add(request);
+
+                return Ok(content);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

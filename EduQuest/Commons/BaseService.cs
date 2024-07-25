@@ -27,6 +27,7 @@ namespace EduQuest.Commons
         public virtual async Task<DTO> Add(DTO entity)
         {
             var res = await repo.Add(mapper.Map<T>(entity));
+
             return mapper.Map<DTO>(res);
         }
 
