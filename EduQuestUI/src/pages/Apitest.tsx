@@ -1,13 +1,8 @@
 import axios from "axios";
 import useSWR from "swr";
-
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+import { fetcher } from "../utils/fetcher";
 
 const Apitest = () => {
-  const { data, error } = useSWR("https://dummyjson.com/test", fetcher);
-
-  console.log(data, error);
-
   return (
     <div>
       <label className="swap swap-rotate">

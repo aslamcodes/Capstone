@@ -3,9 +3,9 @@ import { AuthContext, AuthDispatchContext, initialState } from "./context";
 import { authReducer } from "./authReducer";
 
 export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [user, dispatch] = useReducer(authReducer, initialState);
+  const [state, dispatch] = useReducer(authReducer, initialState);
   return (
-    <AuthContext.Provider value={user}>
+    <AuthContext.Provider value={state}>
       <AuthDispatchContext.Provider value={dispatch}>
         {children}
       </AuthDispatchContext.Provider>

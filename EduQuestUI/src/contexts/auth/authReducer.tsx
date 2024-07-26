@@ -5,7 +5,12 @@ import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
 } from "./constants";
-import { AuthContext, AuthDispatchContext, initialState } from "./context";
+import {
+  AuthContext,
+  AuthDispatchContext,
+  AuthState,
+  initialState,
+} from "./context";
 
 export const authReducer = (state = initialState, action: any) => {
   switch (action.type) {
@@ -36,7 +41,7 @@ export const authRegisterReducer = (state = initialState, action: any) => {
 };
 
 export const useAuthContext = () => {
-  const context = useContext(AuthContext);
+  const context = useContext<AuthState>(AuthContext);
 
   if (!context)
     throw new Error(

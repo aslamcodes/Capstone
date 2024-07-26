@@ -2,7 +2,19 @@ import { createContext } from "react";
 
 const localStateString = localStorage.getItem("userInfo");
 
-export const initialState = {
+export interface User {
+  isEducator: boolean;
+  token: string;
+  isAdmin: boolean;
+}
+
+export interface AuthState {
+  user: User | null;
+  isLoading: boolean;
+  error: any;
+}
+
+export const initialState: AuthState = {
   user: (localStateString && JSON.parse(localStateString)) || null,
   isLoading: false,
   error: null,
