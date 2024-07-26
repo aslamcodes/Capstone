@@ -3,6 +3,6 @@
     public enum ContentTypeEnum
     {
         Video,
-        Audio
+        Article
     }
 }

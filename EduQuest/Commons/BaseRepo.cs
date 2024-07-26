@@ -32,7 +32,7 @@ namespace EduQuest.Commons
 
         }
 
-        public async Task<T> GetByKey(K key)
+        public virtual async Task<T> GetByKey(K key)
         {
             var entity = await context.Set<T>()
                                       .SingleOrDefaultAsync(entity => entity.Id.Equals(key)) ?? throw new EntityNotFoundException($"{typeof(T).Name} with key {key} not found!!!");

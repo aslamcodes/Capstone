@@ -10,7 +10,6 @@ namespace EduQuest.Entities
         public int OrderIndex { get; set; }
         public Section Section { get; set; }
         public ContentTypeEnum ContentType { get; set; }
-
         public Video Video { get; set; }
 
         public Article Article { get; set; }

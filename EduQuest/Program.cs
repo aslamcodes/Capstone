@@ -1,6 +1,7 @@
 
 using EduQuest.Commons;
 using EduQuest.Entities;
+using EduQuest.Features.Articles;
 using EduQuest.Features.Auth;
 using EduQuest.Features.Contents;
 using EduQuest.Features.Courses;
@@ -9,6 +10,7 @@ using EduQuest.Features.Payments;
 using EduQuest.Features.Sections;
 using EduQuest.Features.StudentCourses;
 using EduQuest.Features.Users;
+using EduQuest.Features.Videos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -93,12 +95,13 @@ namespace EduQuest
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserService, UserService>();
-
+            builder.Services.AddScoped<IVideoService, VideoService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IContentService, ContentService>();
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<ISectionService, SectionService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddScoped<IArticleService, ArticleService>();
             #endregion
 
             #region Repositories
@@ -107,6 +110,8 @@ namespace EduQuest
             builder.Services.AddScoped<IRepository<int, Payment>, PaymentRepo>();
             builder.Services.AddScoped<IRepository<int, StudentCourse>, StudentCourseRepo>();
 
+            builder.Services.AddScoped<IArticleRepo, ArticleRepo>();
+            builder.Services.AddScoped<IVideoRepo, VideoRepo>();
             builder.Services.AddScoped<ISectionRepo, SectionRepository>();
             builder.Services.AddScoped<IContentRepo, ContentRepository>();
             builder.Services.AddScoped<ICourseRepo, CourseRepository>();

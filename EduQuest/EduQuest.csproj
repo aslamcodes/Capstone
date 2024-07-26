@@ -25,7 +25,6 @@
 
 	<ItemGroup>
 		<Folder Include="Features\Admin\" />
-		<Folder Include="Features\Article\" />
 		<Folder Include="Features\Educator\" />
 		<Folder Include="Features\LearningPaths\" />
 		<Folder Include="Features\CourseCategory\" />
@@ -34,7 +33,6 @@
 		<Folder Include="Features\Reviews\" />
 		<Folder Include="Features\Subscription\" />
 		<Folder Include="Features\Notes\" />
-		<Folder Include="Features\Video\" />
 		<Folder Include="Migrations\" />
 	</ItemGroup>
 
