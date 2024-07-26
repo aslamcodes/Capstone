@@ -1,12 +1,16 @@
 ﻿using EduQuest.Features.Auth.Exceptions;
-using EduQuest.Features.Content;
-using EduQuest.Features.Course;
+using EduQuest.Features.Contents;
+using EduQuest.Features.Courses;
+using EduQuest.Features.Orders;
 using EduQuest.Features.Sections;
 using System.Security.Claims;
 
 namespace EduQuest.Commons
 {
-    public class ControllerValidator(ICourseService courseService, IContentService contentService, ISectionService sectionService)
+    public class ControllerValidator(ICourseService courseService,
+                                     IOrderService orderService,
+                                     IContentService contentService,
+                                     ISectionService sectionService)
     {
         public async Task ValidateEducatorPrivilegeForCourse(IEnumerable<Claim> claims, int courseId)
         {
@@ -65,6 +69,26 @@ namespace EduQuest.Commons
             var userId = GetUserIdFromClaims(claims);
 
             if (userId != educatorId) throw new UnAuthorisedUserExeception();
+
+            return Task.CompletedTask;
+        }
+
+        public async Task ValidateUserPrivilageForOrder(IEnumerable<Claim> claims, int orderId)
+        {
+            var userId = GetUserIdFromClaims(claims);
+
+            var OrderId = await orderService.GetOrderById(orderId);
+
+            if (OrderId.UserId != userId) throw new UnAuthorisedUserExeception();
+
+            return;
+        }
+
+        public Task ValidateUserPrivilageForUserId(IEnumerable<Claim> claims, int userID)
+        {
+            var UserIdClaim = GetUserIdFromClaims(claims);
+
+            if (userID != UserIdClaim) throw new UnAuthorisedUserExeception();
 
             return Task.CompletedTask;
         }

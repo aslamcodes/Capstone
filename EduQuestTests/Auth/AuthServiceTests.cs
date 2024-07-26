@@ -1,7 +1,7 @@
 ﻿using EduQuest.Commons;
 using EduQuest.Features.Auth;
 using EduQuest.Features.Auth.DTOS;
-using EduQuest.Features.User;
+using EduQuest.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;

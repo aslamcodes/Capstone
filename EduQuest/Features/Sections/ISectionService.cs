@@ -1,4 +1,5 @@
 ﻿using EduQuest.Commons;
+using EduQuest.Entities;
 
 namespace EduQuest.Features.Sections
 {

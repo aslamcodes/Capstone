@@ -1,5 +1,6 @@
-﻿using EduQuest.Features.Auth.DTOS;
-using EduQuest.Features.User;
+﻿using EduQuest.Entities;
+using EduQuest.Features.Auth.DTOS;
+using EduQuest.Features.Users;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace EduQuest.Features.Auth
     public class AuthService(IUserService userService, ITokenService tokenService) : IAuthService
     {
 
-        public async Task<User.User> Login(AuthRequestDto request)
+        public async Task<Entities.User> Login(AuthRequestDto request)
         {
             var userDB = await userService.GetByEmailAsync(request.Email);
 
@@ -25,13 +26,13 @@ namespace EduQuest.Features.Auth
             return userDB;
         }
 
-        public async Task<User.User> Register(RegisterRequestDto request)
+        public async Task<Entities.User> Register(RegisterRequestDto request)
         {
 
             HMACSHA512 hMACSHA = new();
 
 
-            User.User existingUser;
+            Entities.User existingUser;
 
             try
             {
@@ -54,7 +55,7 @@ namespace EduQuest.Features.Auth
 
 
 
-            var user = new User.User()
+            var user = new User()
             {
                 Email = request.Email,
                 FirstName = request.FirstName,

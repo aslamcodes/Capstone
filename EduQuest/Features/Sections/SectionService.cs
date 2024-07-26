@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EduQuest.Commons;
+using EduQuest.Entities;
 
 namespace EduQuest.Features.Sections
 {

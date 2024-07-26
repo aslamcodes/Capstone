@@ -1,10 +1,14 @@
 
 using EduQuest.Commons;
+using EduQuest.Entities;
 using EduQuest.Features.Auth;
-using EduQuest.Features.Content;
-using EduQuest.Features.Course;
+using EduQuest.Features.Contents;
+using EduQuest.Features.Courses;
+using EduQuest.Features.Orders;
+using EduQuest.Features.Payments;
 using EduQuest.Features.Sections;
-using EduQuest.Features.User;
+using EduQuest.Features.StudentCourses;
+using EduQuest.Features.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +24,7 @@ namespace EduQuest
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -89,13 +94,18 @@ namespace EduQuest
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IContentService, ContentService>();
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<ISectionService, SectionService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
             #endregion
 
             #region Repositories
             builder.Services.AddScoped<IRepository<int, User>, UserRepo>();
+            builder.Services.AddScoped<IRepository<int, Order>, OrderRepo>();
+            builder.Services.AddScoped<IRepository<int, Payment>, PaymentRepo>();
+            builder.Services.AddScoped<IRepository<int, StudentCourse>, StudentCourseRepo>();
 
             builder.Services.AddScoped<ISectionRepo, SectionRepository>();
             builder.Services.AddScoped<IContentRepo, ContentRepository>();

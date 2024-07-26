@@ -29,7 +29,6 @@
 		<Folder Include="Features\Article\" />
 		<Folder Include="Features\LearningPaths\" />
 		<Folder Include="Features\CourseCategory\" />
-		<Folder Include="Features\NewFolder\" />
 		<Folder Include="Features\Skills\" />
 		<Folder Include="Features\QuestionAnswers\" />
 		<Folder Include="Features\Reviews\" />

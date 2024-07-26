@@ -15,7 +15,7 @@ namespace EduQuest.Features.Auth
             _secretKey = configuration.GetSection("TokenKey").GetSection("key").Value.ToString();
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
         }
-        public string GenerateUserToken(User.User user)
+        public string GenerateUserToken(Entities.User user)
         {
 
             var claims = new List<Claim>(){
@@ -28,7 +28,7 @@ namespace EduQuest.Features.Auth
 
             return token;
         }
-        public string GetUserRole(User.User user)
+        public string GetUserRole(Entities.User user)
         {
             if (user.IsEducator)
             {

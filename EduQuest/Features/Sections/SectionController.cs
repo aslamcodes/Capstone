@@ -1,7 +1,7 @@
 ﻿using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
-using EduQuest.Features.Content;
-using EduQuest.Features.Content.Dto;
+using EduQuest.Features.Contents;
+using EduQuest.Features.Contents.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +35,12 @@ namespace EduQuest.Features.Sections
         {
             try
             {
+
+                if (sectionId == 0)
+                {
+                    return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Invalid section id"));
+                }
+
                 var section = await sectionService.GetById(sectionId);
 
                 return section;

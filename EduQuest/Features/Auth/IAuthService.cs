@@ -4,8 +4,8 @@ namespace EduQuest.Features.Auth
 {
     public interface IAuthService
     {
-        Task<User.User> Login(AuthRequestDto request);
+        Task<Entities.User> Login(AuthRequestDto request);
 
-        Task<User.User> Register(RegisterRequestDto request);
+        Task<Entities.User> Register(RegisterRequestDto request);
     }
 }

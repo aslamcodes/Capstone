@@ -1,7 +1,4 @@
-﻿using EduQuest.Features.Content;
-using EduQuest.Features.Course;
-using EduQuest.Features.Sections;
-using EduQuest.Features.User;
+﻿using EduQuest.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduQuest.Commons
@@ -15,6 +12,12 @@ namespace EduQuest.Commons
         public DbSet<Content> Contents { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Payment> Payments { get; set; }
+
+        public DbSet<StudentCourse> StudentCourses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,7 +37,8 @@ namespace EduQuest.Commons
 
             modelBuilder.Entity<Course>()
                         .HasMany(c => c.Students)
-                        .WithMany(u => u.CoursesEnrolled);
+                        .WithMany(u => u.CoursesEnrolled)
+                        .UsingEntity<StudentCourse>();
 
             #endregion
 
@@ -79,6 +83,39 @@ namespace EduQuest.Commons
             modelBuilder.Entity<User>()
                         .HasIndex(u => u.Email)
                         .IsUnique();
+            #endregion
+
+            #region Order
+            modelBuilder.Entity<Order>()
+                        .HasKey(o => o.Id);
+
+            modelBuilder.Entity<Order>()
+                        .Property(o => o.Id)
+                        .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Order>()
+                        .HasOne(o => o.OrderedCourse)
+                        .WithMany(u => u.Orders)
+                        .HasForeignKey(o => o.OrderedCourseId);
+
+            modelBuilder.Entity<Order>()
+                        .HasOne(o => o.OrderedUser)
+                        .WithMany(u => u.CoursesOrdered);
+            #endregion
+
+            #region Payments
+            modelBuilder.Entity<Payment>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
+
+
+            modelBuilder.Entity<Payment>()
+                      .HasOne(payment => payment.Order)
+                      .WithOne(order => order.Payment)
+                      .HasForeignKey<Payment>(p => p.OrderId);
             #endregion
 
             #region Enum Conversion 

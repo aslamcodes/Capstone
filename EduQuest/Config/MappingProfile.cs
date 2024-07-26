@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using EduQuest.Entities;
 using EduQuest.Features.Auth.DTOS;
-using EduQuest.Features.Content;
-using EduQuest.Features.Content.Dto;
-using EduQuest.Features.Course;
-using EduQuest.Features.Course.Dto;
+using EduQuest.Features.Contents.Dto;
+using EduQuest.Features.Courses;
+using EduQuest.Features.Courses.Dto;
+using EduQuest.Features.Orders;
 using EduQuest.Features.Sections;
-using EduQuest.Features.User;
 
 namespace EduQuest.Config
 {
@@ -26,6 +26,9 @@ namespace EduQuest.Config
 
             CreateMap<SectionDto, Section>();
             CreateMap<Section, SectionDto>();
+
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderDto, Order>();
 
         }
         public static CourseLevelEnum MapLevel(string level)

@@ -22,22 +22,7 @@ namespace EduQuest.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CourseUser", b =>
-                {
-                    b.Property<int>("CoursesEnrolledId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CoursesEnrolledId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("CourseUser");
-                });
-
-            modelBuilder.Entity("EduQuest.Features.Content.Content", b =>
+            modelBuilder.Entity("EduQuest.Entities.Content", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,7 +51,7 @@ namespace EduQuest.Migrations
                     b.ToTable("Contents");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.Course.Course", b =>
+            modelBuilder.Entity("EduQuest.Entities.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +84,82 @@ namespace EduQuest.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.Sections.Section", b =>
+            modelBuilder.Entity("EduQuest.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("DiscountAmount")
+                        .HasColumnType("real");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderedCourseId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderedCourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("EduQuest.Entities.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentTransactionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("EduQuest.Entities.Section", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +188,30 @@ namespace EduQuest.Migrations
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.User.User", b =>
+            modelBuilder.Entity("EduQuest.Entities.StudentCourse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentCourses");
+                });
+
+            modelBuilder.Entity("EduQuest.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -180,24 +263,9 @@ namespace EduQuest.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CourseUser", b =>
+            modelBuilder.Entity("EduQuest.Entities.Content", b =>
                 {
-                    b.HasOne("EduQuest.Features.Course.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesEnrolledId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EduQuest.Features.User.User", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EduQuest.Features.Content.Content", b =>
-                {
-                    b.HasOne("EduQuest.Features.Sections.Section", "Section")
+                    b.HasOne("EduQuest.Entities.Section", "Section")
                         .WithMany("Contents")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -206,9 +274,9 @@ namespace EduQuest.Migrations
                     b.Navigation("Section");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.Course.Course", b =>
+            modelBuilder.Entity("EduQuest.Entities.Course", b =>
                 {
-                    b.HasOne("EduQuest.Features.User.User", "Educator")
+                    b.HasOne("EduQuest.Entities.User", "Educator")
                         .WithMany("CoursesCreated")
                         .HasForeignKey("EducatorId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -217,9 +285,39 @@ namespace EduQuest.Migrations
                     b.Navigation("Educator");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.Sections.Section", b =>
+            modelBuilder.Entity("EduQuest.Entities.Order", b =>
                 {
-                    b.HasOne("EduQuest.Features.Course.Course", "Course")
+                    b.HasOne("EduQuest.Entities.Course", "OrderedCourse")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderedCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EduQuest.Entities.User", "OrderedUser")
+                        .WithMany("CoursesOrdered")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderedCourse");
+
+                    b.Navigation("OrderedUser");
+                });
+
+            modelBuilder.Entity("EduQuest.Entities.Payment", b =>
+                {
+                    b.HasOne("EduQuest.Entities.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("EduQuest.Entities.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("EduQuest.Entities.Section", b =>
+                {
+                    b.HasOne("EduQuest.Entities.Course", "Course")
                         .WithMany("Sections")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -228,19 +326,48 @@ namespace EduQuest.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.Course.Course", b =>
+            modelBuilder.Entity("EduQuest.Entities.StudentCourse", b =>
                 {
+                    b.HasOne("EduQuest.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EduQuest.Entities.User", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("EduQuest.Entities.Course", b =>
+                {
+                    b.Navigation("Orders");
+
                     b.Navigation("Sections");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.Sections.Section", b =>
+            modelBuilder.Entity("EduQuest.Entities.Order", b =>
+                {
+                    b.Navigation("Payment")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EduQuest.Entities.Section", b =>
                 {
                     b.Navigation("Contents");
                 });
 
-            modelBuilder.Entity("EduQuest.Features.User.User", b =>
+            modelBuilder.Entity("EduQuest.Entities.User", b =>
                 {
                     b.Navigation("CoursesCreated");
+
+                    b.Navigation("CoursesOrdered");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EduQuest.Commons;
 using EduQuest.Features.Auth.DTOS;
-using EduQuest.Features.User;
+using EduQuest.Features.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Auth

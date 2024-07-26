@@ -2,6 +2,6 @@
 {
     public interface ITokenService
     {
-        public string GenerateUserToken(User.User user);
+        public string GenerateUserToken(Entities.User user);
     }
 }
