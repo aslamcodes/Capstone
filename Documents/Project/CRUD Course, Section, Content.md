@@ -2,7 +2,6 @@
 Scope: Backend
 Status: Completed
 Priority: "!!!"
-Tags: Feature
 ---
 # Todo
 - [x] CRUD for Content

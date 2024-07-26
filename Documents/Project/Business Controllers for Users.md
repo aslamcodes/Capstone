@@ -2,7 +2,6 @@
 Scope: Backend
 Status: Completed
 Priority: "!!"
-Tags: Feature
 ---
 > [!DANGER] Start with Testing!
 > [[Notes#Feature Development Flow TDD]]
