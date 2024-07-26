@@ -23,6 +23,8 @@ erDiagram
 	Skill ||--o{ Course : Belongs_to
 
 	Subscription ||--o{ Course : Provides_access_to	
+
+	Order ||--|| Course : Orders
 ```
 
 

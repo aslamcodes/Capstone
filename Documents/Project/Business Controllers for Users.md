@@ -1,11 +1,14 @@
 ---
 Scope: Backend
-Status: InProgress
+Status: Completed
+Priority: "!!"
+Tags: Feature
 ---
-
-- [ ] Student get enrolled in Courses
-- [ ] Educators get their authored courses
-- [ ] Student buy courses
+> [!DANGER] Start with Testing!
+> [[Notes#Feature Development Flow TDD]]
+- [x] Student get enrolled in Courses
+- [x] Educators get their authored courses 
+- [x] Student buy courses
 
 
 

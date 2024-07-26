@@ -247,3 +247,15 @@ text name,
 text icon
 }
 ```
+# Order
+```mermaid
+classDiagram
+    class Order {
+        +ObjectId user
+        +ObjectId course
+        +Number quantity
+        +Number totalPrice
+        +String status
+        +Date createdAt
+    }
+```

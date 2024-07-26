@@ -1,10 +1,11 @@
 ---
 Scope: Backend
 Status: Todo
+Priority: ""
+Tags: Feature
 ---
 
 # Todo
-- [ ] Enroll a course
+- [x] Enroll a course
 - [ ] Like a course
-- [ ] Cart functionality
 - [ ] Buy Subscription
