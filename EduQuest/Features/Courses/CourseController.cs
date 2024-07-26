@@ -65,6 +65,9 @@ namespace EduQuest.Features.Courses
         {
             try
             {
+                if (courseId == 0)
+                    throw new EntityNotFoundException("Course Id is required");
+
                 var course = await courseService.GetById(courseId);
 
                 return Ok(course);
@@ -141,10 +144,13 @@ namespace EduQuest.Features.Courses
         }
 
         [HttpGet("Student-Courses")]
-        public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCoursesForStudent([FromQuery] int studentId)
+        public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCoursesForStudent()
         {
             try
             {
+
+                var studentId = ControllerValidator.GetUserIdFromClaims(User.Claims);
+
                 var courses = await courseService.GetCoursesForStudent(studentId);
 
                 return Ok(courses);

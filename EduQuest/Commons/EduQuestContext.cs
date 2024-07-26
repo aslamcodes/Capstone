@@ -19,6 +19,10 @@ namespace EduQuest.Commons
 
         public DbSet<StudentCourse> StudentCourses { get; set; }
 
+        public DbSet<Video> Videos { get; set; }
+
+        public DbSet<Article> Articles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Course
@@ -116,6 +120,27 @@ namespace EduQuest.Commons
                       .HasOne(payment => payment.Order)
                       .WithOne(order => order.Payment)
                       .HasForeignKey<Payment>(p => p.OrderId);
+            #endregion
+
+            #region Video
+            modelBuilder.Entity<Video>().HasKey(v => v.Id);
+
+            modelBuilder.Entity<Video>().Property(v => v.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Video>().HasOne(v => v.Content)
+                .WithOne(c => c.Video)
+                .HasForeignKey<Video>(v => v.ContentId);
+            #endregion
+
+            #region Article
+            modelBuilder.Entity<Article>().HasKey(a => a.Id);
+
+            modelBuilder.Entity<Article>().Property(a => a.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Article>().HasOne(a => a.Content)
+                .WithOne(c => c.Article)
+                .HasForeignKey<Article>(a => a.ContentId);
+
             #endregion
 
             #region Enum Conversion 

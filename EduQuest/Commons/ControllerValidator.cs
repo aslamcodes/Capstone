@@ -54,7 +54,7 @@ namespace EduQuest.Commons
             return;
         }
 
-        static int GetUserIdFromClaims(IEnumerable<Claim> claims)
+        public static int GetUserIdFromClaims(IEnumerable<Claim> claims)
         {
 
             var claimArr = claims as Claim[] ?? claims.ToArray();

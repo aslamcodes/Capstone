@@ -25,8 +25,8 @@
 
 	<ItemGroup>
 		<Folder Include="Features\Admin\" />
-		<Folder Include="Features\Educator\" />
 		<Folder Include="Features\Article\" />
+		<Folder Include="Features\Educator\" />
 		<Folder Include="Features\LearningPaths\" />
 		<Folder Include="Features\CourseCategory\" />
 		<Folder Include="Features\Skills\" />
