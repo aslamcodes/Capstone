@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { Content, Section, Video } from "../../interfaces/common";
+import { Content, Section, Video } from "../../interfaces/course";
 import { fetcher, fetcherWithToken } from "../../utils/fetcher";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useSWRImmutable from "swr/immutable";

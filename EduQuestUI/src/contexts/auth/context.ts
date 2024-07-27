@@ -6,6 +6,7 @@ export interface User {
   isEducator: boolean;
   token: string;
   isAdmin: boolean;
+  id: number;
 }
 
 export interface AuthState {

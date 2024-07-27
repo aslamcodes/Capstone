@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { Section } from "../../interfaces/common";
+import { Section } from "../../interfaces/course";
 import { fetcher } from "../../utils/fetcher";
 import useSWRImmutable from "swr/immutable";
 

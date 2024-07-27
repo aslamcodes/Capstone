@@ -1,9 +1,9 @@
-# Feature Development Flow: TDD
+### Feature Development Flow: TDD
 - Define Service's Interfaces and its methods
 - Write Test cases and make it fail
 - Implement the services until all test cases passes
 - Complete the flow
-# Getting into a course
+### Getting into a course
 **Use Case: Enroll in Course**
 **Actors:** User, System
 **Preconditions:** User is logged in and has access to course enrollment options.
@@ -19,3 +19,16 @@
     - System checks the user's subscription status.
     - If subscription is valid, System adds the course to the user's course list.
 **Postconditions:** The user is enrolled in the course and can access course materials.
+
+### Use Case: Course Submission Process
+**Actors:** Educator, Admin Team, System
+**Preconditions:**
+- Educator is logged in.
+- Educator has access to the course creation tools.
+**Basic Flow:**
+1. **Educator creates a course** using the provided tools.
+2. **Educator submits** the course for review.
+3. **Admin team verifies** the course content and quality.
+4. **Admin team approves** the course.
+5. **System makes the course live** and available for enrollment.
+**Postconditions:** The course is live and available for students to enroll.

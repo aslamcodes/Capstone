@@ -4,6 +4,7 @@ import RegisterPage from "./auth/register";
 import MyCourses from "./course/MyCourse";
 import CoursePage from "./course/CoursePage";
 import Educator from "./Educator/Educator";
+import ManageCoursePage from "./Educator/ManageCoursePage";
 
 export const pages = [
   {
@@ -12,6 +13,7 @@ export const pages = [
     children: [
       { path: "/myCourses", element: <MyCourses /> },
       { path: "/myCourses/:courseId", element: <CoursePage /> },
+      { path: "/manage-course/:courseId", element: <ManageCoursePage /> },
       { path: "/Educator", element: <Educator /> },
     ],
   },

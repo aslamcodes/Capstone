@@ -2,7 +2,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Course } from "../../interfaces/common";
+import { Course } from "../../interfaces/course";
 
 const MyCourses = () => {
   const { user } = useAuthContext();

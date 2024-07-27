@@ -3,7 +3,7 @@ import SectionDrop from "../../components/Course/SectionDrop";
 import useSWR from "swr";
 import { fetcher } from "../../utils/fetcher";
 import VideoPlayer from "../../components/Course/VideoPlayer";
-import { Content, Section, Video } from "../../interfaces/common";
+import { Content, Section, Video } from "../../interfaces/course";
 import { useEffect, useState } from "react";
 import useSections from "../../hooks/fetchers/useSections";
 import useVideoForContent from "../../hooks/fetchers/useVideo";

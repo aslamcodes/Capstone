@@ -1,21 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
 import SectionContent from "./SectionContent";
 import { Content } from "../../interfaces/course";
-import Loader from "../common/Loader";
 
 type SectionProps = {
   name: string;
   description: string;
   id: number;
-  onContentChange: (contentId: number) => void;
 };
 
-const SectionDrop: FC<SectionProps> = ({
-  name: title,
-  description,
-  id,
-  onContentChange,
-}) => {
+const SectionDrop: FC<SectionProps> = ({ name: title, description, id }) => {
   const [isVisited, setIsVisited] = useState(false);
   const [contents, setContents] = useState<Content[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +26,7 @@ const SectionDrop: FC<SectionProps> = ({
 
   return (
     <div
-      className="collapse collapse-arrow bg-base-200 rounded-lg flex-shrink-0"
+      className="collapse collapse-arrow bg-base-200"
       onClick={() => setIsVisited(true)}
     >
       <input type="checkbox" />
@@ -41,20 +34,15 @@ const SectionDrop: FC<SectionProps> = ({
       <div className="collapse-title text-xl font-medium">{title}</div>
       <div className="collapse-content">
         <p>{description}</p>
-        <div className="mt-4">
-          {isLoading && <Loader />}
-          <div className="flex flex-col gap-2">
-            {contents.length > 0 &&
-              contents.map((content) => (
-                <SectionContent
-                  contentId={content.id}
-                  contentType="Video"
-                  key={content.id}
-                  title={content.title}
-                  onClick={(content) => onContentChange(content)}
-                ></SectionContent>
-              ))}
-          </div>
+        <div>
+          {isLoading && <div>Loading...</div>}
+          {contents.length > 0 &&
+            contents.map((content) => (
+              <SectionContent
+                key={content.id}
+                title={content.title}
+              ></SectionContent>
+            ))}
         </div>
       </div>
     </div>
