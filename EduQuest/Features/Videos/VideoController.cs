@@ -14,7 +14,7 @@ namespace EduQuest.Features.Videos
         {
             try
             {
-                await validator.ValidateEducatorPrivilegeForContent(User.Claims, contentId);
+                await validator.ValidateStudentPrivilegeForContent(User.Claims, contentId);
 
                 var video = await videoService.GetByContentId(contentId);
 

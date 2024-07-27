@@ -92,5 +92,26 @@ namespace EduQuest.Commons
 
             return Task.CompletedTask;
         }
+
+        public async Task ValidateStudentPrivilegeForContent(IEnumerable<Claim> claims, int contentId)
+        {
+            var userId = GetUserIdFromClaims(claims);
+
+            var enrolledCourses = await courseService.GetCoursesForStudent(userId);
+
+
+            var content = await contentService.GetById(contentId);
+
+            var section = await sectionService.GetById(content.SectionId);
+
+            var course = await courseService.GetById(section.CourseId);
+
+
+            if (course.EducatorId == userId) return;
+
+            if (enrolledCourses.Any(c => c.Id == course.Id)) return;
+
+            throw new UnAuthorisedUserExeception();
+        }
     }
 }

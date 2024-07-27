@@ -10,15 +10,13 @@ import { fetcher } from "./utils/fetcher.ts";
 const router = createBrowserRouter(pages);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <SWRConfig
-        value={{
-          fetcher,
-        }}
-      >
-        <RouterProvider router={router} />
-      </SWRConfig>
-    </AuthContextProvider>
-  </React.StrictMode>
+  <AuthContextProvider>
+    <SWRConfig
+      value={{
+        fetcher,
+      }}
+    >
+      <RouterProvider router={router} />
+    </SWRConfig>
+  </AuthContextProvider>
 );

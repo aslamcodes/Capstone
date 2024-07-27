@@ -1,18 +1,8 @@
-import useSWR from "swr";
-import { fetcherWithToken } from "../../utils/fetcher";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-export interface Course {
-  id: number;
-  name: string;
-  description: string;
-  educatorId: number;
-  level: "Begginer" | "Intermediate" | "Advanced";
-  price: number;
-}
+import { Course } from "../../interfaces/common";
 
 const MyCourses = () => {
   const { user } = useAuthContext();
@@ -20,11 +10,6 @@ const MyCourses = () => {
   if (!user?.token) {
     return <div>You need to be logged in to view this page.</div>;
   }
-
-  // const { data: courses, isLoading } = useSWR<Course[], any>(
-  //   ["/api/Course/Student-Courses", user?.token],
-  //   ([url, token]) => fetcherWithToken(url, token as string)
-  // );
 
   useEffect(() => {
     let fetch = async () => {
@@ -39,12 +24,9 @@ const MyCourses = () => {
     fetch();
   }, []);
 
-  // if (isLoading && !courses) {
-  //   return <div>Loading...</div>;
-  // }
-
   return (
     <div className="container mx-auto p-4">
+      <div></div>
       <div className="flex flex-wrap gap-4">
         {courses?.map((course) => (
           <div className="card bg-base-100 w-72 shadow-xl">

@@ -1,6 +1,4 @@
-﻿using EduQuest.Features.Videos;
-
-namespace EduQuest.Features.Contents.Dto
+﻿namespace EduQuest.Features.Contents.Dto
 {
     public class ContentDto
     {
@@ -8,8 +6,7 @@ namespace EduQuest.Features.Contents.Dto
         public string Title { get; set; }
         public int SectionId { get; set; }
         public int OrderIndex { get; set; }
-        public ContentTypeEnum ContentType { get; set; }
+        public required ContentTypeEnum ContentType { get; set; }
 
-        public VideoDto Video { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace EduQuest.Features.Articles
         {
             try
             {
+                await validator.ValidateStudentPrivilegeForContent(User.Claims, contentId);
+
                 var article = await articleService.GetByContentId(contentId);
 
                 return Ok(article);

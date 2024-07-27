@@ -1,10 +1,9 @@
-import { Children } from "react";
 import App from "../App";
-import Apitest from "./Apitest";
 import LoginPage from "./auth/login";
 import RegisterPage from "./auth/register";
 import MyCourses from "./course/MyCourse";
-import Course from "./course/Course";
+import CoursePage from "./course/CoursePage";
+import Educator from "./Educator/Educator";
 
 export const pages = [
   {
@@ -12,7 +11,8 @@ export const pages = [
     element: <App />,
     children: [
       { path: "/myCourses", element: <MyCourses /> },
-      { path: "/myCourses/:courseId", element: <Course /> },
+      { path: "/myCourses/:courseId", element: <CoursePage /> },
+      { path: "/Educator", element: <Educator /> },
     ],
   },
   {
