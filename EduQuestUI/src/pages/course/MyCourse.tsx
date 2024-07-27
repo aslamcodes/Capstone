@@ -6,6 +6,7 @@ import { Course } from "../../interfaces/course";
 
 const MyCourses = () => {
   const { user } = useAuthContext();
+
   const [courses, setCourses] = useState<Course[]>([]);
   if (!user?.token) {
     return <div>You need to be logged in to view this page.</div>;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tab } from "../../interfaces/common";
 import Tabs from "../../components/common/Tabs";
 import CourseInfo from "./manage-course-pages/CourseInfoPage";
@@ -6,6 +6,9 @@ import CourseCurriculum from "./manage-course-pages/CourseCurriculumPage";
 import SubmitCoursePage from "./manage-course-pages/SubmitPage";
 import { ManageCoursePageProps } from "./manage-course-pages/manageCourseTypes";
 import { Course } from "../../interfaces/course";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Loader from "../../components/common/Loader";
 
 interface CourseTab extends Tab {
   value: "course_info" | "course_curriculum" | "submit";
@@ -28,6 +31,35 @@ const manageCoursePages: {
 const ManageCoursePage = () => {
   const [activeTab, setActiveTab] = useState<CourseTab["value"]>("course_info");
   const [managingCourse, setManagingCourse] = useState<Course | null>(null);
+  const [isCourseLoading, setIsCourseLoading] = useState<boolean>(false);
+  const { courseId } = useParams();
+
+  const mode: ManageCoursePageProps["mode"] = courseId
+    ? "updating"
+    : "creating";
+
+  useEffect(() => {
+    if (!courseId) {
+      return;
+    }
+
+    const fetch = async () => {
+      setIsCourseLoading(true);
+      const { data } = await axios.get<Course>(`/api/Course/`, {
+        params: {
+          courseId,
+        },
+      });
+      setManagingCourse(data);
+      setIsCourseLoading(false);
+    };
+
+    fetch();
+  }, [courseId]);
+
+  if (isCourseLoading) {
+    return <Loader />;
+  }
 
   return (
     <div>
@@ -45,7 +77,7 @@ const ManageCoursePage = () => {
 
         {activeTab === "course_info" && (
           <CourseInfo
-            mode="creating"
+            mode={mode}
             initialCourse={managingCourse}
             onSave={(course) => setManagingCourse(course)}
           />
@@ -54,14 +86,14 @@ const ManageCoursePage = () => {
           <CourseCurriculum
             initialCourse={managingCourse}
             onSave={(course) => setManagingCourse(course)}
-            mode="creating"
+            mode={mode}
           />
         )}
         {activeTab === "submit" && (
           <SubmitCoursePage
             initialCourse={managingCourse}
             onSave={(course) => setManagingCourse(course)}
-            mode="creating"
+            mode={mode}
           />
         )}
       </div>

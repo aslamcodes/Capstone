@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { ManageCoursePageProps } from "./manageCourseTypes";
 import Form, {
   FormButton,
@@ -21,18 +21,31 @@ type Inputs = {
 
 interface CourseInfoProps extends ManageCoursePageProps {}
 
-const CourseInfo: FC<CourseInfoProps> = ({ onSave }) => {
+const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
+  const { user } = useAuthContext();
+
+  const isEditing = mode === "updating";
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
-
-  const { user } = useAuthContext();
+  } = useForm<Inputs>({
+    defaultValues: initialCourse || {},
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log({ ...data, educatorId: user?.id });
+    if (isEditing) {
+      const res = await axios.put<Course>(
+        "/api/Course",
+        { ...data },
+        {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        }
+      );
 
+      return onSave(res.data);
+    }
     const res = await axios.post<Course>(
       "/api/Course",
       { ...data, educatorId: user?.id },
