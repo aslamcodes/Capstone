@@ -3,6 +3,7 @@ import { Section } from "../../interfaces/course";
 import { BiDownArrow, BiUpArrow } from "react-icons/bi";
 import useContentsForSection from "../../hooks/fetchers/useContent";
 import ContentEdit from "./ContentEdit";
+import Sortable from "../common/dnd/Sortable";
 
 interface SectionEditProps {
   initialSection: Section;
@@ -20,7 +21,6 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection }) => {
       </div>
     );
   }
-  console.log(contents);
 
   if (error) return <div>Error: </div>;
 

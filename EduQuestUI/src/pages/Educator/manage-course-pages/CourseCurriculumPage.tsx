@@ -3,6 +3,21 @@ import { ManageCoursePageProps } from "./manageCourseTypes";
 import useSections from "../../../hooks/fetchers/useSections";
 import SectionEdit from "../../../components/educators/SectionEdit";
 import { Section } from "../../../interfaces/course";
+import {
+  closestCenter,
+  closestCorners,
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { cornersOfRectangle } from "@dnd-kit/core/dist/utilities/algorithms/helpers";
+import Sortable from "../../../components/common/dnd/Sortable";
 
 interface CourseCurriculumProps extends ManageCoursePageProps {}
 
@@ -14,6 +29,8 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
   const { sections, isLoading, error } = useSections(
     initialCourse?.id as number
   );
+
+  const sensors = useSensors(useSensor(PointerSensor));
 
   const [newSections, setNewSections] = useState<Section[]>(sections || []);
 
@@ -46,21 +63,49 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
         description: "",
         id: 0,
         courseId: initialCourse?.id as number,
+        orderId: prev.length,
       },
     ]);
   };
 
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+
+    if (active.id === over.id) {
+      return;
+    }
+
+    setNewSections((prev) => {
+      const oldIndex = prev.findIndex((section) => section.id === active.id);
+      const newIndex = prev.findIndex((section) => section.id === over.id);
+      prev[oldIndex].orderId = newIndex;
+      prev[newIndex].orderId = oldIndex;
+      return arrayMove(prev, oldIndex, newIndex);
+    });
+  };
+
   return (
-    <div>
-      <div className="flex flex-col items-center gap-3 w-2/3 mx-auto">
-        {newSections?.map((section) => (
-          <SectionEdit initialSection={section} />
-        ))}
-        <button className="btn mt-10 w-full" onClick={handleAddSection}>
-          Add Section
-        </button>
-      </div>
-    </div>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={newSections}
+        strategy={verticalListSortingStrategy}
+      >
+        <div className="flex flex-col  gap-3 w-2/3 mx-auto">
+          {newSections?.map((section) => (
+            <Sortable id={section.id} key={section.id}>
+              <SectionEdit initialSection={section} />
+            </Sortable>
+          ))}
+          <button className="btn mt-10 w-full" onClick={handleAddSection}>
+            Add Section
+          </button>
+        </div>
+      </SortableContext>
+    </DndContext>
   );
 };
 
