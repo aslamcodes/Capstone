@@ -38,6 +38,7 @@ const ManageCoursePage = () => {
     ? "updating"
     : "creating";
 
+  // fetch the course using the courseId from params, and the mode is updating else creating
   useEffect(() => {
     if (!courseId) {
       return;
@@ -66,9 +67,7 @@ const ManageCoursePage = () => {
       <Tabs
         tabs={tabs}
         activeTab={activeTab}
-        onClick={(tab: Tab) => {
-          setActiveTab(tab.value as CourseTab["value"]);
-        }}
+        onClick={(tab: Tab) => setActiveTab(tab.value as CourseTab["value"])}
       />
       <div className="mt-5">
         {/* {manageCoursePages[activeTab]({
