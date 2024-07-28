@@ -47,6 +47,7 @@ namespace EduQuest.Commons
             context.Update(entity);
 
             await context.SaveChangesAsync();
+
             context.Entry(entity).State = EntityState.Detached;
 
             return entity;

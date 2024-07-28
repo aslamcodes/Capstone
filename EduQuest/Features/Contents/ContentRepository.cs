@@ -19,14 +19,14 @@ namespace EduQuest.Features.Contents
 
         public async Task<List<Content>> GetContentsBySection(int sectionId)
         {
-            var contents = await context.Contents.Include(c => c.Video).Where(c => c.SectionId == sectionId).ToListAsync();
+            var contents = await context.Contents.AsNoTracking().Include(c => c.Video).Where(c => c.SectionId == sectionId).ToListAsync();
 
             return contents;
         }
 
         public override async Task<Content> GetByKey(int key)
         {
-            var content = await context.Contents.Include(c => c.Video).Include(c => c.Article).FirstOrDefaultAsync(c => c.Id == key);
+            var content = await context.Contents.AsNoTracking().Include(c => c.Video).Include(c => c.Article).FirstOrDefaultAsync(c => c.Id == key);
 
             return content ?? throw new EntityNotFoundException("Content not found");
         }

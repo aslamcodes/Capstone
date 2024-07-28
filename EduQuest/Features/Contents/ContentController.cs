@@ -37,6 +37,7 @@ namespace EduQuest.Features.Contents
             {
                 await controllerValidator.ValidateEducatorPrivilegeForContent(User.Claims, content.Id);
                 await controllerValidator.ValidateEducatorPrivilegeForSection(User.Claims, content.SectionId);
+
                 var updatedContent = await contentService.Update(content);
 
                 return Ok(updatedContent);
