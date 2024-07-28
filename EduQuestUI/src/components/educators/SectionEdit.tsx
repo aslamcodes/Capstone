@@ -107,6 +107,14 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
     setIsContentLoading(() => false);
   }
 
+  async function handleDeleteContent(contentId: number) {
+    await axios.delete("/api/Content", {
+      params: { contentId },
+      headers: { Authorization: `Bearer ${user?.token}` },
+    });
+    setContents((prev) => prev.filter((content) => content.id !== contentId));
+  }
+
   const handleOrderChange = async (contentId: number, orderId: number) => {
     const content = contents.find((content) => content.id === contentId);
 
@@ -160,11 +168,16 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
                 items={contents}
                 strategy={verticalListSortingStrategy}
               >
-                {contents?.map((content) => (
-                  <Sortable id={content.id} key={content.id}>
-                    <ContentEdit content={content} />
-                  </Sortable>
-                ))}
+                <div className="space-y-2">
+                  {contents?.map((content) => (
+                    <Sortable id={content.id} key={content.id}>
+                      <ContentEdit
+                        content={content}
+                        onDelete={handleDeleteContent}
+                      />
+                    </Sortable>
+                  ))}
+                </div>
               </SortableContext>
             </DndContext>
             {showAddContentForm ? (

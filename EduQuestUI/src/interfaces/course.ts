@@ -3,7 +3,7 @@ export interface Content {
   title: string;
   sectionId: number;
   orderIndex: number;
-  contentType: number;
+  contentType: "Video" | "Article";
   video: Video | null;
   article: Article | null;
 }
