@@ -3,8 +3,14 @@ import { CSS } from "@dnd-kit/utilities";
 import React, { FC, PropsWithChildren } from "react";
 
 const Sortable: FC<PropsWithChildren<{ id: number }>> = ({ id, children }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -15,7 +21,7 @@ const Sortable: FC<PropsWithChildren<{ id: number }>> = ({ id, children }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="z-40"
+      className={`z-40 cursor-grab ${isDragging && "cursor-grabbing z-50"}`}
       {...attributes}
       {...listeners}
     >

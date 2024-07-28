@@ -22,6 +22,12 @@ import Sortable from "../../../components/common/dnd/Sortable";
 import axios from "axios";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
 import Loader from "../../../components/common/Loader";
+import Form, {
+  FormButton,
+  FormGroup,
+  FormTitle,
+} from "../../../components/common/Form";
+import { FieldValue, FieldValues, useForm } from "react-hook-form";
 
 interface CourseCurriculumProps extends ManageCoursePageProps {}
 
@@ -36,22 +42,28 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
     initialCourse?.id as number
   );
 
-  const sensors = useSensors(useSensor(PointerSensor), useSensor(TouchSensor));
-
   const [newSections, setNewSections] = useState<Section[]>(sections || []);
   const [isAddingSection, setIsAddingSection] = useState<boolean>(false);
+  const [showAddSectionForm, setShowAddSectionForm] = useState<boolean>(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor)
+  );
+
   // update the sections when the sections are fetched
   useEffect(() => {
     if (sections) {
-      // sort by orderid
-
-      setNewSections((prev) =>
-        [...sections, ...prev].sort((a, b) => a.orderId - b.orderId)
-      );
+      setNewSections(() => sections.sort((a, b) => a.orderId - b.orderId));
     }
   }, [sections]);
 
   if (isLoading) {
+    // skeleton loader
     return (
       <div className="w-1/2 mx-auto flex flex-col gap-3">
         <div className="w-full skeleton h-10"></div>
@@ -69,6 +81,7 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
   const handleOrderChange = async (sectionId: number, orderId: number) => {
     const section = newSections.find((section) => section.id === sectionId);
     console.log(sectionId);
+
     await axios.put(
       "/api/Section",
       {
@@ -83,14 +96,14 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
     );
   };
 
-  const handleAddSection = async () => {
+  const handleAddSection = async (data: any) => {
     // find a better way to generate unique id instread of string
     setIsAddingSection(true);
     var { data: newSection } = await axios.post<Section>(
       "/api/Section",
       {
-        name: "Dummy Name",
-        description: "Dummyguy",
+        name: data.name,
+        description: data.description,
         courseId: initialCourse?.id,
         orderId: newSections.length,
       },
@@ -101,8 +114,8 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
       }
     );
 
+    setShowAddSectionForm(false);
     setIsAddingSection(false);
-
     setNewSections((prev) => [...prev, newSection]);
   };
 
@@ -138,21 +151,83 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
         items={newSections}
         strategy={verticalListSortingStrategy}
       >
-        <div className="flex flex-col  gap-3 w-2/3 mx-auto">
+        <div className="space-y-3 w-2/3 mx-auto">
           {newSections?.map((section) => (
             <Sortable id={section.id} key={section.id}>
-              <h1>
-                {section.id} {section.orderId}
-              </h1>
-              <SectionEdit initialSection={section} />
+              <SectionEdit
+                initialSection={section}
+                onDelete={(sectionId) => {
+                  setNewSections((prev) =>
+                    prev.filter((section) => section.id !== sectionId)
+                  );
+                }}
+              />
             </Sortable>
           ))}
-          <button className="btn mt-10 w-full" onClick={handleAddSection}>
-            {isAddingSection ? <Loader></Loader> : <h1>Add Section</h1>}
-          </button>
+          {isAddingSection && <div className="w-full skeleton h-10"></div>}
+          {showAddSectionForm && (
+            <AddSectionForm
+              onSubmit={(data) => {
+                handleAddSection(data);
+              }}
+            />
+          )}
+          {!showAddSectionForm && (
+            <button
+              className="btn mt-10 w-full"
+              onClick={() => setShowAddSectionForm(true)}
+            >
+              Add Section
+            </button>
+          )}
         </div>
       </SortableContext>
     </DndContext>
+  );
+};
+
+interface AddSectionInputs {
+  name: string;
+  description: string;
+}
+
+const AddSectionForm: FC<{ onSubmit: (data: FieldValues) => void }> = ({
+  onSubmit,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddSectionInputs>();
+
+  return (
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      className="border border-neutral-content p-4 rounded-lg"
+    >
+      <FormTitle>Add Section</FormTitle>
+      <FormGroup>
+        <label htmlFor="name">Section Name</label>
+        <input
+          type="text"
+          placeholder="Section Name"
+          className="input input-bordered"
+          {...register("name", { required: true })}
+        />
+      </FormGroup>
+      <FormGroup>
+        <label htmlFor="description">Section Description</label>
+        <textarea
+          placeholder="Section Description"
+          className="textarea textarea-bordered"
+          {...register("description", { required: true })}
+        />
+      </FormGroup>
+      <FormGroup row>
+        <FormButton type="button" title="Cancel" />
+        <FormButton title="Add" />
+      </FormGroup>
+    </Form>
   );
 };
 

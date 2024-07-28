@@ -21,8 +21,11 @@ export const FormControl: FC<PropsWithChildren> = ({ children }) => {
   return <div>{children}</div>;
 };
 
-export const FormGroup: FC<PropsWithChildren> = ({ children }) => {
-  return <div className="flex flex-col gap-2">{children}</div>;
+export const FormGroup: FC<PropsWithChildren<{ row?: boolean }>> = ({
+  children,
+  row = false,
+}) => {
+  return <div className={`flex ${!row && "flex-col"} gap-2`}>{children}</div>;
 };
 
 export const FormLabel: FC<PropsWithChildren> = ({ children }) => {
@@ -32,9 +35,10 @@ export const FormLabel: FC<PropsWithChildren> = ({ children }) => {
 export const FormButton: FC<{
   title: string;
   className?: string;
-}> = ({ title, className }) => {
+  type?: "submit" | "reset" | "button";
+}> = ({ title, className, type = "submit" }) => {
   return (
-    <button type="submit" className={`btn ${className}`}>
+    <button type={type} className={`btn ${className}`}>
       {title}
     </button>
   );
