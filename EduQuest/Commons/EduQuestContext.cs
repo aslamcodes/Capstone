@@ -59,6 +59,14 @@ namespace EduQuest.Commons
                         .WithMany(c => c.Sections)
                         .HasForeignKey(s => s.CourseId)
                         .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.HasSequence<int>("SectionOrders")
+                        .StartsAt(1)
+                        .IncrementsBy(1);
+
+            modelBuilder.Entity<Section>()
+                        .Property(o => o.OrderId)
+                        .HasDefaultValueSql("NEXT VALUE FOR SectionOrders");
             #endregion
 
             #region Content
@@ -68,6 +76,14 @@ namespace EduQuest.Commons
             modelBuilder.Entity<Content>()
                         .Property(c => c.Id)
                         .ValueGeneratedOnAdd();
+
+            modelBuilder.HasSequence<int>("ContentOrders")
+                        .StartsAt(1)
+                        .IncrementsBy(1);
+
+            modelBuilder.Entity<Content>()
+                        .Property(o => o.OrderId)
+                        .HasDefaultValueSql("NEXT VALUE FOR ContentOrders");
 
             modelBuilder.Entity<Content>()
                         .HasOne(c => c.Section)
@@ -127,9 +143,10 @@ namespace EduQuest.Commons
 
             modelBuilder.Entity<Video>().Property(v => v.Id).ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<Video>().HasOne(v => v.Content)
-                .WithOne(c => c.Video)
-                .HasForeignKey<Video>(v => v.ContentId);
+            modelBuilder.Entity<Video>()
+                        .HasOne(v => v.Content)
+                        .WithOne(c => c.Video)
+                        .HasForeignKey<Video>(v => v.ContentId);
             #endregion
 
             #region Article
@@ -137,9 +154,10 @@ namespace EduQuest.Commons
 
             modelBuilder.Entity<Article>().Property(a => a.Id).ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<Article>().HasOne(a => a.Content)
-                .WithOne(c => c.Article)
-                .HasForeignKey<Article>(a => a.ContentId);
+            modelBuilder.Entity<Article>()
+                        .HasOne(a => a.Content)
+                        .WithOne(c => c.Article)
+                        .HasForeignKey<Article>(a => a.ContentId);
 
             #endregion
 

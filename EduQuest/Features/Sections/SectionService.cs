@@ -17,6 +17,7 @@ namespace EduQuest.Features.Sections
 
             return sections.Where(s => s.CourseId == courseId)
                 .Select(mapper.Map<SectionDto>)
+                .OrderBy(s => s.OrderId)
                 .ToList();
         }
     }

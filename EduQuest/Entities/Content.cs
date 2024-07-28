@@ -7,7 +7,7 @@ namespace EduQuest.Entities
     {
         public string Title { get; set; }
         public int SectionId { get; set; }
-        public int OrderIndex { get; set; }
+        public int OrderId { get; set; }
         public Section Section { get; set; }
         public ContentTypeEnum ContentType { get; set; }
         public Video Video { get; set; }
