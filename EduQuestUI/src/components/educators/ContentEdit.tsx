@@ -5,11 +5,13 @@ import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { GoVideo } from "react-icons/go";
 import { TbArticle } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 const ContentEdit: FC<{
   content: Content;
   onDelete: (contentId: number) => void;
 }> = ({ content, onDelete }) => {
+  const navigate = useNavigate();
   return (
     <div className="w-full bg-base-300 p-4 rounded-md flex items-center justify-between">
       <div className="flex gap-2 items-center">
@@ -24,7 +26,12 @@ const ContentEdit: FC<{
               <p>Upload Video</p>
             </button>
           ) : (
-            <button className="flex gap-2 items-center">
+            <button
+              className="flex gap-2 items-center"
+              onClick={() => {
+                navigate(`/manage-course/content/article/${content.id}`);
+              }}
+            >
               <TbArticle />
               <p>Edit Content</p>
             </button>

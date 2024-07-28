@@ -1,0 +1,93 @@
+import MDEditor, { title } from "@uiw/react-md-editor";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Loader from "../common/Loader";
+import axios from "axios";
+import { useAuthContext } from "../../contexts/auth/authReducer";
+import { Article } from "../../interfaces/course";
+
+const AritlceEditor = () => {
+  const { user } = useAuthContext();
+
+  const { contentId } = useParams();
+
+  const [isSaving, setIsSaving] = useState(false);
+  const [article, setArticle] = useState<Article | null>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const { data } = await axios.get<Article>(`/api/Article/ForContent`, {
+        params: { contentId },
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+
+      setArticle(data);
+    };
+
+    fetchContent();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (article) handleSave();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [article]);
+
+  console.log(article);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+
+    await axios.put(
+      "/api/Article",
+      {
+        id: article?.id,
+        contentId: article?.contentId,
+        body: article?.body,
+        title: article?.title,
+        description: article?.description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }
+    );
+    setIsSaving(false);
+  };
+
+  return (
+    <div className="flex flex-col gap-3 h-screen">
+      <div className="md:hidden">
+        <p className="alert alert-warning">
+          Use a larger screen to edit the article. The editor is not optimised
+          for mobile.
+        </p>
+      </div>
+      <MDEditor
+        className="flex-grow max-h-[70vh]"
+        value={article?.body}
+        onChange={(v) => {
+          setArticle((prev) => ({ ...prev, body: v } as Article));
+        }}
+        data-color-mode="light"
+      >
+        <MDEditor.Markdown
+          source={article?.body}
+          style={{ whiteSpace: "pre-wrap" }}
+        />
+      </MDEditor>
+      <div className="text-right">
+        <button className="btn btn-primary" onClick={handleSave}>
+          {isSaving ? <Loader type="ring" size="md"></Loader> : <>Save</>}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default AritlceEditor;
