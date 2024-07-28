@@ -18,7 +18,9 @@ namespace EduQuest.Features.Contents
         {
             var contents = await contentRepo.GetContentsBySection(sectionId);
 
-            return contents.ConvertAll(mapper.Map<ContentDto>);
+            return contents.ConvertAll(mapper.Map<ContentDto>)
+                           .OrderBy(c => c.OrderIndex)
+                           .ToList();
         }
 
 

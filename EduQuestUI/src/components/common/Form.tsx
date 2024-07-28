@@ -4,10 +4,7 @@ interface FormProps extends FormHTMLAttributes<HTMLFormElement> {}
 
 const Form: FC<PropsWithChildren<FormProps>> = ({ children, ...props }) => {
   return (
-    <form
-      className="flex flex-col gap-5 max-w-screen-lg rounded-box p-6"
-      {...props}
-    >
+    <form className="space-y-5 max-w-screen-lg rounded-box p-6" {...props}>
       {children}
     </form>
   );
@@ -21,8 +18,11 @@ export const FormControl: FC<PropsWithChildren> = ({ children }) => {
   return <div>{children}</div>;
 };
 
-export const FormGroup: FC<PropsWithChildren> = ({ children }) => {
-  return <div className="flex flex-col gap-2">{children}</div>;
+export const FormGroup: FC<PropsWithChildren<{ row?: boolean }>> = ({
+  children,
+  row = false,
+}) => {
+  return <div className={`flex ${!row && "flex-col"} gap-2`}>{children}</div>;
 };
 
 export const FormLabel: FC<PropsWithChildren> = ({ children }) => {
@@ -32,16 +32,18 @@ export const FormLabel: FC<PropsWithChildren> = ({ children }) => {
 export const FormButton: FC<{
   title: string;
   className?: string;
-}> = ({ title, className }) => {
+  type?: "submit" | "reset" | "button";
+  onClick?: () => void;
+}> = ({ title, className, type = "submit", onClick }) => {
   return (
-    <button type="submit" className={`btn ${className}`}>
+    <button type={type} className={`btn ${className}`} onClick={onClick}>
       {title}
     </button>
   );
 };
 
-export const FormError: FC<{ message: string }> = () => {
-  return <div />;
+export const FormError: FC<{ message: string }> = ({ message }) => {
+  return <span className="text-error">{message}</span>;
 };
 
 export default Form;

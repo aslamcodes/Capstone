@@ -1,8 +1,33 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { act, FC, useEffect, useState } from "react";
 import { ManageCoursePageProps } from "./manageCourseTypes";
 import useSections from "../../../hooks/fetchers/useSections";
 import SectionEdit from "../../../components/educators/SectionEdit";
 import { Section } from "../../../interfaces/course";
+import {
+  closestCenter,
+  closestCorners,
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import Sortable from "../../../components/common/dnd/Sortable";
+import axios from "axios";
+import { useAuthContext } from "../../../contexts/auth/authReducer";
+import Loader from "../../../components/common/Loader";
+import Form, {
+  FormButton,
+  FormGroup,
+  FormTitle,
+} from "../../../components/common/Form";
+import { FieldValue, FieldValues, useForm } from "react-hook-form";
 
 interface CourseCurriculumProps extends ManageCoursePageProps {}
 
@@ -11,19 +36,34 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
   onSave,
   initialCourse,
 }) => {
+  const { user } = useAuthContext();
+
   const { sections, isLoading, error } = useSections(
     initialCourse?.id as number
   );
 
   const [newSections, setNewSections] = useState<Section[]>(sections || []);
+  const [isAddingSection, setIsAddingSection] = useState<boolean>(false);
+  const [showAddSectionForm, setShowAddSectionForm] = useState<boolean>(false);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor)
+  );
+
+  // update the sections when the sections are fetched
   useEffect(() => {
-    if (sections && newSections.length === 0) {
-      setNewSections(sections);
+    if (sections) {
+      setNewSections(() => sections.sort((a, b) => a.orderId - b.orderId));
     }
   }, [sections]);
 
   if (isLoading) {
+    // skeleton loader
     return (
       <div className="w-1/2 mx-auto flex flex-col gap-3">
         <div className="w-full skeleton h-10"></div>
@@ -38,29 +78,155 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
     return <div>{JSON.stringify(error)}</div>;
   }
 
-  const handleAddSection = () => {
-    setNewSections((prev) => [
-      ...prev,
+  const handleOrderChange = async (sectionId: number, orderId: number) => {
+    const section = newSections.find((section) => section.id === sectionId);
+
+    await axios.put(
+      "/api/Section",
       {
-        name: "",
-        description: "",
-        id: 0,
-        courseId: initialCourse?.id as number,
+        ...section,
+        orderId,
       },
-    ]);
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }
+    );
+  };
+
+  const handleAddSection = async (data: any) => {
+    // find a better way to generate unique id instread of string
+    setIsAddingSection(true);
+    var { data: newSection } = await axios.post<Section>(
+      "/api/Section",
+      {
+        name: data.name,
+        description: data.description,
+        courseId: initialCourse?.id,
+        orderId: newSections.length,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }
+    );
+
+    setShowAddSectionForm(false);
+    setIsAddingSection(false);
+    setNewSections((prev) => [...prev, newSection]);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over) {
+      return;
+    }
+
+    if (active.id === over?.id) {
+      return;
+    }
+
+    setNewSections((prev) => {
+      const oldIndex = prev.findIndex((section) => section.id === active.id);
+      const newIndex = prev.findIndex((section) => section.id === over.id);
+      prev[oldIndex].orderId = newIndex;
+      prev[newIndex].orderId = oldIndex;
+      handleOrderChange(prev[oldIndex].id, newIndex);
+      handleOrderChange(prev[newIndex].id, oldIndex);
+      return arrayMove(prev, oldIndex, newIndex);
+    });
   };
 
   return (
-    <div>
-      <div className="flex flex-col items-center gap-3 w-2/3 mx-auto">
-        {newSections?.map((section) => (
-          <SectionEdit initialSection={section} />
-        ))}
-        <button className="btn mt-10 w-full" onClick={handleAddSection}>
-          Add Section
-        </button>
-      </div>
-    </div>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={newSections}
+        strategy={verticalListSortingStrategy}
+      >
+        <div className="space-y-3 lg:w-2/3 mx-auto">
+          {newSections?.map((section) => (
+            <Sortable id={section.id} key={section.id}>
+              <SectionEdit
+                initialSection={section}
+                onDelete={(sectionId) => {
+                  setNewSections((prev) =>
+                    prev.filter((section) => section.id !== sectionId)
+                  );
+                }}
+              />
+            </Sortable>
+          ))}
+          {isAddingSection && <div className="w-full skeleton h-10"></div>}
+          {showAddSectionForm && (
+            <AddSectionForm
+              onSubmit={(data) => {
+                handleAddSection(data);
+              }}
+            />
+          )}
+          {!showAddSectionForm && (
+            <button
+              className="btn mt-10 w-full"
+              onClick={() => setShowAddSectionForm(true)}
+            >
+              Add Section
+            </button>
+          )}
+        </div>
+      </SortableContext>
+    </DndContext>
+  );
+};
+
+interface AddSectionInputs {
+  name: string;
+  description: string;
+}
+
+const AddSectionForm: FC<{ onSubmit: (data: FieldValues) => void }> = ({
+  onSubmit,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddSectionInputs>();
+
+  return (
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      className="border border-neutral-content p-4 rounded-lg"
+    >
+      <FormTitle>Add Section</FormTitle>
+      <FormGroup>
+        <label htmlFor="name">Section Name</label>
+        <input
+          type="text"
+          placeholder="Section Name"
+          className="input input-bordered"
+          {...register("name", { required: true })}
+        />
+      </FormGroup>
+      <FormGroup>
+        <label htmlFor="description">Section Description</label>
+        <textarea
+          placeholder="Section Description"
+          className="textarea textarea-bordered"
+          {...register("description", { required: true })}
+        />
+      </FormGroup>
+      <FormGroup row>
+        <FormButton type="button" title="Cancel" />
+        <FormButton title="Add" />
+      </FormGroup>
+    </Form>
   );
 };
 

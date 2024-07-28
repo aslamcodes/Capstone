@@ -1,7 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
+import { Content } from "../../interfaces/course";
 
-const ContentEdit = () => {
-  return <div className="w-full bg-base-300 p-4 rounded-md">ContentEdit</div>;
+const ContentEdit: FC<{ content: Content }> = ({ content }) => {
+  return (
+    <div className="w-full bg-base-300 p-4 rounded-md">{content.title}</div>
+  );
 };
 
 export default ContentEdit;

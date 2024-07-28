@@ -9,7 +9,7 @@ const Tabs: FC<{
   return (
     <div
       role="tablist"
-      className="tabs tabs-bordered tabs-sm sticky top-16 bg-white"
+      className="tabs tabs-lifted tabs-lg sticky top-16 bg-base-100 z-50"
     >
       {tabs.map((tab) => (
         <a

@@ -14,7 +14,6 @@ const ContentViewer: FC<ContentViewerProps> = ({ contentId }) => {
     return <Skeleton />;
   }
 
-  console.log(error);
   if (error) return <div>{error.response.data?.message}</div>;
 
   if (!video) {
