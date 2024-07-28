@@ -80,7 +80,6 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
 
   const handleOrderChange = async (sectionId: number, orderId: number) => {
     const section = newSections.find((section) => section.id === sectionId);
-    console.log(sectionId);
 
     await axios.put(
       "/api/Section",
@@ -151,7 +150,7 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
         items={newSections}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-3 w-2/3 mx-auto">
+        <div className="space-y-3 lg:w-2/3 mx-auto">
           {newSections?.map((section) => (
             <Sortable id={section.id} key={section.id}>
               <SectionEdit

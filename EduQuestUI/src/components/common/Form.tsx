@@ -4,10 +4,7 @@ interface FormProps extends FormHTMLAttributes<HTMLFormElement> {}
 
 const Form: FC<PropsWithChildren<FormProps>> = ({ children, ...props }) => {
   return (
-    <form
-      className="flex flex-col gap-5 max-w-screen-lg rounded-box p-6"
-      {...props}
-    >
+    <form className="space-y-5 max-w-screen-lg rounded-box p-6" {...props}>
       {children}
     </form>
   );
@@ -36,16 +33,17 @@ export const FormButton: FC<{
   title: string;
   className?: string;
   type?: "submit" | "reset" | "button";
-}> = ({ title, className, type = "submit" }) => {
+  onClick?: () => void;
+}> = ({ title, className, type = "submit", onClick }) => {
   return (
-    <button type={type} className={`btn ${className}`}>
+    <button type={type} className={`btn ${className}`} onClick={onClick}>
       {title}
     </button>
   );
 };
 
-export const FormError: FC<{ message: string }> = () => {
-  return <div />;
+export const FormError: FC<{ message: string }> = ({ message }) => {
+  return <span className="text-error">{message}</span>;
 };
 
 export default Form;
