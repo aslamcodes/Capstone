@@ -1,7 +1,13 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../contexts/auth/actions";
-import { useAuthDispatchContext } from "../../contexts/auth/authReducer";
+import {
+  useAuthContext,
+  useAuthDispatchContext,
+} from "../../contexts/auth/authReducer";
+import Loader from "../../components/common/Loader";
+import { toast } from "react-toastify";
+import { customToast } from "../../utils/toast";
 
 type Inputs = {
   email: string;
@@ -15,10 +21,29 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const navigate = useNavigate();
+  const { user, error, isLoading } = useAuthContext();
+
   const dispatch = useAuthDispatchContext();
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await login(dispatch, data);
   };
+
+  if (user) {
+    customToast("Logged in", {
+      type: "success",
+      onClose: () => {
+        navigate("/");
+      },
+    });
+  }
+
+  if (error) {
+    customToast(error.response.data?.message ?? "Error logging in", {
+      type: "error",
+    });
+  }
 
   return (
     <div className="min-h-screen">
@@ -50,7 +75,9 @@ export default function LoginPage() {
             <span className="text-error">Password is required</span>
           )}
         </div>
-        <button className="btn btn-primary">Submit</button>
+        <button className="btn btn-primary" disabled={isLoading}>
+          {isLoading ? <Loader size="sm" type="spinner" /> : "Submit"}
+        </button>
         <Link to={"/register"} className="text-primary">
           Don't have an account? Register
         </Link>

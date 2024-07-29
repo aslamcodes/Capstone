@@ -26,14 +26,14 @@ export const pages = [
       },
       { path: "/manage-course/:courseId", element: <ManageCoursePage /> },
       { path: "/Educator", element: <Educator /> },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
     ],
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
   },
 ];

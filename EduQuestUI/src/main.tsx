@@ -1,4 +1,3 @@
-import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
@@ -12,17 +11,15 @@ import ErrorPage from "./pages/ErrorPage.tsx";
 const router = createBrowserRouter(pages);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <AuthContextProvider>
-      <ErrorBoundary fallback={<ErrorPage />}>
-        <SWRConfig
-          value={{
-            fetcher,
-          }}
-        >
-          <RouterProvider router={router} />
-        </SWRConfig>
-      </ErrorBoundary>
-    </AuthContextProvider>
-  </StrictMode>
+  <AuthContextProvider>
+    <ErrorBoundary fallback={<ErrorPage />}>
+      <SWRConfig
+        value={{
+          fetcher,
+        }}
+      >
+        <RouterProvider router={router} />
+      </SWRConfig>
+    </ErrorBoundary>
+  </AuthContextProvider>
 );

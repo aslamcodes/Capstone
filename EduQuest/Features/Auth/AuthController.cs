@@ -22,7 +22,7 @@ namespace EduQuest.Features.Auth
             }
             catch (UserNotFoundException ex)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, "Invalid Credentials"));
             }
             catch (InvalideCredsException ex)
             {

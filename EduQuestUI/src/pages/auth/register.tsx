@@ -1,7 +1,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useAuthDispatchContext } from "../../contexts/auth/authReducer";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useAuthContext,
+  useAuthDispatchContext,
+} from "../../contexts/auth/authReducer";
 import { register as registerUser } from "../../contexts/auth/actions";
+import { useEffect } from "react";
+import { customToast } from "../../utils/toast";
 type Inputs = {
   email: string;
   password: string;
@@ -16,10 +21,29 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const { user, isLoading, error } = useAuthContext();
+
   const dispatch = useAuthDispatchContext();
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await registerUser(dispatch, data);
   };
+
+  if (user) {
+    customToast("Registered", {
+      type: "success",
+      onClose: () => {
+        navigate("/");
+      },
+    });
+  }
+
+  if (error) {
+    customToast(error.response.data?.message ?? "Error logging in", {
+      type: "error",
+    });
+  }
 
   return (
     <div className="min-h-screen">

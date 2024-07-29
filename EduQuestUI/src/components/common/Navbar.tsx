@@ -1,10 +1,16 @@
 import React from "react";
-import { useAuthContext } from "../../contexts/auth/authReducer";
+import {
+  useAuthContext,
+  useAuthDispatchContext,
+} from "../../contexts/auth/authReducer";
 import { Link } from "react-router-dom";
 import ThemeController from "./ThemeController";
+import { logout } from "../../contexts/auth/actions";
 
 const Navbar = () => {
   const { user } = useAuthContext();
+
+  const dispatch = useAuthDispatchContext();
 
   return (
     <div className="navbar bg-base-100 fixed left-0 right-0 top-0 z-50  backdrop-filter backdrop-blur-lg  bg-opacity-95  ">
@@ -48,7 +54,7 @@ const Navbar = () => {
             <li>
               <a>Settings</a>
             </li>
-            <li>
+            <li onClick={() => logout(dispatch)}>
               <a>Logout</a>
             </li>
             {user?.isEducator && (

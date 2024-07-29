@@ -18,7 +18,7 @@ namespace EduQuest.Features.Users
 
             var user = users.Find(user => user.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
 
-            return user ?? throw new UserNotFoundException(email);
+            return user ?? throw new UserNotFoundException();
         }
 
     }
