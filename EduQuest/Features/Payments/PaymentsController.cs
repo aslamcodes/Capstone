@@ -22,7 +22,7 @@ namespace EduQuest.Features.Payments
 
                 var order = await orderService.CompleteOrder(orderId);
 
-                var enroll = courseService.EnrollStudentIntoCourse(order.UserId, order.OrderedCourseId);
+                var enroll = await courseService.EnrollStudentIntoCourse(order.UserId, order.OrderedCourseId);
 
                 return Ok(payment);
             }

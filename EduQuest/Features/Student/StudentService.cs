@@ -1,9 +1,12 @@
-﻿using EduQuest.Features.Courses;
+﻿using AutoMapper;
+using EduQuest.Commons;
+using EduQuest.Entities;
+using EduQuest.Features.Courses;
 using EduQuest.Features.Courses.Dto;
 
 namespace EduQuest.Features.Student
 {
-    public class StudentService(ICourseService courseService) : IStudentService
+    public class StudentService(ICourseService courseService, IRepository<int, StudentCourse> studentCourseRepo, IMapper mapper) : IStudentService
     {
         public async Task<List<CourseDTO>> GetRecommendedCourses(int userId)
         {
@@ -17,7 +20,6 @@ namespace EduQuest.Features.Student
 
             var recommendedCourses = courses.Where(c => c.EducatorId != userId)
                                             .Where(c => !enrolledCourses.Any(ec => c.Id == ec.Id))
-                                            .Take(10)
                                             .ToList();
 
             return recommendedCourses;

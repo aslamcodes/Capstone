@@ -26,9 +26,9 @@ namespace EduQuest.Features.Courses
 
         public async Task<List<CourseDTO>> GetCoursesForStudent(int studentId)
         {
-            var courses = await courseRepo.GetAll();
+            var courses = (await studentCourse.GetAll()).Where(sc => sc.StudentId == studentId);
 
-            return courses.Where(c => c.Students.Any(s => s.Id == studentId)).Select(mapper.Map<CourseDTO>).ToList();
+            return courses.Select(c => mapper.Map<CourseDTO>(c.Course)).ToList();
         }
     }
 }
