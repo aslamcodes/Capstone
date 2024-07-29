@@ -9,10 +9,10 @@ export const fetcherWithToken = (
 ) => {
   return axios
     .get(url, {
+      params: params,
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      params,
     })
     .then((res) => res.data);
 };

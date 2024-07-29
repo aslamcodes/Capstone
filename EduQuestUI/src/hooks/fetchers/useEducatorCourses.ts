@@ -3,14 +3,14 @@ import { fetcherWithToken } from "../../utils/fetcher";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Course } from "../../interfaces/course";
 
-export default function useEducatorCourses() {
+export default function useEducatorCourses(educatorId: number) {
   const { user } = useAuthContext();
   const {
     data,
     isLoading: coursesLoading,
     error,
   } = useSWRImmutable<Course[], any>(
-    ["/api/Course/Educator-Courses?educatorId=1", user?.token],
+    [`/api/Course/Educator-Courses?educatorId=${educatorId}`, user?.token],
     ([url, token]) => fetcherWithToken(url, token as string)
   );
 
