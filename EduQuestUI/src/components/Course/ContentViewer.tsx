@@ -23,11 +23,20 @@ const ContentViewer: FC<ContentViewerProps> = ({ contentId }) => {
 
   if (error) return <div>{error.response.data?.message}</div>;
 
-  if (content.contentType === "Article") {
-    return <ArticleViewer contentId={contentId} />;
-  }
-
-  return <VideoViewer contentId={contentId}></VideoViewer>;
+  return (
+    <div>
+      <div className="space-y-4">
+        <div>
+          {content.contentType === "Article" ? (
+            <ArticleViewer contentId={contentId as number} />
+          ) : (
+            <VideoViewer contentId={contentId} />
+          )}
+        </div>
+        <h1 className="text-2xl font-bold">{content.title}</h1>
+      </div>
+    </div>
+  );
 };
 
 export default ContentViewer;
