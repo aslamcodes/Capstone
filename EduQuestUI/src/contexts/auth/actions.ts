@@ -39,6 +39,7 @@ export const register = async (dispatch: React.Dispatch<any>, payload: any) => {
       //   config
     );
     dispatch({ type: AUTH_SUCCESS, payload: data });
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: AUTH_FAILURE,
