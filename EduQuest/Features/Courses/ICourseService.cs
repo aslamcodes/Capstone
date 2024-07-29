@@ -10,5 +10,10 @@ namespace EduQuest.Features.Courses
         Task<List<CourseDTO>> GetCoursesForEducator(int educatorId);
 
         Task<CourseDTO> EnrollStudentIntoCourse(int studentId, int courseId);
+
+        Task<CourseDTO> SetCourseLive(int courseId);
+        Task<CourseDTO> SetCourseUnderReview(int courseId);
+
+        Task<ValidityResponseDto> GetCourseValidity(int courseId);
     }
 }

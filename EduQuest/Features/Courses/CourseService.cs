@@ -2,11 +2,12 @@
 using EduQuest.Commons;
 using EduQuest.Entities;
 using EduQuest.Features.Courses.Dto;
+using EduQuest.Features.Sections;
 
 namespace EduQuest.Features.Courses
 
 {
-    public class CourseService(ICourseRepo courseRepo, IRepository<int, User> userRepo, IRepository<int, StudentCourse> studentCourse, IMapper mapper) : BaseService<Course, CourseDTO>(courseRepo, mapper), ICourseService
+    public class CourseService(ICourseRepo courseRepo, IRepository<int, User> userRepo, IRepository<int, StudentCourse> studentCourse, ISectionService sectionService, IMapper mapper) : BaseService<Course, CourseDTO>(courseRepo, mapper), ICourseService
     {
         public async Task<CourseDTO> EnrollStudentIntoCourse(int studentId, int courseId)
         {
@@ -29,6 +30,64 @@ namespace EduQuest.Features.Courses
             var courses = (await studentCourse.GetAll()).Where(sc => sc.StudentId == studentId);
 
             return courses.Select(c => mapper.Map<CourseDTO>(c.Course)).ToList();
+        }
+
+        public async Task<ValidityResponseDto> GetCourseValidity(int courseId)
+        {
+            var messages = new List<ValidityCriteria>();
+
+            var course = await courseRepo.GetByKey(courseId);
+
+            var sections = await sectionService.GetSectionForCourse(courseId);
+
+
+            messages.Add(new ValidityCriteria { Criteria = "Course should have atleast 4 sections", IsPassed = sections.Count >= 4 });
+            messages.Add(new ValidityCriteria { Criteria = "Course should have a price", IsPassed = course.Price != null });
+            messages.Add(new ValidityCriteria { Criteria = "Course should have a description, atleast 200 letters", IsPassed = !string.IsNullOrEmpty(course.Description) && course.Description.Length > 200 });
+            messages.Add(new ValidityCriteria { Criteria = "Course should have a Name", IsPassed = !string.IsNullOrEmpty(course.Name) });
+            messages.Add(new ValidityCriteria { Criteria = "Course should have a Category", IsPassed = course.CourseCategoryId != 0 });
+
+
+            var response = new ValidityResponseDto()
+            {
+                Criterias = messages,
+                IsValid = messages.All(m => m.IsPassed)
+            };
+
+
+            return response;
+        }
+
+        public async Task<CourseDTO> SetCourseLive(int courseId)
+        {
+            var course = await courseRepo.GetByKey(courseId);
+
+            course.CourseStatus = CourseStatusEnum.Live;
+
+            var updatedCourse = await courseRepo.Update(course);
+
+            return mapper.Map<CourseDTO>(updatedCourse);
+        }
+
+        public async Task<CourseDTO> SetCourseUnderReview(int courseId)
+        {
+            var course = await courseRepo.GetByKey(courseId);
+
+            if (course.CourseStatus == CourseStatusEnum.Live)
+            {
+                throw new InvalidCourseStatusException("Course is already live");
+            }
+
+            if (course.CourseStatus == CourseStatusEnum.Archived)
+            {
+                throw new InvalidCourseStatusException("Course is already Archived, Make it a draft");
+            }
+
+            course.CourseStatus = CourseStatusEnum.Review;
+
+            var updatedCourse = await courseRepo.Update(course);
+
+            return mapper.Map<CourseDTO>(updatedCourse);
         }
     }
 }

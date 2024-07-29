@@ -155,6 +155,10 @@ namespace EduQuest.Features.Courses
 
                 return Ok(courses);
             }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+            }
             catch (Exception)
             {
                 throw;
@@ -169,6 +173,71 @@ namespace EduQuest.Features.Courses
                 var courses = await courseService.GetCoursesForEducator(educatorId);
 
                 return Ok(courses);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("Get-Validity")]
+        [Authorize("Educator")]
+        public async Task<ActionResult<ValidityResponseDto>> GetCourseValidity([FromQuery] int courseId)
+        {
+            try
+            {
+                await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
+
+                var validity = await courseService.GetCourseValidity(courseId);
+
+                return Ok(validity);
+            }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        [HttpPut("Submit-For-Review")]
+        [Authorize("Educator")]
+        public async Task<ActionResult<CourseDTO>> SetCourseUnderReview([FromQuery] int courseId)
+        {
+            try
+            {
+                await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
+
+                var validity = await courseService.GetCourseValidity(courseId);
+
+                if (!validity.IsValid) return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Course not passed validity check"));
+
+                var course = await courseService.SetCourseUnderReview(courseId);
+
+                return Ok(course);
+            }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (InvalidCourseStatusException ex)
+            {
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
             }
             catch (Exception)
             {
