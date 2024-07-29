@@ -1,6 +1,6 @@
 ---
 Scope: Backend
-Status: Todo
+Status: Dropped
 Priority: "!!!"
 ---
 

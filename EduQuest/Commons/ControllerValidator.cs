@@ -93,7 +93,7 @@ namespace EduQuest.Commons
             return Task.CompletedTask;
         }
 
-        public async Task ValidateStudentPrivilegeForContent(IEnumerable<Claim> claims, int contentId)
+        public async Task ValidateUserPrivilegeForContent(IEnumerable<Claim> claims, int contentId)
         {
             var userId = GetUserIdFromClaims(claims);
 

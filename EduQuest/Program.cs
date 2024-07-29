@@ -8,6 +8,7 @@ using EduQuest.Features.Courses;
 using EduQuest.Features.Orders;
 using EduQuest.Features.Payments;
 using EduQuest.Features.Sections;
+using EduQuest.Features.Student;
 using EduQuest.Features.StudentCourses;
 using EduQuest.Features.Users;
 using EduQuest.Features.Videos;
@@ -102,6 +103,7 @@ namespace EduQuest
             builder.Services.AddScoped<ISectionService, SectionService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
             #endregion
 
             #region Repositories

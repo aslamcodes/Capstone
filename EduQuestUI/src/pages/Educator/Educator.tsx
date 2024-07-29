@@ -18,7 +18,7 @@ const Educator = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
       {courses?.map((course) => (
         <div className="card bg-base-100 w-72 shadow-xl ">
           <figure>

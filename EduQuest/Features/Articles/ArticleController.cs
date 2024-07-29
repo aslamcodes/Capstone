@@ -1,4 +1,5 @@
 ﻿using EduQuest.Commons;
+using EduQuest.Features.Auth.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,16 +9,20 @@ namespace EduQuest.Features.Articles
     [ApiController]
     public class ArticleController(IArticleService articleService, ControllerValidator validator) : ControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<ArticleDto>> GetArticleByContentId(int contentId)
+        [HttpGet("ForContent")]
+        public async Task<ActionResult<ArticleDto>> GetArticleByContentId([FromQuery] int contentId)
         {
             try
             {
-                await validator.ValidateStudentPrivilegeForContent(User.Claims, contentId);
+                await validator.ValidateUserPrivilegeForContent(User.Claims, contentId);
 
                 var article = await articleService.GetByContentId(contentId);
 
                 return Ok(article);
+            }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
             }
             catch (EntityNotFoundException ex)
             {
@@ -54,6 +59,36 @@ namespace EduQuest.Features.Articles
             {
                 throw;
             }
+        }
+
+
+        [HttpPut]
+        [Authorize(Policy = "Educator")]
+        public async Task<ActionResult<ArticleDto>> UpdateArticle([FromBody] ArticleDto article)
+        {
+            {
+                try
+                {
+                    await validator.ValidateEducatorPrivilegeForContent(User.Claims, article.ContentId);
+
+                    var updatedArticle = await articleService.Update(article);
+
+                    return Ok(updatedArticle);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                }
+                catch (EntityNotFoundException ex)
+                {
+                    return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     public class ArticleDto
     {
+        public int Id { get; set; }
         public int ContentId { get; set; }
 
         public string Title { get; set; }

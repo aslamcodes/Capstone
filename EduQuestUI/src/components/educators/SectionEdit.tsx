@@ -102,6 +102,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
         },
       }
     );
+
     setContents((prev) => [...prev, Content]);
     setShowAddContentForm(() => false);
     setIsContentLoading(() => false);

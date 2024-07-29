@@ -1,7 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 
-const Loader = () => {
-  return <span className="loading loading-spinner loading-lg"></span>;
+interface LoaderProps {
+  type?: "spinner" | "dots" | "ring" | "bars";
+  size?: "sm" | "md" | "lg";
+}
+
+const Loader: FC<LoaderProps> = ({ type = "spinner", size = "lg" }) => {
+  return <span className={`loading loading-${type} loading-${size}`}></span>;
 };
 
 export default Loader;

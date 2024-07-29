@@ -17,6 +17,7 @@ export interface Video {
 }
 
 export interface Article {
+  id: number;
   contentId: number;
   title: string;
   description: string;
