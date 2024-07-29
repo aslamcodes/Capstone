@@ -15,7 +15,12 @@ namespace EduQuest.Features.Student
 
             var courses = await courseService.GetAll();
 
-            return courses.Where(c => !enrolledCourses.Contains(c)).Take(10).ToList();
+            var recommendedCourses = courses.Where(c => c.EducatorId != userId)
+                                            .Where(c => !enrolledCourses.Any(ec => c.Id == ec.Id))
+                                            .Take(10)
+                                            .ToList();
+
+            return recommendedCourses;
         }
     }
 }
