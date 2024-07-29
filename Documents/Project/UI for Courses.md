@@ -1,6 +1,6 @@
 ---
 Scope: Frontend
-Status: InProgress
+Status: Completed
 Priority: "!!!"
 ---
 

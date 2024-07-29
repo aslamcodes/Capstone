@@ -37,8 +37,6 @@ const AritlceEditor = () => {
     return () => clearInterval(interval);
   }, [article]);
 
-  console.log(article);
-
   const handleSave = async () => {
     setIsSaving(true);
 
