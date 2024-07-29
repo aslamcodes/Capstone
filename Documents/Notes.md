@@ -33,6 +33,11 @@
 5. **System makes the course live** and available for enrollment.
 **Postconditions:** The course is live and available for students to enroll.
 
+### Course Validity check
+- [ ] Should have atleast 4 sections
+- [ ] Should have 16 contents atleast
+- [ ] Should have a pricing tier selected
+- [ ] 
 # Udemy - User Research
 My main complaint would be that they never remove dead courses. There are many courses that someone put up years ago, never once updated, and that hasn't made any sales. I think it would be great if Udemy would contact those instructors to say "improve your course or we'll take it off the platform in 90 days." Of course instructors deserve the opportunity to re-design their courses, but dead courses with absent instructors make picking the right course harder for students, and can be a negative experience for the unlucky students who give them a try.
 
