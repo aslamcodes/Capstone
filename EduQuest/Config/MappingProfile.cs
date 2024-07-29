@@ -3,6 +3,7 @@ using EduQuest.Entities;
 using EduQuest.Features.Articles;
 using EduQuest.Features.Auth.DTOS;
 using EduQuest.Features.Contents.Dto;
+using EduQuest.Features.CourseCategories;
 using EduQuest.Features.Courses;
 using EduQuest.Features.Courses.Dto;
 using EduQuest.Features.Orders;
@@ -37,6 +38,9 @@ namespace EduQuest.Config
 
             CreateMap<Article, ArticleDto>();
             CreateMap<ArticleDto, Article>();
+
+            CreateMap<CourseCategory, CourseCategoryDto>();
+            CreateMap<CourseCategoryDto, CourseCategory>();
         }
         public static CourseLevelEnum MapLevel(string level)
         {

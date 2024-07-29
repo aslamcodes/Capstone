@@ -4,6 +4,7 @@ using EduQuest.Entities;
 using EduQuest.Features.Articles;
 using EduQuest.Features.Auth;
 using EduQuest.Features.Contents;
+using EduQuest.Features.CourseCategories;
 using EduQuest.Features.Courses;
 using EduQuest.Features.Orders;
 using EduQuest.Features.Payments;
@@ -104,6 +105,7 @@ namespace EduQuest
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             #endregion
 
             #region Repositories
@@ -111,6 +113,7 @@ namespace EduQuest
             builder.Services.AddScoped<IRepository<int, Order>, OrderRepo>();
             builder.Services.AddScoped<IRepository<int, Payment>, PaymentRepo>();
             builder.Services.AddScoped<IRepository<int, StudentCourse>, StudentCourseRepo>();
+            builder.Services.AddScoped<IRepository<int, CourseCategory>, CategoryRepo>();
 
             builder.Services.AddScoped<IArticleRepo, ArticleRepo>();
             builder.Services.AddScoped<IVideoRepo, VideoRepo>();

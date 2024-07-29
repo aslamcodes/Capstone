@@ -28,7 +28,7 @@ const CoursePage = () => {
 
   return (
     <div className="min-h-[70vh] grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="col-span-2">
+      <div className="col-span-2 h-full">
         <ContentViewer contentId={currentContentId} />
       </div>
       <div className="flex flex-col gap-2 lg:max-h-screen lg:overflow-scroll no-scrollbar">

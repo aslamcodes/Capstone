@@ -13,7 +13,13 @@ namespace EduQuest.Entities
 
         public float Price { get; set; }
 
+        public int CourseCategoryId { get; set; }
+
+        public CourseCategory CourseCategory { get; set; }
+
         public CourseLevelEnum Level { get; set; }
+
+        public CourseStatusEnum CourseStatus { get; set; } = CourseStatusEnum.Draft;
 
         public User Educator { get; set; }
 

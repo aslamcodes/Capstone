@@ -3,6 +3,7 @@ import Form, { FormGroup, FormLabel, FormTitle } from "../common/Form";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
+import useCategories from "../../hooks/fetchers/useCategories";
 
 const CreateCourseForm = () => {
   const {
@@ -12,6 +13,11 @@ const CreateCourseForm = () => {
   } = useForm();
 
   const { user } = useAuthContext();
+  const {
+    categories,
+    isLoading: isCategoriesLoading,
+    error: categoriesError,
+  } = useCategories();
 
   const onSubmit = async (data: any) => {
     await axios.post(
@@ -44,6 +50,23 @@ const CreateCourseForm = () => {
         />
       </FormGroup>
       <FormGroup>
+        {isCategoriesLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <FormLabel>Category</FormLabel>
+            <select
+              className="select select-bordered"
+              {...register("courseCategoryId", { required: true })}
+            >
+              {categories?.map((category) => (
+                <option value={category.id}>{category.name}</option>
+              ))}
+            </select>
+          </>
+        )}
+      </FormGroup>
+      <FormGroup>
         <FormLabel>Price</FormLabel>
         <input
           type="number"
@@ -66,6 +89,7 @@ const CreateCourseForm = () => {
         type="submit"
         className="btn btn-primary"
         onClick={handleSubmit(onSubmit)}
+        disabled={isCategoriesLoading || !categories || categoriesError}
       >
         Create
       </button>

@@ -22,6 +22,7 @@ namespace EduQuest.Commons
         public DbSet<Video> Videos { get; set; }
 
         public DbSet<Article> Articles { get; set; }
+        public DbSet<CourseCategory> CourseCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -158,6 +159,44 @@ namespace EduQuest.Commons
                         .HasOne(a => a.Content)
                         .WithOne(c => c.Article)
                         .HasForeignKey<Article>(a => a.ContentId);
+
+            #endregion
+
+            #region CourseCategory
+            modelBuilder.Entity<CourseCategory>().HasKey(cc => cc.Id);
+
+            modelBuilder.Entity<CourseCategory>().Property(cc => cc.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<CourseCategory>()
+                        .HasMany(cc => cc.Courses)
+                        .WithOne(c => c.CourseCategory)
+                        .HasForeignKey(c => c.CourseCategoryId);
+
+
+            modelBuilder.Entity<CourseCategory>().HasData(
+                new CourseCategory { Id = 1, Name = "Programming", Description = "Courses on various programming languages and software development techniques." },
+                new CourseCategory { Id = 2, Name = "Design", Description = "Courses on graphic design, UX/UI, and other design disciplines." },
+                new CourseCategory { Id = 3, Name = "Business", Description = "Courses covering business management, entrepreneurship, and corporate strategy." },
+                new CourseCategory { Id = 4, Name = "Marketing", Description = "Courses on digital marketing, advertising, and sales strategies." },
+                new CourseCategory { Id = 5, Name = "Music", Description = "Courses on music theory, instrument training, and music production." },
+                new CourseCategory { Id = 6, Name = "Photography", Description = "Courses on photography techniques, camera handling, and photo editing." },
+                new CourseCategory { Id = 7, Name = "Health & Fitness", Description = "Courses on physical health, fitness routines, and nutrition." },
+                new CourseCategory { Id = 8, Name = "Personal Development", Description = "Courses focused on personal growth, self-improvement, and life skills." },
+                new CourseCategory { Id = 9, Name = "Lifestyle", Description = "Courses covering lifestyle improvements, hobbies, and general well-being." },
+                new CourseCategory { Id = 10, Name = "IT & Software", Description = "Courses on IT infrastructure, software applications, and tech support." },
+                new CourseCategory { Id = 11, Name = "Language", Description = "Courses on learning new languages and improving language proficiency." },
+                new CourseCategory { Id = 12, Name = "Academics", Description = "Courses covering academic subjects and school-level education." },
+                new CourseCategory { Id = 15, Name = "Engineering", Description = "Courses on various engineering disciplines and technical skills." },
+                new CourseCategory { Id = 16, Name = "Science", Description = "Courses covering different scientific fields and research methods." },
+                new CourseCategory { Id = 17, Name = "Mathematics", Description = "Courses on mathematics, from basic arithmetic to advanced calculus." },
+                new CourseCategory { Id = 20, Name = "Data Science", Description = "Courses on data analysis, machine learning, and big data." },
+                new CourseCategory { Id = 21, Name = "Art & Culture", Description = "Courses on various forms of art, history, and cultural studies." },
+                new CourseCategory { Id = 22, Name = "Finance & Accounting", Description = "Courses on financial management, accounting principles, and investments." },
+                new CourseCategory { Id = 24, Name = "Sales", Description = "Courses on sales techniques, customer relations, and sales management." },
+                new CourseCategory { Id = 26, Name = "Management", Description = "Courses on management skills, leadership, and organizational behavior." },
+                new CourseCategory { Id = 27, Name = "Communication", Description = "Courses on effective communication, public speaking, and interpersonal skills." },
+                new CourseCategory { Id = 42, Name = "Fitness", Description = "Courses on physical fitness, exercise routines, and healthy living." }
+            );
 
             #endregion
 

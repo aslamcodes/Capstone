@@ -31,6 +31,7 @@ export interface Course {
   educatorId: number;
   level: "Begginer" | "Intermediate" | "Advanced";
   price: number;
+  courseStatus: "Live" | "Draft" | "Archived" | "Outdated" | "Review";
 }
 
 export interface Section {
@@ -38,4 +39,20 @@ export interface Section {
   description: string;
   id: number;
   orderId: number;
+}
+
+export interface Validity {
+  isValid: boolean;
+  criterias: [
+    {
+      criteria: string;
+      isPassed: boolean;
+    }
+  ];
+}
+
+export interface CourseCategory {
+  id: number;
+  name: string;
+  description: string;
 }

@@ -7,7 +7,7 @@ import useFetchAxios from "./useFetchAxios";
 
 export default function useCourse(courseId: number) {
   const { user } = useAuthContext();
-  const { data, isLoading, error } = useFetchAxios({
+  const { data, isLoading, error } = useFetchAxios<Course, any>({
     url: "/api/Course",
     headers: { Authorization: `Bearer ${user?.token}` },
     params: { courseId },
