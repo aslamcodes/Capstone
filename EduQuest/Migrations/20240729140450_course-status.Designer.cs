@@ -4,6 +4,7 @@ using EduQuest.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduQuest.Migrations
 {
     [DbContext(typeof(EduQuestContext))]
-    partial class EduQuestContextModelSnapshot : ModelSnapshot
+    [Migration("20240729140450_course-status")]
+    partial class coursestatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,9 +99,6 @@ namespace EduQuest.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CourseCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CourseStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -123,166 +123,9 @@ namespace EduQuest.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseCategoryId");
-
                     b.HasIndex("EducatorId");
 
                     b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("EduQuest.Entities.CourseCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CourseCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Courses on various programming languages and software development techniques.",
-                            Name = "Programming"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Courses on graphic design, UX/UI, and other design disciplines.",
-                            Name = "Design"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Courses covering business management, entrepreneurship, and corporate strategy.",
-                            Name = "Business"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "Courses on digital marketing, advertising, and sales strategies.",
-                            Name = "Marketing"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "Courses on music theory, instrument training, and music production.",
-                            Name = "Music"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Description = "Courses on photography techniques, camera handling, and photo editing.",
-                            Name = "Photography"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Description = "Courses on physical health, fitness routines, and nutrition.",
-                            Name = "Health & Fitness"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Description = "Courses focused on personal growth, self-improvement, and life skills.",
-                            Name = "Personal Development"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Description = "Courses covering lifestyle improvements, hobbies, and general well-being.",
-                            Name = "Lifestyle"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Description = "Courses on IT infrastructure, software applications, and tech support.",
-                            Name = "IT & Software"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Description = "Courses on learning new languages and improving language proficiency.",
-                            Name = "Language"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Description = "Courses covering academic subjects and school-level education.",
-                            Name = "Academics"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Description = "Courses on various engineering disciplines and technical skills.",
-                            Name = "Engineering"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Description = "Courses covering different scientific fields and research methods.",
-                            Name = "Science"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Description = "Courses on mathematics, from basic arithmetic to advanced calculus.",
-                            Name = "Mathematics"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Description = "Courses on data analysis, machine learning, and big data.",
-                            Name = "Data Science"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Description = "Courses on various forms of art, history, and cultural studies.",
-                            Name = "Art & Culture"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Description = "Courses on financial management, accounting principles, and investments.",
-                            Name = "Finance & Accounting"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Description = "Courses on sales techniques, customer relations, and sales management.",
-                            Name = "Sales"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Description = "Courses on management skills, leadership, and organizational behavior.",
-                            Name = "Management"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Description = "Courses on effective communication, public speaking, and interpersonal skills.",
-                            Name = "Communication"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            Description = "Courses on physical fitness, exercise routines, and healthy living.",
-                            Name = "Fitness"
-                        });
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Order", b =>
@@ -522,19 +365,11 @@ namespace EduQuest.Migrations
 
             modelBuilder.Entity("EduQuest.Entities.Course", b =>
                 {
-                    b.HasOne("EduQuest.Entities.CourseCategory", "CourseCategory")
-                        .WithMany("Courses")
-                        .HasForeignKey("CourseCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("EduQuest.Entities.User", "Educator")
                         .WithMany("CoursesCreated")
                         .HasForeignKey("EducatorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("CourseCategory");
 
                     b.Navigation("Educator");
                 });
@@ -624,11 +459,6 @@ namespace EduQuest.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Sections");
-                });
-
-            modelBuilder.Entity("EduQuest.Entities.CourseCategory", b =>
-                {
-                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Order", b =>
