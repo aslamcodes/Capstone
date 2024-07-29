@@ -1,31 +1,33 @@
-import { FC } from "react";
-import Skeleton from "../common/Skeleton";
-import VideoPlayer from "./VideoPlayer";
-import useVideoForContent from "../../hooks/fetchers/useVideo";
+import React, { FC } from "react";
+import useContent from "../../hooks/fetchers/useContent";
+import { Content } from "../../interfaces/course";
+import VideoViewer from "./VideoViewer";
+import ArticleViewer from "./ArticleViewer";
 
 interface ContentViewerProps {
   contentId: number | null;
 }
 
 const ContentViewer: FC<ContentViewerProps> = ({ contentId }) => {
-  const { video, isLoading, error } = useVideoForContent(contentId as number);
+  const { content, isLoading, error } = useContent(contentId);
 
   if (isLoading) {
-    return <Skeleton />;
+    return <div>Loading...</div>;
   }
+
+  if (!content) {
+    return <div>No Content</div>;
+  }
+
+  console.log(content, isLoading, error);
 
   if (error) return <div>{error.response.data?.message}</div>;
 
-  if (!video) {
-    return <div>No Video</div>;
+  if (content.contentType === "Article") {
+    return <ArticleViewer contentId={contentId} />;
   }
 
-  return (
-    <div className="h-full">
-      <VideoPlayer type="Youtube" url={video.url} />
-      <h1></h1>
-    </div>
-  );
+  return <VideoViewer contentId={contentId}></VideoViewer>;
 };
 
 export default ContentViewer;

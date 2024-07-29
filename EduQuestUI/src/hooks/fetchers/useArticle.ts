@@ -1,12 +1,12 @@
 import { useAuthContext } from "../../contexts/auth/authReducer";
-import { Content } from "../../interfaces/course";
+import { Article, Content } from "../../interfaces/course";
 import useFetchAxios from "./useFetchAxios";
 
-export default function useContent(contentId: number | null) {
+export default function useArticle(contentId: number | null) {
   const { user } = useAuthContext();
 
-  const { data, error, isLoading } = useFetchAxios<Content, any>({
-    url: "/api/Content",
+  const { data, error, isLoading } = useFetchAxios<Article, any>({
+    url: "/api/Article/ForContent",
     params: { contentId },
     headers: {
       Authorization: `Bearer ${user?.token}`,

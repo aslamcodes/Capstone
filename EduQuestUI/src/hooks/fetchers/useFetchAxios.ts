@@ -1,5 +1,6 @@
 import axios, { AxiosHeaders } from "axios";
 import { useEffect, useState } from "react";
+import { set } from "react-hook-form";
 
 export default function useFetchAxios<T, K>({
   url,
@@ -16,10 +17,14 @@ export default function useFetchAxios<T, K>({
 
   const [error, setError] = useState<K | null>(null);
 
+  const memoizedHeaders = JSON.stringify(headers);
+  const memoizedParams = JSON.stringify(params);
+
   useEffect(() => {
     async function fetchData() {
       try {
         setIsLoading(true);
+        setError(null);
         var { data } = await axios.get<T>(url, {
           headers: { ...headers },
           params: { ...params },
@@ -34,7 +39,7 @@ export default function useFetchAxios<T, K>({
     }
 
     fetchData();
-  }, []);
+  }, [url, memoizedHeaders, memoizedParams]);
 
   return { data, error, isLoading };
 }

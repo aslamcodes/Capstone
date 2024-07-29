@@ -7,8 +7,9 @@ import { Content, Section, Video } from "../../interfaces/course";
 import { useEffect, useState } from "react";
 import useSections from "../../hooks/fetchers/useSections";
 import useVideoForContent from "../../hooks/fetchers/useVideo";
-import ContentViewer from "../../components/Course/ContentViewer";
+import VideoViewer from "../../components/Course/VideoViewer";
 import Loader from "../../components/common/Loader";
+import ContentViewer from "../../components/Course/ContentViewer";
 
 const CoursePage = () => {
   const { courseId } = useParams();
@@ -16,8 +17,6 @@ const CoursePage = () => {
   const [currentContentId, setCurrentContentId] = useState<number | null>(null);
 
   const { isLoading, sections } = useSections(courseId as string);
-
-  const { video } = useVideoForContent(currentContentId as number);
 
   if (isLoading) {
     return <Loader />;
