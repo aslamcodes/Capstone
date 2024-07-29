@@ -6,12 +6,17 @@ import CoursePage from "./course/CoursePage";
 import Educator from "./Educator/Educator";
 import ManageCoursePage from "./Educator/ManageCoursePage";
 import AritlceEditor from "../components/educators/AritlceEditor";
+import Home from "./Home";
+import CourseLanding from "../components/Course/CourseLanding";
 
 export const pages = [
   {
     path: "/",
     element: <App />,
     children: [
+      { path: "/", element: <Home /> },
+      { path: "/course-description/:courseId", element: <CourseLanding /> },
+
       { path: "/myCourses", element: <MyCourses /> },
       { path: "/myCourses/:courseId", element: <CoursePage /> },
       {

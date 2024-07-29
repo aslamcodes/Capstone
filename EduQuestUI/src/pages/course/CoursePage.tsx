@@ -28,7 +28,7 @@ const CoursePage = () => {
   }
 
   return (
-    <div className="min-h-[70vh] grid grid-cols-1 md:grid-cols-3 gap-3">
+    <div className="min-h-[70vh] grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="col-span-2">
         <ContentViewer contentId={currentContentId} />
       </div>
