@@ -36,5 +36,7 @@ namespace EduQuest.Entities
         public IEnumerable<Order> Orders { get; set; }
 
         public IEnumerable<Skill> Skills { get; set; }
+
+        public IEnumerable<Review> Reviews { get; set; }
     }
 }

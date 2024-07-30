@@ -35,6 +35,8 @@ namespace EduQuest.Commons
 
         public DbSet<CourseSkill> CourseSkills { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Course
@@ -187,6 +189,26 @@ namespace EduQuest.Commons
                         .HasOne(n => n.Content)
                         .WithMany()
                         .HasForeignKey(n => n.ContentId);
+            #endregion
+
+            #region Review
+            modelBuilder.Entity<Review>()
+                        .HasKey(r => r.Id);
+
+            modelBuilder.Entity<Review>()
+                        .Property(r => r.Id)
+                        .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Review>()
+                        .HasOne(r => r.Course)
+                        .WithMany(c => c.Reviews)
+                        .HasForeignKey(r => r.CourseId);
+
+            modelBuilder.Entity<Review>()
+                        .HasOne(r => r.ReviewedBy)
+                        .WithMany()
+                        .HasForeignKey(r => r.ReviewedById);
+
             #endregion
 
             #region CourseCategory
