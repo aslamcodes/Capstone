@@ -13,5 +13,7 @@ namespace EduQuest.Entities
         public Video Video { get; set; }
 
         public Article Article { get; set; }
+
+        public ICollection<Question> Questions { get; set; }
     }
 }

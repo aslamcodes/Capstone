@@ -22,9 +22,14 @@ namespace EduQuest.Commons
         public DbSet<Video> Videos { get; set; }
 
         public DbSet<Article> Articles { get; set; }
+
         public DbSet<CourseCategory> CourseCategories { get; set; }
 
         public DbSet<Note> Notes { get; set; }
+
+        public DbSet<Question> Questions { get; set; }
+
+        public DbSet<Answer> Answers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -218,6 +223,36 @@ namespace EduQuest.Commons
 
             #endregion
 
+            #region Question
+
+            modelBuilder.Entity<Question>().HasKey(q => q.Id);
+
+            modelBuilder.Entity<Question>().Property(q => q.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Question>()
+                        .HasOne(q => q.Content)
+                        .WithMany(c => c.Questions)
+                        .HasForeignKey(q => q.ContentId)
+                        .OnDelete(DeleteBehavior.NoAction);
+            #endregion
+
+            #region Answer
+            modelBuilder.Entity<Answer>().HasKey(a => a.Id);
+
+            modelBuilder.Entity<Answer>().Property(a => a.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Answer>()
+                        .HasOne(a => a.Question)
+                        .WithMany(q => q.Answers)
+                        .HasForeignKey(a => a.QuestionId)
+                        .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Answer>()
+                        .HasOne(a => a.AnsweredBy)
+                        .WithMany()
+                        .HasForeignKey(a => a.AnsweredById)
+                        .OnDelete(DeleteBehavior.NoAction);
+            #endregion
             #region Enum Conversion 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
