@@ -34,5 +34,7 @@ namespace EduQuest.Entities
         public IEnumerable<Section> Sections { get; set; }
 
         public IEnumerable<Order> Orders { get; set; }
+
+        public IEnumerable<Skill> Skills { get; set; }
     }
 }
