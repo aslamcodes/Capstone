@@ -1,3 +1,5 @@
+import { UserProfile } from "./common";
+
 export interface Content {
   id: number;
   title: string;
@@ -66,4 +68,23 @@ export interface Notes {
   noteContent: string;
   userId: number;
   id: number;
+}
+
+export interface Question {
+  id: number;
+  contentId: number;
+  questionText: string;
+  postedById: number;
+  postedBy: UserProfile;
+  postedOn: string;
+  upvotes: number;
+}
+
+export interface Answer {
+  id: number;
+  questionId: number;
+  answerText: string;
+  answeredById: number;
+  answeredOn: string;
+  answeredBy: UserProfile;
 }

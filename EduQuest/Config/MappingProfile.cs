@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EduQuest.Entities;
+using EduQuest.Features.Answers;
 using EduQuest.Features.Articles;
 using EduQuest.Features.Auth.DTOS;
 using EduQuest.Features.Contents.Dto;
@@ -8,6 +9,7 @@ using EduQuest.Features.Courses;
 using EduQuest.Features.Courses.Dto;
 using EduQuest.Features.Notes;
 using EduQuest.Features.Orders;
+using EduQuest.Features.Questions;
 using EduQuest.Features.Sections;
 using EduQuest.Features.Videos;
 
@@ -18,6 +20,7 @@ namespace EduQuest.Config
         public MappingProfile()
         {
             CreateMap<User, AuthResponseDto>().ForMember(res => res.Token, opt => opt.Ignore());
+            CreateMap<User, UserProfileDto>();
 
             CreateMap<CourseDTO, Course>()
                 .ForMember(d => d.Level, opt => opt.MapFrom((s) => MapLevel(s.Level)));
@@ -45,6 +48,14 @@ namespace EduQuest.Config
 
             CreateMap<Note, NoteDto>();
             CreateMap<NoteDto, Note>();
+
+            CreateMap<QuestionDto, Question>();
+            CreateMap<Question, QuestionDto>();
+            CreateMap<QuestionRequestDto, QuestionDto>();
+
+            CreateMap<Answer, AnswerDto>();
+            CreateMap<AnswerDto, Answer>();
+            CreateMap<AnswerRequestDto, AnswerDto>();
         }
         public static CourseLevelEnum MapLevel(string level)
         {

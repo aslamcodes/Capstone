@@ -28,7 +28,6 @@
 		<Folder Include="Features\Educator\" />
 		<Folder Include="Features\LearningPaths\" />
 		<Folder Include="Features\Skills\" />
-		<Folder Include="Features\QuestionAnswers\" />
 		<Folder Include="Features\Reviews\" />
 		<Folder Include="Features\Subscription\" />
 		<Folder Include="Migrations\" />

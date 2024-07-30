@@ -4,7 +4,7 @@ namespace EduQuest.Commons
 {
     public abstract class BaseRepo<K, T>(EduQuestContext context) : IRepository<K, T> where T : BaseEntity
     {
-        public async Task<T> Add(T entity)
+        public virtual async Task<T> Add(T entity)
         {
             await context.AddAsync(entity);
 

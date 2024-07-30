@@ -4,6 +4,7 @@ import { Tab } from "../../interfaces/common";
 import CourseDescription from "./ContentDescription";
 import Notes from "./Notes";
 import Review from "./review";
+import QuestionAnswer from "./question-answer";
 
 interface ContentDescriptionProps {
   contentId: number | null;
@@ -51,7 +52,7 @@ const ContentTabs: FC<ContentDescriptionProps> = ({ contentId, courseId }) => {
         <CourseDescription courseId={courseId as number} />
       )}
 
-      {activeTab === "qa" && <div>Q & A</div>}
+      {activeTab === "qa" && <QuestionAnswer contentId={contentId as number} />}
 
       {activeTab === "notes" && <Notes contentId={contentId as number} />}
 

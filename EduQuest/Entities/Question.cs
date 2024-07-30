@@ -12,7 +12,7 @@ namespace EduQuest.Entities
 
         public DateTime PostedOn { get; set; } = DateTime.Now;
 
-        public int Upvotes { get; set; }
+        public int Upvotes { get; set; } = 0;
 
         public Content Content { get; set; }
 

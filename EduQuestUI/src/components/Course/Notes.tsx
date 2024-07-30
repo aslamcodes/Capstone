@@ -48,7 +48,8 @@ const Notes: FC<{ contentId: number }> = ({ contentId }) => {
   }
 
   return (
-    <div className="p-4">
+    <div className="gap-4 p-4 flex flex-col">
+      <div className="text-xl font-bold">Notes</div>
       <textarea
         className="textarea textarea-bordered w-full"
         value={localNote}

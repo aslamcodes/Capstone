@@ -1,7 +1,10 @@
 import React, { FC, useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-export const StarRating = ({ rating, setRating }) => {
+export const StarRating: FC<{
+  rating: number;
+  setRating: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ rating, setRating }) => {
   return (
     <div className="flex items-center gap-2">
       {[1, 2, 3, 4, 5].map((star) => {
