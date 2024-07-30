@@ -24,6 +24,8 @@ namespace EduQuest.Commons
         public DbSet<Article> Articles { get; set; }
         public DbSet<CourseCategory> CourseCategories { get; set; }
 
+        public DbSet<Note> Notes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Course
@@ -160,6 +162,22 @@ namespace EduQuest.Commons
                         .WithOne(c => c.Article)
                         .HasForeignKey<Article>(a => a.ContentId);
 
+            #endregion
+
+            #region Notes
+            modelBuilder.Entity<Note>().HasKey(n => n.Id);
+
+            modelBuilder.Entity<Note>().Property(n => n.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Note>()
+                        .HasOne(n => n.User)
+                        .WithMany(u => u.Notes)
+                        .HasForeignKey(n => n.UserId);
+
+            modelBuilder.Entity<Note>()
+                        .HasOne(n => n.Content)
+                        .WithMany()
+                        .HasForeignKey(n => n.ContentId);
             #endregion
 
             #region CourseCategory

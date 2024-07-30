@@ -60,3 +60,10 @@ export interface CourseCategory {
   name: string;
   description: string;
 }
+
+export interface Notes {
+  contentId: number;
+  noteContent: string;
+  userId: number;
+  id: number;
+}

@@ -29,6 +29,8 @@ namespace EduQuest.Entities
 
         public IEnumerable<Course> CoursesCreated { get; set; }
 
+        public IEnumerable<Note> Notes { get; set; }
+
     }
 }
 

@@ -19,8 +19,6 @@ const ContentViewer: FC<ContentViewerProps> = ({ contentId }) => {
     return <div>No Content</div>;
   }
 
-  console.log(content, isLoading, error);
-
   if (error) return <div>{error.response.data?.message}</div>;
 
   return (

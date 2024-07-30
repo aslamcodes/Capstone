@@ -1,15 +1,18 @@
 import React, { FC } from "react";
 import { Tab } from "../../interfaces/common";
 
+type TabStyle = "boxed" | "lifted" | "bordered";
+
 const Tabs: FC<{
   tabs: Tab[];
   activeTab: Tab["value"];
   onClick: (tab: Tab) => void;
-}> = ({ tabs, activeTab, onClick }) => {
+  style?: TabStyle;
+}> = ({ tabs, activeTab, onClick, style = "lifted" }) => {
   return (
     <div
       role="tablist"
-      className="tabs tabs-lifted tabs-lg sticky top-16 bg-base-100 z-50"
+      className={`tabs tabs-${style} tabs-lg sticky top-16 bg-base-100 z-50`}
     >
       {tabs.map((tab) => (
         <a

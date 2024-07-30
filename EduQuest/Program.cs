@@ -6,6 +6,7 @@ using EduQuest.Features.Auth;
 using EduQuest.Features.Contents;
 using EduQuest.Features.CourseCategories;
 using EduQuest.Features.Courses;
+using EduQuest.Features.Notes;
 using EduQuest.Features.Orders;
 using EduQuest.Features.Payments;
 using EduQuest.Features.Sections;
@@ -106,6 +107,7 @@ namespace EduQuest
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<INotesService, NotesService>();
             #endregion
 
             #region Repositories
@@ -120,6 +122,7 @@ namespace EduQuest
             builder.Services.AddScoped<ISectionRepo, SectionRepository>();
             builder.Services.AddScoped<IContentRepo, ContentRepository>();
             builder.Services.AddScoped<ICourseRepo, CourseRepository>();
+            builder.Services.AddScoped<INotesRepo, NotesRepo>();
             #endregion
 
 

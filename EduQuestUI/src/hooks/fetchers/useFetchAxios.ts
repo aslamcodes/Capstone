@@ -1,16 +1,18 @@
 import axios, { AxiosHeaders } from "axios";
 import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
 
-export default function useFetchAxios<T, K>({
-  url,
-  params = {},
-  headers = {},
-}: {
-  url: string;
-  params?: any;
-  headers?: any;
-}) {
+export default function useFetchAxios<T, K>(
+  {
+    url,
+    params = {},
+    headers = {},
+  }: {
+    url: string;
+    params?: any;
+    headers?: any;
+  },
+  deps: any[] = []
+) {
   const [data, setData] = useState<T | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,7 +41,7 @@ export default function useFetchAxios<T, K>({
     }
 
     fetchData();
-  }, [url, memoizedHeaders, memoizedParams]);
+  }, [url, memoizedHeaders, memoizedParams, ...deps]);
 
   return { data, error, isLoading };
 }

@@ -31,7 +31,6 @@
 		<Folder Include="Features\QuestionAnswers\" />
 		<Folder Include="Features\Reviews\" />
 		<Folder Include="Features\Subscription\" />
-		<Folder Include="Features\Notes\" />
 		<Folder Include="Migrations\" />
 	</ItemGroup>
 

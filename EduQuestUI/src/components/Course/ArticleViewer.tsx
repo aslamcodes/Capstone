@@ -22,6 +22,7 @@ const ArticleViewer: FC<{ contentId: number }> = ({ contentId }) => {
         data-color-mode="light"
         preview="preview"
         value={content.body}
+        className="min-h-[60vh]"
       >
         <MDEditor.Markdown />
       </MDEditor>

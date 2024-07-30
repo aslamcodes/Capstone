@@ -1,15 +1,10 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SectionDrop from "../../components/Course/SectionDrop";
-import useSWR from "swr";
-import { fetcher } from "../../utils/fetcher";
-import VideoPlayer from "../../components/Course/VideoPlayer";
-import { Content, Section, Video } from "../../interfaces/course";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSections from "../../hooks/fetchers/useSections";
-import useVideoForContent from "../../hooks/fetchers/useVideo";
-import VideoViewer from "../../components/Course/VideoViewer";
 import Loader from "../../components/common/Loader";
 import ContentViewer from "../../components/Course/ContentViewer";
+import ContentTabs from "../../components/Course/ContentTabs";
 
 const CoursePage = () => {
   const { courseId } = useParams();
@@ -30,8 +25,9 @@ const CoursePage = () => {
     <div className="min-h-[70vh] grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="col-span-2 h-full">
         <ContentViewer contentId={currentContentId} />
+        <ContentTabs contentId={currentContentId} courseId={Number(courseId)} />
       </div>
-      <div className="flex flex-col gap-2 lg:max-h-screen lg:overflow-scroll no-scrollbar">
+      <div className="flex flex-col gap-2 lg:max-h-screen lg:overflow-scroll no-scrollbar lg:sticky lg:top-10">
         {sections ? (
           sections.map((section) => (
             <SectionDrop
