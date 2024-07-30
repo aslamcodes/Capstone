@@ -11,6 +11,7 @@ using EduQuest.Features.Notes;
 using EduQuest.Features.Orders;
 using EduQuest.Features.Payments;
 using EduQuest.Features.Questions;
+using EduQuest.Features.Reviews;
 using EduQuest.Features.Sections;
 using EduQuest.Features.Student;
 using EduQuest.Features.StudentCourses;
@@ -95,7 +96,6 @@ namespace EduQuest
 
             builder.Services.AddScoped<ControllerValidator>();
 
-
             #region Services
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
@@ -112,6 +112,7 @@ namespace EduQuest
             builder.Services.AddScoped<INotesService, NotesService>();
             builder.Services.AddScoped<IQuestionService, QuestionService>();
             builder.Services.AddScoped<IAnswerService, AnswersService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
             #endregion
 
             #region Repositories
@@ -129,6 +130,7 @@ namespace EduQuest
             builder.Services.AddScoped<ICourseRepo, CourseRepository>();
             builder.Services.AddScoped<INotesRepo, NotesRepo>();
             builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
+            builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
             #endregion
 
 

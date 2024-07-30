@@ -93,6 +93,19 @@ namespace EduQuest.Commons
             return Task.CompletedTask;
         }
 
+        public async Task ValidateStudentPrivilegeForCourse(IEnumerable<Claim> claims, int courseId)
+        {
+            var userId = GetUserIdFromClaims(claims);
+
+            var enrolledCourses = await courseService.GetCoursesForStudent(userId);
+
+            var course = await courseService.GetById(courseId);
+
+            if (enrolledCourses.Any(c => c.Id == course.Id)) return;
+
+            throw new UnAuthorisedUserExeception();
+        }
+
         public async Task ValidateUserPrivilegeForContent(IEnumerable<Claim> claims, int contentId)
         {
             var userId = GetUserIdFromClaims(claims);

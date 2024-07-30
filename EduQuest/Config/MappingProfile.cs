@@ -10,6 +10,7 @@ using EduQuest.Features.Courses.Dto;
 using EduQuest.Features.Notes;
 using EduQuest.Features.Orders;
 using EduQuest.Features.Questions;
+using EduQuest.Features.Reviews;
 using EduQuest.Features.Sections;
 using EduQuest.Features.Videos;
 
@@ -56,6 +57,10 @@ namespace EduQuest.Config
             CreateMap<Answer, AnswerDto>();
             CreateMap<AnswerDto, Answer>();
             CreateMap<AnswerRequestDto, AnswerDto>();
+
+            CreateMap<Review, ReviewDto>();
+            CreateMap<ReviewDto, Review>();
+            CreateMap<ReviewRequestDto, ReviewDto>();
         }
         public static CourseLevelEnum MapLevel(string level)
         {

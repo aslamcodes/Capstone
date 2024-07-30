@@ -56,7 +56,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Article", b =>
@@ -87,7 +87,7 @@ namespace EduQuest.Migrations
                     b.HasIndex("ContentId")
                         .IsUnique();
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Content", b =>
@@ -118,7 +118,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("SectionId");
 
-                    b.ToTable("Contents");
+                    b.ToTable("Contents", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Course", b =>
@@ -169,7 +169,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("EducatorId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.CourseCategory", b =>
@@ -190,7 +190,7 @@ namespace EduQuest.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CourseCategories");
+                    b.ToTable("CourseCategories", (string)null);
 
                     b.HasData(
                         new
@@ -347,7 +347,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("CourseSkills");
+                    b.ToTable("CourseSkills", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Note", b =>
@@ -374,7 +374,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Order", b =>
@@ -416,7 +416,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Payment", b =>
@@ -449,7 +449,7 @@ namespace EduQuest.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Question", b =>
@@ -482,7 +482,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("PostedById");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Review", b =>
@@ -515,7 +515,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("ReviewedById");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Section", b =>
@@ -546,7 +546,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Sections");
+                    b.ToTable("Sections", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Skill", b =>
@@ -563,7 +563,7 @@ namespace EduQuest.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skills", (string)null);
 
                     b.HasData(
                         new
@@ -1088,7 +1088,7 @@ namespace EduQuest.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentCourses");
+                    b.ToTable("StudentCourses", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.User", b =>
@@ -1140,7 +1140,7 @@ namespace EduQuest.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Video", b =>
@@ -1172,7 +1172,7 @@ namespace EduQuest.Migrations
                     b.HasIndex("ContentId")
                         .IsUnique();
 
-                    b.ToTable("Videos");
+                    b.ToTable("Videos", (string)null);
                 });
 
             modelBuilder.Entity("EduQuest.Entities.Answer", b =>

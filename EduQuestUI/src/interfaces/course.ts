@@ -88,3 +88,11 @@ export interface Answer {
   answeredOn: string;
   answeredBy: UserProfile;
 }
+
+export interface Review {
+  courseId: number;
+  rating: number;
+  reviewText: string;
+  reviewedById: number;
+  reviewedBy: UserProfile;
+}
