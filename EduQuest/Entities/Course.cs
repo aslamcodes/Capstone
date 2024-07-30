@@ -15,6 +15,12 @@ namespace EduQuest.Entities
 
         public int CourseCategoryId { get; set; }
 
+        public string? CourseObjective { get; set; }
+        public string? TargetAudience { get; set; }
+
+        public string? Prerequisites { get; set; }
+
+
         public CourseCategory CourseCategory { get; set; }
 
         public CourseLevelEnum Level { get; set; }

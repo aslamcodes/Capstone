@@ -7,16 +7,20 @@ import Form, {
   FormLabel,
   FormTitle,
 } from "../../../components/common/Form";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import axios from "axios";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";
+import Divider from "../../../components/common/divider";
 
 type Inputs = {
   name: string;
   description: string;
   price: number;
   level: string;
+  objectives: string[];
+  targetAudience: string[];
+  prerequisites: string[];
 };
 
 interface CourseInfoProps extends ManageCoursePageProps {}
@@ -30,30 +34,63 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<Inputs>({
-    defaultValues: initialCourse || {},
+    defaultValues: {
+      ...initialCourse,
+      objectives: initialCourse?.courseObjective?.split("|"),
+      prerequisites: initialCourse?.prerequisites?.split("|"),
+      targetAudience: initialCourse?.targetAudience?.split("|"),
+    },
+  });
+
+  const {
+    append: appendObjective,
+    fields: objectiveFields,
+    remove: removeObjective,
+  } = useFieldArray<Inputs>({
+    control,
+    name: "objectives",
+  });
+
+  const {
+    append: appendPrerequisites,
+    fields: prerequisiteFields,
+    remove: removePrerequisites,
+  } = useFieldArray<Inputs>({
+    control,
+    name: "prerequisites",
+  });
+
+  const {
+    append: appendTargetAudience,
+    fields: targetAudienceFields,
+    remove: removeTargetAudience,
+  } = useFieldArray<Inputs>({
+    control,
+    name: "targetAudience",
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const payload = {
+      ...data,
+      courseObjective: data.objectives.join("|"),
+      prerequisites: data.prerequisites.join("|"),
+      targetAudience: data.targetAudience.join("|"),
+    };
     if (isEditing) {
-      const res = await axios.put<Course>(
-        "/api/Course",
-        { ...data },
-        {
-          headers: { Authorization: `Bearer ${user?.token}` },
-        }
-      );
-
+      const res = await axios.put<Course>("/api/Course", payload, {
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
       return onSave(res.data);
     }
     const res = await axios.post<Course>(
       "/api/Course",
-      { ...data, educatorId: user?.id },
+      { ...payload, educatorId: user?.id },
       {
         headers: { Authorization: `Bearer ${user?.token}` },
       }
     );
-
     onSave(res.data);
   };
 
@@ -94,7 +131,6 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
       </FormGroup>
       <FormGroup>
         <FormLabel>Level</FormLabel>
-
         <select
           className="select select-bordered"
           {...register("level", { required: true })}
@@ -104,7 +140,117 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
           <option value="Advanced">Advanced</option>
         </select>
       </FormGroup>
-      <FormButton title="Save" />
+      <Divider />
+      <FormTitle>Course Objectives</FormTitle>
+      <div className="alert text-base-content">
+        Add your course objectives, these will be shown to the students before
+        they enroll in your course.
+      </div>
+      {objectiveFields.length < 4 && (
+        <p className="alert alert-warning text-error-content">
+          Please Add atleast 4 objectives for your course
+        </p>
+      )}
+      <FormGroup>
+        {objectiveFields.map((field, index) => (
+          <div key={field.id} className="flex gap-2">
+            <input
+              type="text"
+              className="input input-bordered"
+              {...register(`objectives.${index}` as const)}
+            />
+            <button
+              type="button"
+              onClick={() => removeObjective(index)}
+              className="btn btn-error"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => appendObjective("Testing")}
+          className="btn"
+        >
+          Add a Objective
+        </button>
+      </FormGroup>
+      <Divider />
+      <FormTitle>Prerequisites</FormTitle>
+      <div className="alert text-base-content">
+        List the required skills, experience, tools or equipment learners should
+        have prior to taking your course. If there are no requirements, use this
+        space as an opportunity to lower the barrier for beginners.
+      </div>
+      {prerequisiteFields.length < 1 && (
+        <p className="alert alert-warning text-error-content">
+          Please Add atleast 1 Prerequisite for your course
+        </p>
+      )}
+      <FormGroup>
+        {prerequisiteFields.map((field, index) => (
+          <div key={field.id} className="flex gap-2">
+            <input
+              type="text"
+              className="input input-bordered"
+              {...register(`prerequisites.${index}` as const)}
+            />
+            <button
+              type="button"
+              onClick={() => removePrerequisites(index)}
+              className="btn btn-error"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => appendPrerequisites("Testing")}
+          className="btn"
+        >
+          Add a Prerequisite
+        </button>
+      </FormGroup>
+      <Divider />
+      <FormTitle>Who is this course for?</FormTitle>
+      <div className="alert text-base-content">
+        Write a clear description of the intended learners for your course who
+        will find your course content valuable. This will help you attract the
+        right learners to your course.
+      </div>
+      {targetAudienceFields.length < 1 && (
+        <p className="alert alert-warning text-error-content">
+          Please Add atleast 1 Target Audience for your course
+        </p>
+      )}
+      <FormGroup>
+        {targetAudienceFields.map((field, index) => (
+          <div key={field.id} className="flex gap-2">
+            <input
+              type="text"
+              className="input input-bordered"
+              {...register(`targetAudience.${index}` as const)}
+            />
+            <button
+              type="button"
+              onClick={() => removeTargetAudience(index)}
+              className="btn btn-error"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => appendTargetAudience("Testing")}
+          className="btn"
+        >
+          Add a Target Audience
+        </button>
+      </FormGroup>
+      <FormButton className="btn-primary" title="Save" />
     </Form>
   );
 };

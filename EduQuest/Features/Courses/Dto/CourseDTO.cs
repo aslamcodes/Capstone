@@ -9,6 +9,15 @@ namespace EduQuest.Features.Courses.Dto
 
         public string Description { get; set; }
 
+        [RegularExpression("^[^|]+(\\|[^|]+)*$", ErrorMessage = "Invalid Course Objectives")]
+        public string? CourseObjective { get; set; }
+
+        [RegularExpression("^[^|]+(\\|[^|]+)*$", ErrorMessage = "Invalid Prerequisites")]
+        public string? Prerequisites { get; set; }
+
+        [RegularExpression("^[^|]+(\\|[^|]+)*$", ErrorMessage = "Invalid TargetAudience")]
+        public string? TargetAudience { get; set; }
+
         public int CourseCategoryId { get; set; }
 
         public int EducatorId { get; set; }

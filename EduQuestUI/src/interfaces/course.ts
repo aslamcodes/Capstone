@@ -32,6 +32,10 @@ export interface Course {
   level: "Begginer" | "Intermediate" | "Advanced";
   price: number;
   courseStatus: "Live" | "Draft" | "Archived" | "Outdated" | "Review";
+  courseObjective: string;
+  prerequisites: string;
+  targetAudience: string;
+  courseCategoryId: number;
 }
 
 export interface Section {
