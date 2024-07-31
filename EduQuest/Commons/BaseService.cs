@@ -31,7 +31,7 @@ namespace EduQuest.Commons
             return mapper.Map<DTO>(res);
         }
 
-        public async Task<DTO> Update(DTO updateEntity)
+        public virtual async Task<DTO> Update(DTO updateEntity)
         {
             try
             {

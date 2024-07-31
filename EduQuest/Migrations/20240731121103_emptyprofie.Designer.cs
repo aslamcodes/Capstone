@@ -4,6 +4,7 @@ using EduQuest.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduQuest.Migrations
 {
     [DbContext(typeof(EduQuestContext))]
-    partial class EduQuestContextModelSnapshot : ModelSnapshot
+    [Migration("20240731121103_emptyprofie")]
+    partial class emptyprofie
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,9 +140,6 @@ namespace EduQuest.Migrations
 
                     b.Property<string>("CourseStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CourseThumbnailPicture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")

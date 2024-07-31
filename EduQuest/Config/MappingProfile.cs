@@ -12,6 +12,7 @@ using EduQuest.Features.Orders;
 using EduQuest.Features.Questions;
 using EduQuest.Features.Reviews;
 using EduQuest.Features.Sections;
+using EduQuest.Features.Users;
 using EduQuest.Features.Videos;
 
 namespace EduQuest.Config
@@ -22,6 +23,8 @@ namespace EduQuest.Config
         {
             CreateMap<User, AuthResponseDto>().ForMember(res => res.Token, opt => opt.Ignore());
             CreateMap<User, UserProfileDto>();
+            CreateMap<UserProfileDto, User>();
+            CreateMap<UserProfileUpdateDto, UserProfileDto>();
 
             CreateMap<CourseDTO, Course>()
                 .ForMember(d => d.Level, opt => opt.MapFrom((s) => MapLevel(s.Level)));
@@ -40,6 +43,7 @@ namespace EduQuest.Config
 
             CreateMap<Video, VideoDto>();
             CreateMap<VideoDto, Video>();
+            CreateMap<VideoRequestDto, VideoDto>();
 
             CreateMap<Article, ArticleDto>();
             CreateMap<ArticleDto, Article>();

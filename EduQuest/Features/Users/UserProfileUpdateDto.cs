@@ -1,15 +1,11 @@
-﻿namespace EduQuest.Features.Questions
+﻿namespace EduQuest.Features.Users
 {
-    public class UserProfileDto
+    public class UserProfileUpdateDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public bool IsEducator { get; set; }
-
         public string Email { get; set; }
-
-        public string ProfilePictureUrl { get; set; }
     }
 }

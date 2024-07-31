@@ -11,6 +11,7 @@ export interface Content {
 }
 
 export interface Video {
+  id: number;
   contentId: number;
   durationHours: number;
   durationMinutes: number;
@@ -38,6 +39,7 @@ export interface Course {
   prerequisites: string;
   targetAudience: string;
   courseCategoryId: number;
+  courseThumbnailPicture: string | null;
 }
 
 export interface Section {

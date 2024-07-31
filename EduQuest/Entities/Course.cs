@@ -20,6 +20,7 @@ namespace EduQuest.Entities
 
         public string? Prerequisites { get; set; }
 
+        public string? CourseThumbnailPicture { get; set; }
 
         public CourseCategory CourseCategory { get; set; }
 

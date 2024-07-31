@@ -20,6 +20,8 @@ namespace EduQuest.Features.Courses.Dto
 
         public int CourseCategoryId { get; set; }
 
+        public string CourseThumbnailPicture { get; set; }
+
         public int EducatorId { get; set; }
         public float Price { get; set; }
 

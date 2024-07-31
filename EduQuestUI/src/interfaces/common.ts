@@ -6,4 +6,7 @@ export interface Tab {
 export interface UserProfile {
   firstName: string;
   lastName: string;
+  isEducator: boolean;
+  email: string;
+  profilePictureUrl: string | null;
 }

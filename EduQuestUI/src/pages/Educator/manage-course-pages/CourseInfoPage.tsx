@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback, useState } from "react";
 import { ManageCoursePageProps } from "./manageCourseTypes";
 import Form, {
   FormButton,
@@ -12,6 +12,7 @@ import axios from "axios";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";
 import Divider from "../../../components/common/divider";
+import { ImAngry2, ImImage } from "react-icons/im";
 
 type Inputs = {
   name: string;
@@ -52,6 +53,12 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
     control,
     name: "objectives",
   });
+
+  const [courseImage, setCourseImage] = useState<File | null>(null);
+
+  const [coursePreview, setCoursePreview] = useState<string>(
+    initialCourse?.courseThumbnailPicture
+  );
 
   const {
     append: appendPrerequisites,
@@ -94,9 +101,50 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
     onSave(res.data);
   };
 
+  const handleImageUpload = useCallback(async () => {
+    const formData = new FormData();
+    formData.append("thumbnail", courseImage as Blob);
+    await axios.put(
+      `/api/Course/Course-Thumbnail?courseId=${initialCourse?.id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  }, [initialCourse?.id, user?.token, courseImage]);
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormTitle>Course Details</FormTitle>
+      <FormGroup>
+        <FormLabel>Course Image</FormLabel>
+        {coursePreview ? (
+          <img
+            src={coursePreview}
+            alt="Course Thumbnail"
+            className="rounded-lg h-48 max-w-xl"
+          />
+        ) : (
+          <div className="h-48 w-xl bg-base-content rounded-lg flex items-center justify-center object-contain">
+            <ImImage className="text-base-300" size={30} />
+          </div>
+        )}
+        <input
+          type="file"
+          className="file-input"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setCourseImage(file);
+              setCoursePreview(URL.createObjectURL(file));
+              handleImageUpload();
+            }
+          }}
+        />
+      </FormGroup>
       <FormGroup>
         <FormLabel>Course Name</FormLabel>
         <input

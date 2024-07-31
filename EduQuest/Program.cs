@@ -1,4 +1,6 @@
 
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using EduQuest.Commons;
 using EduQuest.Entities;
 using EduQuest.Features.Answers;
@@ -19,6 +21,7 @@ using EduQuest.Features.Users;
 using EduQuest.Features.Videos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -30,9 +33,6 @@ namespace EduQuest
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -86,10 +86,22 @@ namespace EduQuest
             .AddPolicy("Admin", policy => policy.RequireRole("Admin"));
             #endregion
 
-            #region Context
+            var client = new SecretClient(vaultUri: new Uri("https://eduquest-keys.vault.azure.net/"), credential: new DefaultAzureCredential());
+
+            string storageConn = client.GetSecret("eduquest-storage").Value.Value.ToString();
+
+            string? dbConn = builder.Environment.IsDevelopment() ? builder.Configuration.GetConnectionString("default") : client.GetSecret("eduquest-db").Value.Value.ToString();
+
+            #region DB and Storage
             builder.Services.AddDbContext<EduQuestContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+                options.UseSqlServer(dbConn);
+            });
+
+            builder.Services.AddAzureClients(clientBuilder =>
+            {
+                clientBuilder.AddSecretClient(vaultUri: new Uri("https://eduquest-keys.vault.azure.net/"));
+                clientBuilder.AddBlobServiceClient(storageConn);
             });
 
             #endregion
@@ -97,6 +109,7 @@ namespace EduQuest
             builder.Services.AddScoped<ControllerValidator>();
 
             #region Services
+
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserService, UserService>();

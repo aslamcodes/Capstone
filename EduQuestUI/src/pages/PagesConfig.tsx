@@ -9,6 +9,7 @@ import AritlceEditor from "../components/educators/AritlceEditor";
 import Home from "./Home";
 import CourseLanding from "../components/Course/CourseLanding";
 import OrderPage from "../components/order/OrderPage";
+import UserProfile from "./user-profile";
 
 export const pages = [
   {
@@ -20,6 +21,7 @@ export const pages = [
       { path: "/order/:orderId", element: <OrderPage /> },
       { path: "/myCourses", element: <MyCourses /> },
       { path: "/myCourses/:courseId", element: <CoursePage /> },
+      { path: "/profile", element: <UserProfile /> },
       {
         path: "/manage-course/content/article/:contentId",
         element: <AritlceEditor />,

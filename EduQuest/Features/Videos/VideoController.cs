@@ -1,4 +1,9 @@
-﻿using EduQuest.Commons;
+﻿using AutoMapper;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
+using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +11,7 @@ namespace EduQuest.Features.Videos
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoController(ControllerValidator validator, IVideoService videoService) : Controller
+    public class VideoController(ControllerValidator validator, IVideoService videoService, BlobServiceClient blobServiceClient, IMapper mapper, SecretClient secretClient) : Controller
     {
         [HttpGet]
         [Authorize]
@@ -36,15 +41,15 @@ namespace EduQuest.Features.Videos
         }
 
         [HttpPost]
-        [Authorize("Educator")]
-        public async Task<ActionResult<VideoDto>> UploadVideoForContent([FromBody] VideoDto video)
+        [Authorize(Policy = "Educator")]
+        public async Task<ActionResult<VideoDto>> UploadVideoDataForContent([FromBody] VideoRequestDto video)
         {
             try
             {
 
                 await validator.ValidateEducatorPrivilegeForContent(User.Claims, video.ContentId);
 
-                var addedVideo = await videoService.Add(video);
+                var addedVideo = await videoService.Add(mapper.Map<VideoDto>(video));
 
                 return Ok(addedVideo);
             }
@@ -60,6 +65,42 @@ namespace EduQuest.Features.Videos
             {
 
                 throw;
+            }
+        }
+
+        [HttpPost("get-upload-url")]
+        [Authorize(Policy = "Educator")]
+        public async Task<ActionResult<UploadUrlResponse>> GetUploadUrl([FromBody] GetUploadUrlRequest request)
+        {
+            try
+            {
+                var containerClient = blobServiceClient.GetBlobContainerClient("videos");
+                var blobClient = containerClient.GetBlobClient($"{request.ContentId}-{request.FileName}");
+
+                // Generate SAS token for the blob
+                var sasBuilder = new BlobSasBuilder
+                {
+                    BlobContainerName = containerClient.Name,
+                    BlobName = blobClient.Name,
+                    Resource = "b",
+                    ExpiresOn = DateTimeOffset.UtcNow.AddHours(1),
+                };
+                sasBuilder.SetPermissions(BlobSasPermissions.Write);
+
+                var accountName = secretClient.GetSecret("StorageAccountName").Value.Value;
+                var accountKey = secretClient.GetSecret("StorageAccountKey").Value.Value;
+
+                var sasToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(accountName, accountKey)).ToString();
+                var uploadUrl = $"{blobClient.Uri}?{sasToken}";
+
+                // Create a record in your database
+                //await _videoService.InitiateUpload(request.ContentId, request.FileName);
+
+                return Ok(new UploadUrlResponse { UploadUrl = uploadUrl });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while generating the upload URL");
             }
         }
 

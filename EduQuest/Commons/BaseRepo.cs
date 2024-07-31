@@ -42,7 +42,7 @@ namespace EduQuest.Commons
             return entity;
         }
 
-        public async Task<T> Update(T entity)
+        public virtual async Task<T> Update(T entity)
         {
             context.Update(entity);
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Storage.Blobs;
 using EduQuest.Commons;
 using EduQuest.Entities;
 using EduQuest.Features.Auth.Exceptions;
@@ -16,6 +17,7 @@ namespace EduQuest.Features.Courses
                                   ISectionService sectionService,
                                   IContentService contentService,
                                   ControllerValidator validator,
+                                  BlobServiceClient blobService,
                                   IMapper mapper) : Controller
     {
         [HttpPost]
@@ -185,7 +187,7 @@ namespace EduQuest.Features.Courses
         }
 
         [HttpGet("Get-Validity")]
-        [Authorize("Educator")]
+        [Authorize(Policy = "Educator")]
         public async Task<ActionResult<ValidityResponseDto>> GetCourseValidity([FromQuery] int courseId)
         {
             try
@@ -212,7 +214,7 @@ namespace EduQuest.Features.Courses
 
 
         [HttpPut("Submit-For-Review")]
-        [Authorize("Educator")]
+        [Authorize(Policy = "Educator")]
         public async Task<ActionResult<CourseDTO>> SetCourseUnderReview([FromQuery] int courseId)
         {
             try
@@ -234,6 +236,54 @@ namespace EduQuest.Features.Courses
             catch (InvalidCourseStatusException ex)
             {
                 return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, ex.Message));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPut("Course-Thumbnail")]
+        [Authorize(Policy = "Educator")]
+        public async Task<ActionResult<CourseDTO>> SetCourseThumbnail([FromQuery] int courseId, [FromForm] IFormFile thumbnail)
+        {
+            try
+            {
+                await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
+
+                BlobContainerClient profileContainer = blobService.GetBlobContainerClient("course-images");
+
+                BlobClient blob = profileContainer.GetBlobClient($"{courseId}-profile.jpg");
+
+                if (await blob.ExistsAsync())
+                {
+                    await blob.DeleteAsync();
+                }
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await thumbnail.CopyToAsync(memoryStream);
+                    memoryStream.Position = 0;
+                    await blob.UploadAsync(memoryStream);
+                }
+
+                var fileUrl = blob.Uri.AbsoluteUri;
+
+                var course = await courseService.GetById(courseId);
+
+                course.CourseThumbnailPicture = fileUrl;
+
+                var updatedCourse = await courseService.Update(course);
+
+                return Ok(updatedCourse);
+            }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
             }
             catch (EntityNotFoundException ex)
             {
