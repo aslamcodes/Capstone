@@ -34,6 +34,8 @@ const AdminReviewTab = () => {
   }
 
   const handleAuthorize = async (id: number) => {
+    // TODO: Reactify this function
+
     await axios.put(
       `/api/Course/set-course-live?courseId=${id}`,
       {},

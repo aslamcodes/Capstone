@@ -15,6 +15,8 @@ const Notes: FC<{ contentId: number }> = ({ contentId }) => {
   const debouncedSaveNote = useCallback(
     debounce(async (updatedNote: string) => {
       setIsSaving(true);
+      // TODO: Reactify this function, try catch
+
       await axios.put(
         `/api/Notes/`,
         {

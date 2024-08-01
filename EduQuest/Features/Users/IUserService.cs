@@ -10,5 +10,6 @@ namespace EduQuest.Features.Users
         Task<User> GetByEmailAsync(string email);
         Task<UserProfileDto> MakeEducator(int userId);
         Task<UserProfileDto> UpdateProfile(UserProfileDto user);
+        Task<UserProfileDto> UpdateProfileEntries(UserProfileUpdateDto userProfile);
     }
 }

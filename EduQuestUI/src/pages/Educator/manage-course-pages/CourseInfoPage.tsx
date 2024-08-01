@@ -120,6 +120,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
   };
 
   const handleImageUpload = useCallback(async () => {
+    // TODO: Reactify this function, try catch
     const formData = new FormData();
     formData.append("thumbnail", courseImage as Blob);
     await axios.put(

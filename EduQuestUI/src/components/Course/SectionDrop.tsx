@@ -23,6 +23,7 @@ const SectionDrop: FC<SectionProps> = ({
   useEffect(() => {
     const fetchContents = async () => {
       setIsLoading(true);
+      // TODO: Reactify this function, try catch
       const res = await fetch(`/api/Section/Contents?sectionId=${id}`);
       const data = await res.json();
       setContents(data);

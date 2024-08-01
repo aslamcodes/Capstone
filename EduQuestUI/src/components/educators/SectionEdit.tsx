@@ -22,6 +22,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { customToast } from "../../utils/toast";
 
 interface SectionEditProps {
   initialSection: Section;
@@ -64,6 +65,9 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
+        customToast("Cannot fetch the contents", {
+          type: "error",
+        });
       }
     };
 
@@ -81,6 +85,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
   if (error) return <div>Error: </div>;
 
   async function handleDeleteSection(sectionId: number) {
+    // TODO: Reactify this function, try catch
     await axios.delete("/api/Section", {
       params: { sectionId },
       headers: { Authorization: `Bearer ${user?.token}` },
@@ -89,6 +94,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
 
   async function handleAddContent(content: FieldValues) {
     setIsContentLoading(() => true);
+    // TODO: Reactify this function, try catch
     const { data: Content } = await axios.post<Content>(
       "/api/Content",
       {
@@ -109,6 +115,8 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
   }
 
   async function handleDeleteContent(contentId: number) {
+    // TODO: Reactify this function, try catch
+
     await axios.delete("/api/Content", {
       params: { contentId },
       headers: { Authorization: `Bearer ${user?.token}` },
@@ -118,6 +126,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
 
   const handleOrderChange = async (contentId: number, orderId: number) => {
     const content = contents.find((content) => content.id === contentId);
+    // TODO: Reactify this function, try catch
 
     await axios.put(
       "/api/Content",

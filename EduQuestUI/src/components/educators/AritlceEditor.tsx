@@ -16,6 +16,7 @@ const AritlceEditor = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
+      // TODO: Reactify this function, try catch
       const { data } = await axios.get<Article>(`/api/Article/ForContent`, {
         params: { contentId },
         headers: {

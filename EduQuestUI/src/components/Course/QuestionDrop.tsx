@@ -15,6 +15,7 @@ const Answers: FC<{ questionId: number }> = ({ questionId }) => {
   const { user: userProfile } = useUserProfile();
 
   const handleAnswer = async () => {
+    // TODO: Reactify this function, try catch
     const { data } = await axios.post<Answer>(
       "/api/Answers/For-Question",
       {

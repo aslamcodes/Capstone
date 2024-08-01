@@ -49,5 +49,17 @@ namespace EduQuest.Features.Users
 
         }
 
+        public async Task<UserProfileDto> UpdateProfileEntries(UserProfileUpdateDto updateEntity)
+        {
+            var user = await userRepository.GetByKey(updateEntity.Id);
+
+            user.FirstName = updateEntity.FirstName;
+            user.LastName = updateEntity.LastName;
+            user.Email = updateEntity.Email;
+
+            var updatedUser = await userRepository.Update(user);
+
+            return mapper.Map<UserProfileDto>(updatedUser);
+        }
     }
 }

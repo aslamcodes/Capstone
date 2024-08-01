@@ -34,6 +34,7 @@ const AdminLiveTab = () => {
   }
 
   const handleOutdated = async (id: number) => {
+    // TODO: Reactify this function
     await axios.put(
       `/api/Course/set-course-outdated?courseId=${id}`,
       {},

@@ -14,6 +14,7 @@ const UserProfile = () => {
   const { user, isLoading } = useUserProfile();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const { user: authUser } = useAuthContext();
   const [userProfileImage, setUserProfileImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>();
@@ -25,40 +26,54 @@ const UserProfile = () => {
   }, [user]);
 
   const handleUpdate = async () => {
-    await handleUserProfileImageUpdate();
-    await axios.put(
-      "/api/user",
-      {
-        id: authUser?.id,
-        firstName: userProfile?.firstName,
-        lastName: userProfile?.lastName,
-        email: userProfile?.email,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${authUser?.token}`,
+    try {
+      setIsUpdating(true);
+      await handleUserProfileImageUpdate();
+      await axios.put(
+        "/api/user",
+        {
+          id: authUser?.id,
+          firstName: userProfile?.firstName,
+          lastName: userProfile?.lastName,
+          email: userProfile?.email,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${authUser?.token}`,
+          },
+        }
+      );
+    } catch {
+      customToast("Failed to update user profile", { type: "error" });
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const handleBecomeEducator = async () => {
-    var { data } = await axios.put<UserProfile>(
-      "/api/user/Become-Educator",
-      {},
-      {
-        params: {
-          userId: authUser?.id,
-        },
-        headers: {
-          Authorization: `Bearer ${authUser?.token}`,
-        },
-      }
-    );
-    customToast("Your're now an Educator, Please login again to see effects", {
-      type: "success",
-    });
-    setUserProfile(data);
+    try {
+      var { data } = await axios.put<UserProfile>(
+        "/api/user/Become-Educator",
+        {},
+        {
+          params: {
+            userId: authUser?.id,
+          },
+          headers: {
+            Authorization: `Bearer ${authUser?.token}`,
+          },
+        }
+      );
+      customToast(
+        "Your're now an Educator, Please login again to see effects",
+        {
+          type: "success",
+        }
+      );
+      setUserProfile(data);
+    } catch (error) {
+      customToast("Failed to apply for educator role", { type: "error" });
+    }
   };
 
   const handleUserProfileImageUpdate = async () => {
@@ -88,7 +103,7 @@ const UserProfile = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[80vw] mx-auto">
       <div className="flex flex-col gap-3 items-center">
-        {userProfile?.profilePictureUrl ? (
+        {userProfile?.profilePictureUrl || previewUrl ? (
           <img
             src={previewUrl as string}
             alt="profile"
@@ -113,12 +128,19 @@ const UserProfile = () => {
         {isEditing && (
           <button
             className="btn btn-ghost"
-            onClick={() => {
+            disabled={isUpdating}
+            onClick={async () => {
+              await handleUpdate();
               setIsEditing(false);
-              handleUpdate();
             }}
           >
-            <BiSave /> Save
+            {isUpdating ? (
+              <Loader></Loader>
+            ) : (
+              <div className="flex gap-2 items-center">
+                <BiSave /> Save
+              </div>
+            )}
           </button>
         )}
         {!userProfile?.isEducator && (

@@ -7,6 +7,7 @@ import QuestionBox from "./QuestionDrop";
 import { BiError } from "react-icons/bi";
 import { Question } from "../../interfaces/course";
 import useUserProfile from "../../hooks/fetchers/useUserProfile";
+import { customToast } from "../../utils/toast";
 
 const QuestionAnswer: FC<{ contentId: number }> = ({ contentId }) => {
   const [question, setQuestion] = useState("");
@@ -52,7 +53,12 @@ const QuestionAnswer: FC<{ contentId: number }> = ({ contentId }) => {
         },
         ...prev,
       ]);
-    } catch {}
+    } catch {
+      setIsSubmitting(false);
+      customToast("Cannot submit the question", {
+        type: "error",
+      });
+    }
   };
 
   if (!contentId)

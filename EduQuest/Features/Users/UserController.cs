@@ -34,7 +34,7 @@ namespace EduQuest.Features.Users
         {
             try
             {
-                var updatedUserProfile = await userService.UpdateProfile(mapper.Map<UserProfileDto>(userProfile));
+                var updatedUserProfile = await userService.UpdateProfileEntries(userProfile);
 
                 return Ok(updatedUserProfile);
             }

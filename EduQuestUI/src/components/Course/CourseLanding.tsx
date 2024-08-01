@@ -41,6 +41,7 @@ const CourseLanding = () => {
 
   const handleBuyCourse = async () => {
     try {
+      // TODO: Reactify this function
       let order = await axios.post(
         "/api/Order",
         {

@@ -48,6 +48,7 @@ const ManageCoursePage = () => {
 
     const fetch = async () => {
       setIsCourseLoading(true);
+      // try catch
       const { data } = await axios.get<Course>(`/api/Course/`, {
         params: {
           courseId,
