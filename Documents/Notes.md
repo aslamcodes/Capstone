@@ -45,9 +45,9 @@ My main complaint would be that they never remove dead courses. There are many c
 - [x] Price tiers should be listed![[Pasted image 20240801143318.png]]
 - [x] Adding a objective with a field value testing![[Pasted image 20240801143430.png]]
 - [x] No responses to save button on course info edit, its better if save button is a floating action![[Pasted image 20240801143519.png]]
-- Toggling between tabs, and sections I added vanishes, only returned after refreshing
-- Course level not showing even after saving  ![[Pasted image 20240801143839.png]]
-- Status not updating after save press  ![[Pasted image 20240801144102.png]]
+- [x] Toggling between tabs, and sections I added vanishes, only returned after refreshing
+- [ambiguos]Course level not showing even after saving  ![[Pasted image 20240801143839.png]]
+- [x] Status not updating after save press  ![[Pasted image 20240801144102.png]]
 - ![[Pasted image 20240801144155.png]] - Course Descirpiont page hero ![[Pasted image 20240801144326.png]]
 - -Paying for order not repsonsive ![[Pasted image 20240801144352.png]]
 - Initial course page is this for student, should there be something helpful![[Pasted image 20240801144435.png]]

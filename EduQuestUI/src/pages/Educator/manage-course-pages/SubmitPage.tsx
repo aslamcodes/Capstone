@@ -1,22 +1,30 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { ManageCoursePageProps } from "./manageCourseTypes";
 import axios from "axios";
 import useCourseValidity from "../../../hooks/fetchers/useCourseValidity";
 import { CiCircleAlert, CiCircleCheck, CiRainbow } from "react-icons/ci";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";
+import { customToast } from "../../../utils/toast";
+import Loader from "../../../components/common/Loader";
 
 interface SubmitCoursePageProps extends ManageCoursePageProps {}
 
 const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { validity, isLoading, error } = useCourseValidity(
     initialCourse?.id as number
   );
+  const [courseStatus, setCourseStatus] = useState<Course["courseStatus"]>();
 
   const { user } = useAuthContext();
 
+  useEffect(() => {
+    setCourseStatus(initialCourse?.courseStatus);
+  }, [initialCourse?.courseStatus]);
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader></Loader>;
   }
 
   if (error) {
@@ -25,6 +33,7 @@ const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
 
   const handleSubmit = async () => {
     try {
+      setIsSubmitting(true);
       await axios.put(
         `/api/Course/Submit-For-Review?courseId=${initialCourse?.id}`,
         {},
@@ -34,7 +43,16 @@ const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
           },
         }
       );
+      customToast("Course submitted for review", {
+        type: "success",
+      });
+      setIsSubmitting(false);
+      setCourseStatus("Review");
     } catch (error) {
+      setIsSubmitting(false);
+      customToast("Cannot submit the course for review", {
+        type: "error",
+      });
       console.error(error);
     }
   };
@@ -45,11 +63,10 @@ const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
         <span>Current Status:</span>
         <span
           className={`badge ${getBadgeForStatus(
-            initialCourse?.courseStatus as Course["courseStatus"]
+            courseStatus as Course["courseStatus"]
           )} `}
         >
-          {" "}
-          {initialCourse?.courseStatus}
+          {courseStatus}
         </span>
       </p>
       {validity?.criterias.map((criteria) => (
@@ -71,7 +88,7 @@ const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
         disabled={!validity?.isValid || initialCourse?.courseStatus == "Review"}
         onClick={handleSubmit}
       >
-        Submit For Review
+        {isSubmitting ? <Loader></Loader> : "Submit For Review"}
       </button>
     </div>
   );
