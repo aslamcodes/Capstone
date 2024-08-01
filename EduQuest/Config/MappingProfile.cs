@@ -24,6 +24,7 @@ namespace EduQuest.Config
             CreateMap<User, AuthResponseDto>().ForMember(res => res.Token, opt => opt.Ignore());
             CreateMap<User, UserProfileDto>();
             CreateMap<UserProfileDto, User>();
+            CreateMap<UserProfileDto, EducatorProfileDto>();
             CreateMap<UserProfileUpdateDto, UserProfileDto>();
 
             CreateMap<CourseDTO, Course>()

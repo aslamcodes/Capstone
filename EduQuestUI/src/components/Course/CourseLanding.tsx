@@ -5,6 +5,9 @@ import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useSections from "../../hooks/fetchers/useSections";
 import SectionDrop from "./SectionDrop";
+import EducatorProfile from "../educators/educator-profile";
+import CourseDescription from "./ContentDescription";
+import Review, { CourseReviews } from "./review";
 
 const CourseLanding = () => {
   const { courseId } = useParams();
@@ -56,11 +59,11 @@ const CourseLanding = () => {
       <div className="hero bg-base-200 min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <img
-            src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+            src={course.courseThumbnailPicture}
             className="max-w-sm rounded-lg shadow-2xl"
           />
           <div>
-            <h1 className="text-5xl font-bold">Box Office News!</h1>
+            <h1 className="text-5xl font-bold">{course.name}</h1>
             <p className="py-6">{course.description}</p>
             <button className="btn btn-primary" onClick={handleBuyCourse}>
               Buy Course
@@ -68,9 +71,9 @@ const CourseLanding = () => {
           </div>
         </div>
       </div>
-      <div className=" max-w-3xl mx-auto">
+      <div className=" max-w-3xl mx-auto space-y-4">
         <div className=" my-10 space-y-2">
-          <h1 className="text-2xl font-bold ">Sections</h1>
+          <h1 className="text-2xl font-bold ">Course Contents</h1>
           {sections ? (
             sections.map((section) => (
               <SectionDrop
@@ -84,8 +87,10 @@ const CourseLanding = () => {
             <h1>This Course Dont have sections</h1>
           )}
         </div>
+        <CourseDescription courseId={Number(courseId)}></CourseDescription>
         <div>
-          <h1 className="text-2xl font-bold ">Instructor</h1>
+          <h1 className="text-2xl font-bold">Reviews</h1>
+          <CourseReviews courseId={Number(courseId)} />
         </div>
       </div>
     </div>

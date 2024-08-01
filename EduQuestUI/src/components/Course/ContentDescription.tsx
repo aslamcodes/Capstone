@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import useContent from "../../hooks/fetchers/useContent";
 import useCourse from "../../hooks/fetchers/useCourse";
 import { GoGoal } from "react-icons/go";
+import EducatorProfile from "../educators/educator-profile";
 
 const CourseDescription: FC<{
   courseId: number;
@@ -44,8 +45,8 @@ const CourseDescription: FC<{
         </div>
       </div>
       <div>
-        <h1 className="text-xl font-bold">Educator</h1>
-        <div></div>
+        <h1 className="text-2xl font-bold">Educator</h1>
+        <EducatorProfile educatorId={course?.educatorId} />
       </div>
     </div>
   );

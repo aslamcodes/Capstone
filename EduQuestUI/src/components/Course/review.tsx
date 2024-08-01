@@ -86,7 +86,7 @@ const Review: FC<{ courseId: number }> = ({ courseId }) => {
   );
 };
 
-const CourseReviews: FC<{ courseId: number }> = ({ courseId }) => {
+export const CourseReviews: FC<{ courseId: number }> = ({ courseId }) => {
   const { reviews } = useReviews(courseId);
   return (
     <div>

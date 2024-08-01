@@ -19,6 +19,7 @@ namespace EduQuest.Features.Student
             var courses = await courseService.GetAll();
 
             var recommendedCourses = courses.Where(c => c.EducatorId != userId)
+                                            //.Where(c => c.CourseStatus == CourseStatusEnum.Live.ToString())
                                             .Where(c => !enrolledCourses.Any(ec => c.Id == ec.Id))
                                             .ToList();
 

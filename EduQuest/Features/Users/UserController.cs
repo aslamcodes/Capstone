@@ -100,5 +100,23 @@ namespace EduQuest.Features.Users
 
             return Ok(updatedUser);
         }
+        ///api/User/Educator-Profile? educatorId =${educatorId
+        [HttpGet("Educator-Profile")]
+        [Authorize]
+        public async Task<ActionResult<EducatorProfileDto>> GetEducatorProfile([FromQuery] int educatorId)
+        {
+            try
+            {
+                var educatorProfile = await userService.GetById(educatorId);
+
+                return Ok(mapper.Map<EducatorProfileDto>(educatorProfile));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

@@ -16,10 +16,12 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { user: authUser } = useAuthContext();
   const [userProfileImage, setUserProfileImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>();
   const navigate = useNavigate();
 
   useEffect(() => {
     setUserProfile(user);
+    setPreviewUrl(user?.profilePictureUrl as string);
   }, [user]);
 
   const handleUpdate = async () => {
@@ -61,6 +63,7 @@ const UserProfile = () => {
 
   const handleUserProfileImageUpdate = async () => {
     if (!userProfileImage) return;
+
     const formData = new FormData();
 
     formData.append("file", userProfileImage);
@@ -87,12 +90,12 @@ const UserProfile = () => {
       <div className="flex flex-col gap-3 items-center">
         {userProfile?.profilePictureUrl ? (
           <img
-            src={userProfile?.profilePictureUrl}
+            src={previewUrl as string}
             alt="profile"
-            className="w-32 h-32 rounded-full"
+            className="w-32 h-32 rounded-full object-cover"
           />
         ) : (
-          <div className="w-32 h-32 rounded-full bg-slate-500">
+          <div className="w-32 h-32 rounded-full bg-slate-500 flex items-center justify-center text-white font-bold text-2xl ">
             {user?.firstName[0]}
             {user?.lastName[0]}
           </div>
@@ -135,9 +138,11 @@ const UserProfile = () => {
           <input
             type="file"
             className="file-input file-input-bordered w-full"
+            accept="image/*"
             disabled={!isEditing}
             onChange={(e) => {
               setUserProfileImage(e.target.files?.[0] as File);
+              setPreviewUrl(URL.createObjectURL(e.target.files?.[0] as File));
             }}
           />
         </div>

@@ -9,29 +9,54 @@ import Loader from "../components/common/Loader";
 const Home = () => {
   const { user } = useAuthContext();
   const { categories, isLoading } = useCategories();
-
   const { courses } = useRecomendedCoureses(user?.id as number);
+  const [currentCategory, setCurrentCategory] = React.useState<number>();
+
   const navigate = useNavigate();
+
   if (!user) {
     navigate("/login");
   }
 
   return (
     <div>
-      {isLoading ? (
-        <Loader size="md" type="bars" />
-      ) : (
-        <div className="flex max-w-screen overflow-x-scroll gap-3 no-scrollbar">
-          {categories?.map((category) => (
-            <button className="btn font-bold my-4">{category.name}</button>
-          ))}
+      <div>
+        <h1 className="text-2xl font-bold my-4 bg-base-100 ">
+          Explore Courses
+        </h1>
+        {isLoading ? (
+          <Loader size="md" type="bars" />
+        ) : (
+          <div className="flex max-w-screen overflow-x-scroll gap-3 no-scrollbar sticky top-16 z-30 bg-base-100">
+            {categories?.map((category) => (
+              <button
+                className={`btn font-bold mb-4 ${
+                  category.id === currentCategory &&
+                  "bg-base-content text-base-300"
+                }`}
+                onClick={() => {
+                  if (category.id === currentCategory) {
+                    setCurrentCategory(undefined);
+                    return;
+                  }
+                  setCurrentCategory(category.id);
+                }}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="grid  grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 ">
+          {courses
+            ?.filter((c) => {
+              if (!currentCategory) return true;
+              return c.courseCategoryId == currentCategory;
+            })
+            .map((course) => (
+              <CourseCard type="view" course={course} />
+            ))}
         </div>
-      )}
-      <h1 className="text-2xl font-bold my-4">Recommended Courses</h1>
-      <div className="grid  grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 ">
-        {courses?.map((course) => (
-          <CourseCard type="view" course={course} />
-        ))}
       </div>
     </div>
   );
