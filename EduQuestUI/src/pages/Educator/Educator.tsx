@@ -23,6 +23,10 @@ const Educator = () => {
     ref.current?.showModal();
   };
 
+  const handleOnClose = () => {
+    ref.current?.close();
+  };
+
   if (coursesLoading) {
     return (
       <div className="min-h-screen min-w-screen flex items-center justify-center">
@@ -33,9 +37,9 @@ const Educator = () => {
 
   return (
     <div>
-      <dialog className="modal" ref={ref}>
+      <dialog className="modal z-10" ref={ref}>
         <div className="modal-box">
-          <CreateCourseForm />
+          <CreateCourseForm onClose={handleOnClose} />
         </div>
         <form method="dialog" className="modal-backdrop">
           <button></button>

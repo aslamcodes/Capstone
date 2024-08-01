@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <div className="mt-20 px-4">
         <Outlet />
-        <ToastContainer />
+        <ToastContainer className={"z-50"} />
       </div>
     </div>
   );

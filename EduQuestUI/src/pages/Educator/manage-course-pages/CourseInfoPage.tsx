@@ -13,6 +13,8 @@ import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";
 import Divider from "../../../components/common/divider";
 import { ImImage } from "react-icons/im";
+import Loader from "../../../components/common/Loader";
+import { customToast } from "../../../utils/toast";
 
 type Inputs = {
   name: string;
@@ -28,7 +30,7 @@ interface CourseInfoProps extends ManageCoursePageProps {}
 
 const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
   const { user } = useAuthContext();
-
+  const [isSaving, setIsSaving] = useState(false);
   const isEditing = mode === "updating";
 
   const {
@@ -79,26 +81,42 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const payload = {
-      ...data,
-      courseObjective: data.objectives.join("|"),
-      prerequisites: data.prerequisites.join("|"),
-      targetAudience: data.targetAudience.join("|"),
-    };
-    if (isEditing) {
-      const res = await axios.put<Course>("/api/Course", payload, {
-        headers: { Authorization: `Bearer ${user?.token}` },
-      });
-      return onSave(res.data);
-    }
-    const res = await axios.post<Course>(
-      "/api/Course",
-      { ...payload, educatorId: user?.id },
-      {
-        headers: { Authorization: `Bearer ${user?.token}` },
+    try {
+      setIsSaving(true);
+      const payload = {
+        ...data,
+        courseObjective: data.objectives.join("|"),
+        prerequisites: data.prerequisites.join("|"),
+        targetAudience: data.targetAudience.join("|"),
+      };
+      if (isEditing) {
+        const res = await axios.put<Course>("/api/Course", payload, {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        });
+        setIsSaving(false);
+        customToast("Updates Saved!", {
+          type: "success",
+        });
+        return onSave(res.data);
       }
-    );
-    onSave(res.data);
+      const res = await axios.post<Course>(
+        "/api/Course",
+        { ...payload, educatorId: user?.id },
+        {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        }
+      );
+      onSave(res.data);
+      setIsSaving(false);
+      customToast("Updates Saved!", {
+        type: "success",
+      });
+    } catch {
+      setIsSaving(false);
+      customToast("Error Saving the Updates", {
+        type: "error",
+      });
+    }
   };
 
   const handleImageUpload = useCallback(async () => {
@@ -205,7 +223,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
             <input
               type="text"
               className="input input-bordered"
-              {...register(`objectives.${index}` as const)}
+              {...register(`objectives.${index}` as const, { required: true })}
             />
             <button
               type="button"
@@ -218,7 +236,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
         ))}
         <button
           type="button"
-          onClick={() => appendObjective("Testing")}
+          onClick={() => appendObjective("")}
           className="btn"
         >
           Add a Objective
@@ -255,7 +273,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
         ))}
         <button
           type="button"
-          onClick={() => appendPrerequisites("Testing")}
+          onClick={() => appendPrerequisites("")}
           className="btn"
         >
           Add a Prerequisite
@@ -292,13 +310,18 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
         ))}
         <button
           type="button"
-          onClick={() => appendTargetAudience("Testing")}
+          onClick={() => appendTargetAudience("")}
           className="btn"
         >
           Add a Target Audience
         </button>
       </FormGroup>
-      <FormButton className="btn-primary" title="Save" />
+      <FormButton
+        className="btn-primary fixed bottom-10 right-10 hover:bg-primary-700 hover:shadow-md"
+        disabled={isSaving}
+      >
+        {isSaving ? <Loader size="md" type="dots"></Loader> : "Save"}
+      </FormButton>
     </Form>
   );
 };

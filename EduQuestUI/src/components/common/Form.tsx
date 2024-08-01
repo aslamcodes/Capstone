@@ -29,15 +29,30 @@ export const FormLabel: FC<PropsWithChildren> = ({ children }) => {
   return <label className="font-semibold">{children}</label>;
 };
 
-export const FormButton: FC<{
-  title: string;
-  className?: string;
-  type?: "submit" | "reset" | "button";
-  onClick?: () => void;
-}> = ({ title, className, type = "submit", onClick }) => {
+export const FormButton: FC<
+  PropsWithChildren<{
+    title?: string;
+    className?: string;
+    type?: "submit" | "reset" | "button";
+    onClick?: () => void;
+    disabled?: boolean;
+  }>
+> = ({
+  title,
+  className,
+  type = "submit",
+  onClick,
+  disabled = false,
+  children,
+}) => {
   return (
-    <button type={type} className={`btn ${className}`} onClick={onClick}>
-      {title}
+    <button
+      type={type}
+      className={`btn ${className}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {title || children}
     </button>
   );
 };
