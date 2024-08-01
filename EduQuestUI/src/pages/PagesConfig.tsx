@@ -11,6 +11,7 @@ import CourseLanding from "../components/Course/CourseLanding";
 import OrderPage from "../components/order/OrderPage";
 import UserProfile from "./user-profile";
 import Admin from "./Admin";
+import UserOrders from "./user-orders";
 
 export const pages = [
   {
@@ -24,6 +25,7 @@ export const pages = [
       { path: "/myCourses/:courseId", element: <CoursePage /> },
       { path: "/profile", element: <UserProfile /> },
       { path: "/admin", element: <Admin /> },
+      { path: "/orders", element: <UserOrders /> },
       {
         path: "/manage-course/content/article/:contentId",
         element: <AritlceEditor />,

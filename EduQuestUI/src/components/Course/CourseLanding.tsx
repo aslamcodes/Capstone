@@ -5,9 +5,8 @@ import axios, { AxiosError } from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useSections from "../../hooks/fetchers/useSections";
 import SectionDrop from "./SectionDrop";
-import EducatorProfile from "../educators/educator-profile";
 import CourseDescription from "./ContentDescription";
-import Review, { CourseReviews } from "./review";
+import { CourseReviews } from "./review";
 import { customToast } from "../../utils/toast";
 import useUserOwnsCourse from "../../hooks/fetchers/useUserOwnsCourse";
 

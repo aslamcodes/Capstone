@@ -52,6 +52,30 @@ const OrderPage = () => {
     }
   };
 
+  const handleCancel = async () => {
+    if (!order) return;
+    try {
+      setIsPaying(true);
+      await axios.put(
+        "/api/Order/Cancel",
+        {},
+        {
+          params: { orderId: order.id },
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      setIsPaying(false);
+      setOrderState("Cancelled");
+      customToast("Payment Cancelled", { type: "info" });
+      // Handle successful payment (e.g., show success message, redirect)
+    } catch (error) {
+      setIsPaying(false);
+      customToast("Payment failed", { type: "error" });
+      // Handle payment error (e.g., show error message)
+    }
+  };
+
   if (isLoading)
     return <div className="text-center">Loading order details...</div>;
   if (error)
@@ -84,7 +108,14 @@ const OrderPage = () => {
           {orderState === "Pending" && (
             <div className="card-actions justify-end mt-4">
               <button
-                className="btn btn-primary"
+                className="btn btn-outline"
+                onClick={handleCancel}
+                disabled={isLoading}
+              >
+                {isPaying ? <Loader /> : "Cancel"}
+              </button>
+              <button
+                className="btn btn-outline bg-base-content text-base-100"
                 onClick={handlePayment}
                 disabled={isLoading}
               >

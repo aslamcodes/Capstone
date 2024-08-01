@@ -8,6 +8,8 @@ namespace EduQuest.Features.Student
 {
     public class StudentService(ICourseService courseService, IRepository<int, StudentCourse> studentCourseRepo, IMapper mapper) : IStudentService
     {
+
+
         public async Task<List<CourseDTO>> GetHomeCourses(int studentId)
         {
             var courses = await courseService.GetAll();

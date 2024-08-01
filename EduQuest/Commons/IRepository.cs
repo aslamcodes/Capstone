@@ -1,4 +1,5 @@
-﻿namespace EduQuest.Commons
+﻿
+namespace EduQuest.Commons
 {
     public interface IRepository<K, T> where T : class
     {

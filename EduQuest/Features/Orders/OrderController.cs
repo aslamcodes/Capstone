@@ -93,5 +93,26 @@ namespace EduQuest.Features.Orders
                 throw;
             }
         }
+
+        [HttpGet("user-orders")]
+        [Authorize]
+        public async Task<ActionResult<List<OrderDto>>> GetUserOrders()
+        {
+            try
+            {
+                int userId = ControllerValidator.GetUserIdFromClaims(User.Claims);
+
+                List<OrderDto> orders = await orderService.GetOrdersForUser(userId);
+
+                return Ok(orders);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
     }
 }

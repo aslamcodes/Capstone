@@ -17,6 +17,16 @@ namespace EduQuest.Features.Orders
             return mapper.Map<OrderDto>(updatedOrder);
         }
 
+        public async Task<bool> PendingOrderExists(int userId, int orderedCourse)
+        {
+            var orders = await orderRepo.GetAll();
+
+            var existingOrder = orders.FirstOrDefault(o => o.UserId == userId && o.OrderedCourseId == orderedCourse && o.OrderStatus == OrderStatusEnum.Pending);
+
+            return existingOrder is not null;
+
+        }
+
         public async Task<OrderDto> CompleteOrder(int orderId)
         {
             var order = await orderRepo.GetByKey(orderId);
@@ -36,9 +46,16 @@ namespace EduQuest.Features.Orders
                 throw new CannotPlaceOrderException("Educator cannot buy his own course");
             }
 
-            var orderExists = await studentService.UserOwnsCourse(orderRequest.UserId, orderRequest.OrderedCourse);
+            var sameOrderExist = await PendingOrderExists(orderRequest.UserId, orderRequest.OrderedCourse);
 
-            if (orderExists.UserOwnsCourse)
+            if (sameOrderExist)
+            {
+                throw new CannotPlaceOrderException("Order already exists");
+            }
+
+            var userHasCourse = await studentService.UserOwnsCourse(orderRequest.UserId, orderRequest.OrderedCourse);
+
+            if (userHasCourse.UserOwnsCourse)
             {
                 throw new CannotPlaceOrderException("User already owns the course");
             }
@@ -64,6 +81,15 @@ namespace EduQuest.Features.Orders
             var order = await orderRepo.GetByKey(id);
 
             return mapper.Map<OrderDto>(order);
+        }
+
+        public async Task<List<OrderDto>> GetOrdersForUser(int userId)
+        {
+            var orders = await orderRepo.GetAll();
+
+            var userOrders = orders = orders.Where(o => o.UserId == userId).ToList();
+
+            return mapper.Map<List<OrderDto>>(userOrders);
         }
     }
 }
