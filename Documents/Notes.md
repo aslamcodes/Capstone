@@ -48,14 +48,16 @@ My main complaint would be that they never remove dead courses. There are many c
 - [x] Toggling between tabs, and sections I added vanishes, only returned after refreshing
 - [ambiguos]Course level not showing even after saving  ![[Pasted image 20240801143839.png]]
 - [x] Status not updating after save press  ![[Pasted image 20240801144102.png]]
-- ![[Pasted image 20240801144155.png]] - Course Descirpiont page hero ![[Pasted image 20240801144326.png]]
-- -Paying for order not repsonsive ![[Pasted image 20240801144352.png]]
-- Initial course page is this for student, should there be something helpful![[Pasted image 20240801144435.png]]
-- Video Icons for article on sectiondrops![[Pasted image 20240801144518.png]]
-- Loggout isnt affecting course page![[Pasted image 20240801144554.png]]
-- Course description![[Pasted image 20240801144613.png]]
-- Search results and this weird description  ![[Pasted image 20240801144705.png]]\
-- Clicking on search results doesnt navigate
+- [x] ![[Pasted image 20240801144155.png]] - Course Descirpiont page hero ![[Pasted image 20240801144326.png]]
+- [x] -Paying for order not reactive ![[Pasted image 20240801144352.png]]
+- [x] Initial course page is this for student, should there be something helpful![[Pasted image 20240801144435.png]]
+- [x] Video Icons for article on sectiondrops![[Pasted image 20240801144518.png]]
+- [x] Loggout isnt affecting course page![[Pasted image 20240801144554.png]]
+- [x] Course description![[Pasted image 20240801144613.png]]
+- [x] Search results and this weird description  ![[Pasted image 20240801144705.png]]\
+- [x]  Clicking on search results doesnt navigate
 - No way knowing if a user bought a course, there should be endpoint
-- Courses on review is displayed and not with the profile picture
+- [x] Courses on review is displayed an
+- [x] not with the profile picture
 - ![[Pasted image 20240801144905.png]]
+-  [ ]  ![[Pasted image 20240801162339.png]]

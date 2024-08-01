@@ -13,7 +13,7 @@ const CourseDescription: FC<{
     <div className="mt-5 space-y-3">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold">{course?.name}</h1>
-        <p className="text-lg ">{course?.description}</p>
+        <p className="text-lg break-all">{course?.description}</p>
       </div>
       <div className="flex flex-wrap gap-4 ">
         <div className="p-4 min-w-72 rounded-md border border-base-300">

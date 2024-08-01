@@ -1,10 +1,8 @@
-import React from "react";
 import {
   useAuthContext,
   useAuthDispatchContext,
 } from "../../contexts/auth/authReducer";
 import { Link, useLocation } from "react-router-dom";
-import ThemeController from "./ThemeController";
 import { logout } from "../../contexts/auth/actions";
 import useUserProfile from "../../hooks/fetchers/useUserProfile";
 import Loader from "./Loader";
@@ -54,9 +52,9 @@ const Navbar = () => {
             </div>
           </div>
         )}
-        <button className="btn btn-ghost">
+        {/* <button className="btn btn-ghost">
           <Link to={"/wishlist"}>Wishlist</Link>
-        </button>
+        </button> */}
 
         {user && location.pathname !== "login" && (
           <div className="flex-none gap-2 ">
@@ -102,6 +100,11 @@ const Navbar = () => {
                     Profile
                   </Link>
                 </li>
+                <li>
+                  <Link to={"/orders"} className="justify-between">
+                    Orders
+                  </Link>
+                </li>
 
                 <li onClick={() => logout(dispatch)}>
                   <a>Logout</a>
@@ -111,6 +114,22 @@ const Navbar = () => {
                 </li>
               </ul>
             </div>
+          </div>
+        )}
+
+        {!user && (
+          <div>
+            <button className="btn btn-ghost">
+              <Link to={"/login"}>Login</Link>
+            </button>
+          </div>
+        )}
+
+        {!user && (
+          <div>
+            <button className="btn btn-ghost">
+              <Link to={"/register"}>Register</Link>
+            </button>
           </div>
         )}
       </div>

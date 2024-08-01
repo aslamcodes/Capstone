@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useCourse from "../../hooks/fetchers/useCourse";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useSections from "../../hooks/fetchers/useSections";
 import SectionDrop from "./SectionDrop";
 import EducatorProfile from "../educators/educator-profile";
 import CourseDescription from "./ContentDescription";
 import Review, { CourseReviews } from "./review";
+import { customToast } from "../../utils/toast";
+import useUserOwnsCourse from "../../hooks/fetchers/useUserOwnsCourse";
 
 const CourseLanding = () => {
   const { courseId } = useParams();
@@ -18,9 +20,14 @@ const CourseLanding = () => {
     error,
   } = useSections(courseId as string);
   const { user } = useAuthContext();
+
   const navigate = useNavigate();
 
-  if (isLoading || sectionsLoading) {
+  const { isUserOwns, isLoading: checkingCourseOwnership } = useUserOwnsCourse(
+    Number(courseId)
+  );
+
+  if (isLoading || sectionsLoading || checkingCourseOwnership) {
     return <div>Loading...</div>;
   }
 
@@ -29,24 +36,29 @@ const CourseLanding = () => {
   }
 
   if (!user) {
-    return <div>You must be logged in to view this page</div>;
+    customToast("Please login to view this page", { type: "info" });
+    return navigate("/login");
   }
 
   const handleBuyCourse = async () => {
-    let order = await axios.post(
-      "/api/Order",
-      {
-        orderedCourse: course.id,
-        userId: user.id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
+    try {
+      let order = await axios.post(
+        "/api/Order",
+        {
+          orderedCourse: course.id,
+          userId: user.id,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
-    navigate(`/order/${order.data.id}`);
+      navigate(`/order/${order.data.id}`);
+    } catch (error: any) {
+      customToast(error.response.data.message, { type: "error" });
+    }
   };
 
   return (
@@ -64,10 +76,24 @@ const CourseLanding = () => {
           />
           <div>
             <h1 className="text-5xl font-bold">{course.name}</h1>
-            <p className="py-6">{course.description}</p>
-            <button className="btn btn-primary" onClick={handleBuyCourse}>
-              Buy Course
-            </button>
+            <p className="py-6 break-all">{course.description}</p>
+            <p className="py-6 break-all text-2xl font-bold">
+              Rs. {course.price}
+            </p>
+            {isUserOwns ? (
+              <button
+                className="btn btn-outline"
+                onClick={() => {
+                  navigate(`/myCourses/${course.id}`);
+                }}
+              >
+                Go to Course
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={handleBuyCourse}>
+                Buy Course
+              </button>
+            )}
           </div>
         </div>
       </div>

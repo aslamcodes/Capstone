@@ -6,9 +6,10 @@ import CourseCurriculum from "./manage-course-pages/CourseCurriculumPage";
 import SubmitCoursePage from "./manage-course-pages/SubmitPage";
 import { ManageCoursePageProps } from "./manage-course-pages/manageCourseTypes";
 import { Course } from "../../interfaces/course";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "../../components/common/Loader";
+import { useAuthContext } from "../../contexts/auth/authReducer";
 
 interface CourseTab extends Tab {
   value: "course_info" | "course_curriculum" | "submit";
@@ -33,7 +34,8 @@ const ManageCoursePage = () => {
   const [managingCourse, setManagingCourse] = useState<Course | null>(null);
   const [isCourseLoading, setIsCourseLoading] = useState<boolean>(false);
   const { courseId } = useParams();
-
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
   const mode: ManageCoursePageProps["mode"] = courseId
     ? "updating"
     : "creating";
@@ -57,6 +59,10 @@ const ManageCoursePage = () => {
 
     fetch();
   }, [courseId]);
+
+  if (!user) {
+    navigate("/login");
+  }
 
   if (isCourseLoading) {
     return <Loader />;

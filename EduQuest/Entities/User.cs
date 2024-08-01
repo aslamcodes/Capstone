@@ -20,7 +20,7 @@ namespace EduQuest.Entities
 
         public bool IsAdmin { get; set; } = false;
 
-        public string ProfilePictureUrl { get; set; } = string.Empty;
+        public string? ProfilePictureUrl { get; set; }
 
         public UserStatusEnum Status { get; set; }
 

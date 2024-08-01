@@ -1,14 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SectionDrop from "../../components/Course/SectionDrop";
 import { useState } from "react";
 import useSections from "../../hooks/fetchers/useSections";
 import Loader from "../../components/common/Loader";
 import ContentViewer from "../../components/Course/ContentViewer";
 import ContentTabs from "../../components/Course/ContentTabs";
+import { useAuthContext } from "../../contexts/auth/authReducer";
 
 const CoursePage = () => {
   const { courseId } = useParams();
-
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
   const [currentContentId, setCurrentContentId] = useState<number | null>(null);
 
   const { isLoading, sections } = useSections(courseId as string);
@@ -19,6 +21,10 @@ const CoursePage = () => {
 
   function handleContentChange(contentId: number) {
     setCurrentContentId(contentId);
+  }
+
+  if (!user) {
+    navigate("/login");
   }
 
   return (

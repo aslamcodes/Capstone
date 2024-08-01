@@ -12,14 +12,17 @@ const Admin = () => {
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user?.isAdmin) {
-      navigate("/");
-      customToast("You are not authorized to view this page", {
-        type: "error",
-      });
-    }
-  }, []);
+  if (!user) {
+    navigate("/login");
+    customToast("Please login to view this page", { type: "info" });
+  }
+
+  if (!user?.isAdmin) {
+    navigate("/");
+    customToast("You are not authorized to view this page", {
+      type: "error",
+    });
+  }
 
   return (
     <div className="space-y-4">

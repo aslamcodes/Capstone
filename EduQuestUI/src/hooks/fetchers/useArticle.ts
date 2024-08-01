@@ -1,5 +1,5 @@
 import { useAuthContext } from "../../contexts/auth/authReducer";
-import { Article, Content } from "../../interfaces/course";
+import { Article } from "../../interfaces/course";
 import useFetchAxios from "./useFetchAxios";
 
 export default function useArticle(contentId: number | null) {

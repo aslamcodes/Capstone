@@ -11,13 +11,7 @@ const Home = () => {
   const { categories, isLoading } = useCategories();
   const { courses } = useRecomendedCoureses(user?.id as number);
   const [currentCategory, setCurrentCategory] = React.useState<number>();
-
   const navigate = useNavigate();
-
-  if (!user) {
-    navigate("/login");
-  }
-
   return (
     <div>
       <div>

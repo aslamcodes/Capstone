@@ -143,7 +143,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
           <img
             src={coursePreview}
             alt="Course Thumbnail"
-            className="rounded-lg h-48 max-w-xl"
+            className="rounded-lg h-48 max-w-xl object-cover"
           />
         ) : (
           <div className="h-48 w-xl bg-base-content rounded-lg flex items-center justify-center object-contain">

@@ -48,7 +48,7 @@ const SectionDrop: FC<SectionProps> = ({
               contents.map((content) => (
                 <SectionContent
                   contentId={content.id}
-                  contentType="Video"
+                  contentType={content.contentType}
                   key={content.id}
                   title={content.title}
                   onClick={(content) => onContentChange(content)}

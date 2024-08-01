@@ -1,22 +1,24 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Course } from "../../interfaces/course";
-import { Link } from "react-router-dom";
 
 const CourseCard: FC<{
   course: Course;
   actions: { actionTitle: string; action: (courseId: number) => void }[];
 }> = ({ course, actions }) => {
   return (
-    <div className="card bg-base-100 w-72 shadow-xl ">
-      <figure>
+    <div className="card bg-base-100 w-72 shadow-xl  ">
+      {course.courseThumbnailPicture ? (
         <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes"
+          src={course.courseThumbnailPicture}
+          alt={course.name}
+          className="rounded-t-lg h-32 object-cover"
         />
-      </figure>
+      ) : (
+        <div className="w-full h-32 bg-base-content rounded-t-lg"></div>
+      )}
       <div className="card-body p-6">
         <h2 className="card-title">{course.name}</h2>
-        <p className="text-balance">
+        <p className="break-all">
           {course.description.length > 50
             ? course.description.slice(0, 50) + "..."
             : course.description}

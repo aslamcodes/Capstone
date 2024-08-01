@@ -5,12 +5,18 @@ import { Course } from "../../interfaces/course";
 
 export default function useRecomendedCoureses(studentId: number) {
   const { user } = useAuthContext();
+
   const {
     data,
     isLoading: coursesLoading,
     error,
   } = useSWRImmutable<Course[], any>(
-    [`/api/Student/recommended-courses?studentId=${studentId}`, user?.token],
+    [
+      `/api/Student/${
+        user ? `recommended-courses?studentId=${studentId}` : `home-courses`
+      }`,
+      user?.token,
+    ],
     ([url, token]) => fetcherWithToken(url, token as string)
   );
 

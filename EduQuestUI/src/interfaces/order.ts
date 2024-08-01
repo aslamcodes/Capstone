@@ -1,7 +1,7 @@
 export interface Order {
   id: number;
   userId: number;
-  totalPrice: number;
+  price: number;
   orderStatus: string;
   createdAt: string;
   orderedCourseId: number;

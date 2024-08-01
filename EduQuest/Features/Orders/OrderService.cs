@@ -3,10 +3,11 @@ using AutoMapper;
 using EduQuest.Commons;
 using EduQuest.Entities;
 using EduQuest.Features.Courses;
+using EduQuest.Features.Student;
 
 namespace EduQuest.Features.Orders
 {
-    public class OrderService(IRepository<int, Order> orderRepo, ICourseRepo courseRepo, IMapper mapper) : IOrderService
+    public class OrderService(IRepository<int, Order> orderRepo, ICourseRepo courseRepo, IMapper mapper, IStudentService studentService) : IOrderService
     {
         public async Task<OrderDto> CancelOrder(int orderId)
         {
@@ -28,9 +29,18 @@ namespace EduQuest.Features.Orders
         {
             var course = await courseRepo.GetByKey(orderRequest.OrderedCourse);
 
+
+
             if (course.EducatorId == orderRequest.UserId)
             {
                 throw new CannotPlaceOrderException("Educator cannot buy his own course");
+            }
+
+            var orderExists = await studentService.UserOwnsCourse(orderRequest.UserId, orderRequest.OrderedCourse);
+
+            if (orderExists.UserOwnsCourse)
+            {
+                throw new CannotPlaceOrderException("User already owns the course");
             }
 
             var CoursePrice = course.Price;
