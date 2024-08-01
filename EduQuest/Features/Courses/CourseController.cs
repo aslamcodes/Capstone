@@ -330,5 +330,41 @@ namespace EduQuest.Features.Courses
                 throw;
             }
         }
+
+
+        [HttpPut("set-course-live")]
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<CourseDTO>> SetCourseLive([FromQuery] int courseId)
+        {
+            try
+            {
+                var course = await courseService.SetCourseLive(courseId);
+
+                return Ok(course);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPut("set-course-outdated")]
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<CourseDTO>> SetCourseOutdated([FromQuery] int courseId)
+        {
+            try
+            {
+                var course = await courseService.SetCourseOutdated(courseId);
+
+                return Ok(course);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

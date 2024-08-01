@@ -21,10 +21,10 @@ const CourseCard: FC<{
             ? course.description.slice(0, 50) + "..."
             : course.description}
         </p>
-        <div className="card-actions justify-end mt-5 ">
+        <div className="card-actions justify-end mt-5">
           {actions.map(({ action, actionTitle }) => (
             <button
-              className="btn btn-outline btn-md"
+              className="btn btn-outline btn-sm"
               onClick={() => action(course.id)}
             >
               {actionTitle}

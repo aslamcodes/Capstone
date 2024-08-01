@@ -113,5 +113,16 @@ namespace EduQuest.Features.Courses
 
             return mapper.Map<CourseDTO>(updatedCourse);
         }
+
+        public async Task<CourseDTO> SetCourseOutdated(int courseId)
+        {
+            var course = await courseRepo.GetByKey(courseId);
+
+            course.CourseStatus = CourseStatusEnum.Outdated;
+
+            var updatedCourse = await courseRepo.Update(course);
+
+            return mapper.Map<CourseDTO>(updatedCourse);
+        }
     }
 }
