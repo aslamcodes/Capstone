@@ -15,5 +15,6 @@ namespace EduQuest.Features.Courses
         Task<CourseDTO> SetCourseUnderReview(int courseId);
 
         Task<ValidityResponseDto> GetCourseValidity(int courseId);
+        Task<List<CourseDTO>> SearchCourse(string query);
     }
 }

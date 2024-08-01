@@ -293,6 +293,22 @@ namespace EduQuest.Features.Courses
             {
                 throw;
             }
+
+
+        }
+        [HttpGet("search")]
+        public async Task<ActionResult<List<CourseDTO>>> SearchCourse([FromQuery] string query)
+        {
+            try
+            {
+                var courses = await courseService.SearchCourse(query);
+
+                return Ok(courses);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

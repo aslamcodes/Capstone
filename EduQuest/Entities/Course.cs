@@ -39,5 +39,23 @@ namespace EduQuest.Entities
         public IEnumerable<Skill> Skills { get; set; }
 
         public IEnumerable<Review> Reviews { get; set; }
+
+        public override string ToString()
+        {
+            return Name
+                + " "
+                + Description
+                + " "
+                + CourseObjective
+                + " "
+                + TargetAudience
+                + " "
+                + Prerequisites
+                + " "
+                + CourseCategory.ToString()
+                + " "
+                + Level.ToString();
+
+        }
     }
 }

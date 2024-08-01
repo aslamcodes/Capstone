@@ -8,6 +8,7 @@ import ThemeController from "./ThemeController";
 import { logout } from "../../contexts/auth/actions";
 import useUserProfile from "../../hooks/fetchers/useUserProfile";
 import Loader from "./Loader";
+import SearchBar from "./search";
 
 const Navbar = () => {
   const { user } = useAuthContext();
@@ -24,11 +25,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
-          />
+          <SearchBar />
         </div>
       </div>
       <div className="space-x-4">
@@ -57,6 +54,9 @@ const Navbar = () => {
             </div>
           </div>
         )}
+        <button className="btn btn-ghost">
+          <Link to={"/wishlist"}>Wishlist</Link>
+        </button>
 
         {user && location.pathname !== "login" && (
           <div className="flex-none gap-2 ">
@@ -79,6 +79,7 @@ const Navbar = () => {
                     {userProfile?.profilePictureUrl ? (
                       <img
                         alt="Tailwind CSS Navbar component"
+                        className="w-32 h-22"
                         src={userProfile?.profilePictureUrl as string}
                       />
                     ) : (

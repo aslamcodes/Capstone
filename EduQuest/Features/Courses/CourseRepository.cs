@@ -11,5 +11,25 @@ namespace EduQuest.Features.Courses
             return context.Courses.Include(c => c.Students).ToListAsync();
         }
 
+        public async Task<List<Course>> GetBySearch(string query)
+        {
+            var results = await context.Courses
+         .Where(item =>
+             (item.Name != null && item.Name.ToLower().Contains(query)) ||
+             (item.Description != null && item.Description.ToLower().Contains(query)))
+         .Select(item => new
+         {
+             Item = item,
+             RelevanceScore = (item.Name != null && item.Name.ToLower().Contains(query) ? 2 : 0)
+                             + (item.Description != null && item.Description.ToLower().Contains(query) ? 1 : 0)
+         })
+         .OrderByDescending(x => x.RelevanceScore)
+         .ThenBy(x => x.Item.Name)
+         .Select(x => x.Item)
+         .Take(10)
+         .ToListAsync();
+
+            return results;
+        }
     }
 }

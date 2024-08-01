@@ -58,6 +58,13 @@ namespace EduQuest.Features.Courses
             return response;
         }
 
+        public async Task<List<CourseDTO>> SearchCourse(string query)
+        {
+            var courses = await courseRepo.GetBySearch(query);
+
+            return courses.ConvertAll(mapper.Map<CourseDTO>);
+        }
+
         public async Task<CourseDTO> SetCourseLive(int courseId)
         {
             var course = await courseRepo.GetByKey(courseId);
