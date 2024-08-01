@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { BiError } from "react-icons/bi";
 import Loader from "../common/Loader";
+import { customToast } from "../../utils/toast";
 
 const Notes: FC<{ contentId: number }> = ({ contentId }) => {
   const { user } = useAuthContext();
@@ -14,20 +15,23 @@ const Notes: FC<{ contentId: number }> = ({ contentId }) => {
 
   const debouncedSaveNote = useCallback(
     debounce(async (updatedNote: string) => {
-      setIsSaving(true);
-      // TODO: Reactify this function, try catch
-
-      await axios.put(
-        `/api/Notes/`,
-        {
-          ...notes,
-          noteContent: updatedNote,
-        },
-        {
-          headers: { Authorization: `Bearer ${user?.token}` },
-        }
-      );
-      setIsSaving(false);
+      try {
+        setIsSaving(true);
+        await axios.put(
+          `/api/Notes/`,
+          {
+            ...notes,
+            noteContent: updatedNote,
+          },
+          {
+            headers: { Authorization: `Bearer ${user?.token}` },
+          }
+        );
+      } catch {
+        customToast("Failed to save note", { type: "error" });
+      } finally {
+        setIsSaving(false);
+      }
     }, 1000),
     [notes, user?.token]
   );

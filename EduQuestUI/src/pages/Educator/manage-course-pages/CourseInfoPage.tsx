@@ -120,19 +120,25 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
   };
 
   const handleImageUpload = useCallback(async () => {
-    // TODO: Reactify this function, try catch
-    const formData = new FormData();
-    formData.append("thumbnail", courseImage as Blob);
-    await axios.put(
-      `/api/Course/Course-Thumbnail?courseId=${initialCourse?.id}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    try {
+      setIsSaving(true);
+      const formData = new FormData();
+      formData.append("thumbnail", courseImage as Blob);
+      await axios.put(
+        `/api/Course/Course-Thumbnail?courseId=${initialCourse?.id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+    } catch {
+      customToast("Failed to upload the image", { type: "error" });
+    } finally {
+      setIsSaving(false);
+    }
   }, [initialCourse?.id, user?.token, courseImage]);
 
   return (

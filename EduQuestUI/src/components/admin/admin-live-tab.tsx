@@ -6,6 +6,7 @@ import { Course, CourseStatusEnum } from "../../interfaces/course";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import CourseCard from "../Course/CourseCard";
 import axios from "axios";
+import { customToast } from "../../utils/toast";
 
 const AdminLiveTab = () => {
   const { user } = useAuthContext();
@@ -34,17 +35,21 @@ const AdminLiveTab = () => {
   }
 
   const handleOutdated = async (id: number) => {
-    // TODO: Reactify this function
-    await axios.put(
-      `/api/Course/set-course-outdated?courseId=${id}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      }
-    );
-    setLocalCourses((prev) => prev?.filter((course) => course.id !== id));
+    try {
+      await axios.put(
+        `/api/Course/set-course-outdated?courseId=${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      setLocalCourses((prev) => prev?.filter((course) => course.id !== id));
+    } catch {
+      customToast("Failed to set course to outdated", { type: "error" });
+    } finally {
+    }
   };
 
   return (

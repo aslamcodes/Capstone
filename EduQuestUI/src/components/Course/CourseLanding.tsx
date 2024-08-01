@@ -13,6 +13,7 @@ import useUserOwnsCourse from "../../hooks/fetchers/useUserOwnsCourse";
 const CourseLanding = () => {
   const { courseId } = useParams();
   const { course, isLoading } = useCourse(Number(courseId));
+  const [isBuying, setIsBuying] = React.useState(false);
   const {
     sections,
     isLoading: sectionsLoading,
@@ -41,7 +42,7 @@ const CourseLanding = () => {
 
   const handleBuyCourse = async () => {
     try {
-      // TODO: Reactify this function
+      setIsBuying(true);
       let order = await axios.post(
         "/api/Order",
         {
@@ -54,10 +55,12 @@ const CourseLanding = () => {
           },
         }
       );
-
+      customToast("Order created successfully", { type: "success" });
       navigate(`/order/${order.data.id}`);
     } catch (error: any) {
       customToast(error.response.data.message, { type: "error" });
+    } finally {
+      setIsBuying(false);
     }
   };
 
@@ -90,7 +93,11 @@ const CourseLanding = () => {
                 Go to Course
               </button>
             ) : (
-              <button className="btn btn-primary" onClick={handleBuyCourse}>
+              <button
+                disabled={isBuying}
+                className="btn btn-primary"
+                onClick={handleBuyCourse}
+              >
                 Buy Course
               </button>
             )}

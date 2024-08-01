@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import SectionContent from "./SectionContent";
 import { Content } from "../../interfaces/course";
 import Loader from "../common/Loader";
+import { customToast } from "../../utils/toast";
 
 type SectionProps = {
   name: string;
@@ -22,12 +23,18 @@ const SectionDrop: FC<SectionProps> = ({
 
   useEffect(() => {
     const fetchContents = async () => {
-      setIsLoading(true);
-      // TODO: Reactify this function, try catch
-      const res = await fetch(`/api/Section/Contents?sectionId=${id}`);
-      const data = await res.json();
-      setContents(data);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const res = await fetch(`/api/Section/Contents?sectionId=${id}`);
+        const data = await res.json();
+        setContents(data);
+      } catch {
+        customToast("Cannot fetch the contents", {
+          type: "error",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     };
     isVisited && fetchContents();
   }, [isVisited]);

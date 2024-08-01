@@ -85,61 +85,80 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
   if (error) return <div>Error: </div>;
 
   async function handleDeleteSection(sectionId: number) {
-    // TODO: Reactify this function, try catch
-    await axios.delete("/api/Section", {
-      params: { sectionId },
-      headers: { Authorization: `Bearer ${user?.token}` },
-    });
+    try {
+      await axios.delete("/api/Section", {
+        params: { sectionId },
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
+    } catch {
+      customToast("Cannot delete the section", {
+        type: "error",
+      });
+    }
   }
 
   async function handleAddContent(content: FieldValues) {
-    setIsContentLoading(() => true);
-    // TODO: Reactify this function, try catch
-    const { data: Content } = await axios.post<Content>(
-      "/api/Content",
-      {
-        sectionId: initialSection.id,
-        title: content.title,
-        contentType: content.contentType,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+    try {
+      setIsContentLoading(true);
+      const { data: Content } = await axios.post<Content>(
+        "/api/Content",
+        {
+          sectionId: initialSection.id,
+          title: content.title,
+          contentType: content.contentType,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
 
-    setContents((prev) => [...prev, Content]);
-    setShowAddContentForm(() => false);
-    setIsContentLoading(() => false);
+      setContents((prev) => [...prev, Content]);
+      setShowAddContentForm(false);
+    } catch (error) {
+      customToast("Cannot add the content", {
+        type: "error",
+      });
+    } finally {
+      setIsContentLoading(false);
+    }
   }
 
   async function handleDeleteContent(contentId: number) {
-    // TODO: Reactify this function, try catch
-
-    await axios.delete("/api/Content", {
-      params: { contentId },
-      headers: { Authorization: `Bearer ${user?.token}` },
-    });
-    setContents((prev) => prev.filter((content) => content.id !== contentId));
+    try {
+      await axios.delete("/api/Content", {
+        params: { contentId },
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
+      setContents((prev) => prev.filter((content) => content.id !== contentId));
+    } catch {
+      customToast("Cannot delete the content", {
+        type: "error",
+      });
+    }
   }
 
   const handleOrderChange = async (contentId: number, orderId: number) => {
     const content = contents.find((content) => content.id === contentId);
-    // TODO: Reactify this function, try catch
-
-    await axios.put(
-      "/api/Content",
-      {
-        ...content,
-        orderIndex: orderId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+    try {
+      await axios.put(
+        "/api/Content",
+        {
+          ...content,
+          orderIndex: orderId,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+    } catch {
+      customToast("Reordering failed!", {
+        type: "error",
+      });
+    }
   };
   const handleDragEnd = async (event: any) => {
     const { active, over } = event;

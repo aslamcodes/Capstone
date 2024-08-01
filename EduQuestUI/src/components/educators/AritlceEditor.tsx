@@ -5,6 +5,7 @@ import Loader from "../common/Loader";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Article } from "../../interfaces/course";
+import { customToast } from "../../utils/toast";
 
 const AritlceEditor = () => {
   const { user } = useAuthContext();
@@ -16,15 +17,18 @@ const AritlceEditor = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
-      // TODO: Reactify this function, try catch
-      const { data } = await axios.get<Article>(`/api/Article/ForContent`, {
-        params: { contentId },
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
+      try {
+        const { data } = await axios.get<Article>(`/api/Article/ForContent`, {
+          params: { contentId },
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        });
 
-      setArticle(data);
+        setArticle(data);
+      } catch {
+        customToast("Failed to fetch article", { type: "error" });
+      }
     };
 
     fetchContent();

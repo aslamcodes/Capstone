@@ -5,41 +5,48 @@ import useAnswersForQuestion from "../../hooks/fetchers/useAnswers";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useUserProfile from "../../hooks/fetchers/useUserProfile";
+import { customToast } from "../../utils/toast";
 
 const Answers: FC<{ questionId: number }> = ({ questionId }) => {
   const { answers, isLoading, error } = useAnswersForQuestion(questionId);
   const [localAnswers, setLocalAnswers] = useState<Answer[]>([]);
   const [answer, setAnswer] = useState<string>("");
-
+  const [isAnswering, setIsAnswering] = useState(false);
   const { user } = useAuthContext();
   const { user: userProfile } = useUserProfile();
 
   const handleAnswer = async () => {
-    // TODO: Reactify this function, try catch
-    const { data } = await axios.post<Answer>(
-      "/api/Answers/For-Question",
-      {
-        answerText: answer,
-        questionId: questionId,
-        answeredById: user?.id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+    try {
+      setIsAnswering(true);
+      const { data } = await axios.post<Answer>(
+        "/api/Answers/For-Question",
+        {
+          answerText: answer,
+          questionId: questionId,
+          answeredById: user?.id,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
 
-    setLocalAnswers([
-      {
-        ...data,
-        answeredBy: {
-          firstName: userProfile?.firstName as string,
-          lastName: userProfile?.lastName as string,
+      setLocalAnswers([
+        {
+          ...data,
+          answeredBy: {
+            firstName: userProfile?.firstName as string,
+            lastName: userProfile?.lastName as string,
+          },
         },
-      },
-      ...localAnswers,
-    ]);
+        ...localAnswers,
+      ]);
+    } catch (error) {
+      customToast("Failed to answer question", { type: "error" });
+    } finally {
+      setIsAnswering(false);
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -49,7 +56,22 @@ const Answers: FC<{ questionId: number }> = ({ questionId }) => {
   return (
     <div className="">
       <div className="space-y-2 mb-2">
-        {[...(answers as Answer[]), ...localAnswers].map((answer) => (
+        <div>
+          <textarea
+            className="textarea textarea-bordered w-full"
+            placeholder="Write your Answer"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+          ></textarea>
+          <button
+            className="btn btn-outline"
+            onClick={handleAnswer}
+            disabled={isAnswering}
+          >
+            Answer
+          </button>
+        </div>
+        {[...localAnswers, ...(answers as Answer[])].map((answer) => (
           <div className="bg-base-300 rounded-md p-2 flex gap-3">
             <div className="avatar  rounded-full bg-base-400 w-8 h-8">
               <p className="placeholder font-semibold">
@@ -67,17 +89,6 @@ const Answers: FC<{ questionId: number }> = ({ questionId }) => {
             </div>
           </div>
         ))}
-      </div>
-      <div>
-        <textarea
-          className="textarea textarea-bordered w-full"
-          placeholder="Write your Answer"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-        ></textarea>
-        <button className="btn btn-outline" onClick={handleAnswer}>
-          Answer
-        </button>
       </div>
     </div>
   );

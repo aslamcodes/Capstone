@@ -6,6 +6,7 @@ import CourseCard from "../Course/CourseCard";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
+import { customToast } from "../../utils/toast";
 
 const AdminReviewTab = () => {
   const { user } = useAuthContext();
@@ -34,19 +35,20 @@ const AdminReviewTab = () => {
   }
 
   const handleAuthorize = async (id: number) => {
-    // TODO: Reactify this function
-
-    await axios.put(
-      `/api/Course/set-course-live?courseId=${id}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      }
-    );
-
-    setLocalCourses((prev) => prev?.filter((course) => course.id !== id));
+    try {
+      await axios.put(
+        `/api/Course/set-course-live?courseId=${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      setLocalCourses((prev) => prev?.filter((course) => course.id !== id));
+    } catch (error) {
+      customToast("Failed to authorize course", { type: "error" });
+    }
   };
 
   return (
@@ -58,7 +60,7 @@ const AdminReviewTab = () => {
           actions={[
             {
               action: handleAuthorize,
-              actionTitle: "Authorize",
+              actionTitle: "Set Live",
             },
             {
               action: (id) => {
