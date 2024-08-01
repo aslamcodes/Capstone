@@ -8,7 +8,7 @@ namespace EduQuest.Features.Videos
     {
         public async Task<Video> GetByContentId(int contentId)
         {
-            var video = await context.Videos.FirstOrDefaultAsync(video => video.ContentId == contentId) ?? throw new EntityNotFoundException("Video not found for the content");
+            var video = await context.Videos.AsNoTracking().FirstOrDefaultAsync(video => video.ContentId == contentId) ?? throw new EntityNotFoundException("Video not found for the content");
 
             return video;
         }

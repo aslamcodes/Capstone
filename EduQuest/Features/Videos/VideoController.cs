@@ -104,5 +104,35 @@ namespace EduQuest.Features.Videos
             }
         }
 
+        [HttpPost("complete-upload")]
+        [Authorize(Policy = "Educator")]
+        public async Task<ActionResult<VideoDto>> CompleteUpload([FromBody] CompleteUploadRequest request)
+        {
+            try
+            {
+                await validator.ValidateEducatorPrivilegeForContent(User.Claims, request.ContentId);
+
+                var containerClient = blobServiceClient.GetBlobContainerClient("videos");
+
+                var blobClient = containerClient.GetBlobClient($"{request.ContentId}-{request.FileName}");
+
+                var properties = await blobClient.GetPropertiesAsync();
+
+                var video = await videoService.GetByContentId(request.ContentId);
+
+                video.Url = blobClient.Uri.ToString();
+
+                var updatedVideo = await videoService.Update(video);
+                //await _videoService.CompleteUpload(request.ContentId blobClient.Uri.ToString());
+
+                return Ok(updatedVideo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+        }
+
+
     }
 }
