@@ -1,15 +1,16 @@
 import Loader from "../../components/common/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useEducatorCourses from "../../hooks/fetchers/useEducatorCourses";
 import { BiPlus } from "react-icons/bi";
 import { useRef, useState } from "react";
 import CreateCourseForm from "../../components/Course/CreateCourseForm";
 import { useAuthContext } from "../../contexts/auth/authReducer";
+import CourseCard from "../../components/Course/CourseCard";
 
 const Educator = () => {
   const { user } = useAuthContext();
   const ref = useRef<HTMLDialogElement>(null);
-
+  const navigate = useNavigate();
   var { courses, coursesLoading, error } = useEducatorCourses(
     user?.id as number
   );
@@ -50,23 +51,18 @@ const Educator = () => {
         </div>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
           {courses?.map((course) => (
-            <div className="card bg-base-100 w-72 shadow-xl ">
-              <figure>
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                  alt="Shoes"
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">{course.name}</h2>
-                <p>{course.description}</p>
-                <div className="card-actions justify-end">
-                  <Link to={`/manage-course/${course.id}`}>
-                    <button className="btn btn- ">Manage Course</button>
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <CourseCard
+              course={course}
+              actions={[
+                {
+                  actionTitle: "Manage Course",
+                  action: (id) => {
+                    navigate(`/manage-course/${id}`);
+                  },
+                },
+              ]}
+              key={course.id}
+            ></CourseCard>
           ))}
         </div>
       </div>

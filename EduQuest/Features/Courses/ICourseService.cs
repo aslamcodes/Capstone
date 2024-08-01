@@ -16,5 +16,6 @@ namespace EduQuest.Features.Courses
 
         Task<ValidityResponseDto> GetCourseValidity(int courseId);
         Task<List<CourseDTO>> SearchCourse(string query);
+        Task<List<CourseDTO>> GetCoursesByStatus(CourseStatusEnum status);
     }
 }

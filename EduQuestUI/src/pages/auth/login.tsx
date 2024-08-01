@@ -75,7 +75,7 @@ export default function LoginPage() {
             <span className="text-error">Password is required</span>
           )}
         </div>
-        <button className="btn btn-primary" disabled={isLoading}>
+        <button className="btn btn-outline" disabled={isLoading}>
           {isLoading ? <Loader size="sm" type="spinner" /> : "Submit"}
         </button>
         <Link to={"/register"} className="text-primary">

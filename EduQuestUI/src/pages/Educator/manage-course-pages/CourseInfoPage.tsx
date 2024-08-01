@@ -12,7 +12,7 @@ import axios from "axios";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";
 import Divider from "../../../components/common/divider";
-import { ImAngry2, ImImage } from "react-icons/im";
+import { ImImage } from "react-icons/im";
 
 type Inputs = {
   name: string;

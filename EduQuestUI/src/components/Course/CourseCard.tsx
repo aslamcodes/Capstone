@@ -2,10 +2,10 @@ import React, { FC } from "react";
 import { Course } from "../../interfaces/course";
 import { Link } from "react-router-dom";
 
-const CourseCard: FC<{ course: Course; type: "manage" | "view" }> = ({
-  course,
-  type,
-}) => {
+const CourseCard: FC<{
+  course: Course;
+  actions: { actionTitle: string; action: (courseId: number) => void }[];
+}> = ({ course, actions }) => {
   return (
     <div className="card bg-base-100 w-72 shadow-xl ">
       <figure>
@@ -14,19 +14,22 @@ const CourseCard: FC<{ course: Course; type: "manage" | "view" }> = ({
           alt="Shoes"
         />
       </figure>
-      <div className="card-body">
+      <div className="card-body p-6">
         <h2 className="card-title">{course.name}</h2>
-        <p>{course.description}</p>
-        <div className="card-actions justify-end">
-          {type === "manage" ? (
-            <Link to={`/manage-course/${course.id}`}>
-              <button className="btn btn-primary">Manage Course</button>
-            </Link>
-          ) : (
-            <Link to={`/course-description/${course.id}`}>
-              <button className="btn btn-primary">View Course</button>
-            </Link>
-          )}
+        <p className="text-balance">
+          {course.description.length > 50
+            ? course.description.slice(0, 50) + "..."
+            : course.description}
+        </p>
+        <div className="card-actions justify-end mt-5 ">
+          {actions.map(({ action, actionTitle }) => (
+            <button
+              className="btn btn-outline btn-md"
+              onClick={() => action(course.id)}
+            >
+              {actionTitle}
+            </button>
+          ))}
         </div>
       </div>
     </div>

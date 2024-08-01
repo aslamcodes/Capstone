@@ -46,7 +46,7 @@ const CourseDescription: FC<{
       </div>
       <div>
         <h1 className="text-2xl font-bold">Educator</h1>
-        <EducatorProfile educatorId={course?.educatorId} />
+        <EducatorProfile educatorId={course?.educatorId as number} />
       </div>
     </div>
   );

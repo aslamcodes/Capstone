@@ -9,6 +9,16 @@ namespace EduQuest.Features.Courses
 {
     public class CourseService(ICourseRepo courseRepo, IRepository<int, User> userRepo, IRepository<int, StudentCourse> studentCourse, ISectionService sectionService, IMapper mapper) : BaseService<Course, CourseDTO>(courseRepo, mapper), ICourseService
     {
+        public override async Task<CourseDTO> Add(CourseDTO entity)
+        {
+            var course = mapper.Map<Course>(entity);
+
+            course.CourseStatus = CourseStatusEnum.Draft;
+
+            var courseDb = await courseRepo.Add(course);
+
+            return mapper.Map<CourseDTO>(courseDb);
+        }
         public async Task<CourseDTO> EnrollStudentIntoCourse(int studentId, int courseId)
         {
             var course = await courseRepo.GetByKey(courseId);
@@ -56,6 +66,13 @@ namespace EduQuest.Features.Courses
 
 
             return response;
+        }
+
+        public async Task<List<CourseDTO>> GetCoursesByStatus(CourseStatusEnum courseStatus)
+        {
+            List<Course> courses = await courseRepo.GetByStatus(courseStatus);
+
+            return courses.ConvertAll(mapper.Map<CourseDTO>);
         }
 
         public async Task<List<CourseDTO>> SearchCourse(string query)

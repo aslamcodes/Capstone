@@ -31,5 +31,16 @@ namespace EduQuest.Features.Courses
 
             return results;
         }
+
+        public async Task<List<Course>> GetByStatus(CourseStatusEnum status)
+        {
+            var courses = await context.Courses.Include(c => c.Educator)
+                                  .Where(c => c.CourseStatus == status)
+                                  .AsNoTracking()
+                                  .ToListAsync();
+
+            return courses;
+
+        }
     }
 }

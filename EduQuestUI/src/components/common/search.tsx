@@ -8,7 +8,7 @@ const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [showResults, setShowResult] = useState(false);
 
   const fetchResults = useCallback(
@@ -44,7 +44,7 @@ const SearchBar = () => {
     };
   }, [query, fetchResults]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     setQuery(e.target.value);
   };
 

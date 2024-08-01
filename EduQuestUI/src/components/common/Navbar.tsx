@@ -102,9 +102,7 @@ const Navbar = () => {
                     Profile
                   </Link>
                 </li>
-                <li>
-                  <a>Settings</a>
-                </li>
+
                 <li onClick={() => logout(dispatch)}>
                   <a>Logout</a>
                 </li>

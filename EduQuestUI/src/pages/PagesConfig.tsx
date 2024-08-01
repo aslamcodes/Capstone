@@ -10,6 +10,7 @@ import Home from "./Home";
 import CourseLanding from "../components/Course/CourseLanding";
 import OrderPage from "../components/order/OrderPage";
 import UserProfile from "./user-profile";
+import Admin from "./Admin";
 
 export const pages = [
   {
@@ -22,6 +23,7 @@ export const pages = [
       { path: "/myCourses", element: <MyCourses /> },
       { path: "/myCourses/:courseId", element: <CoursePage /> },
       { path: "/profile", element: <UserProfile /> },
+      { path: "/admin", element: <Admin /> },
       {
         path: "/manage-course/content/article/:contentId",
         element: <AritlceEditor />,

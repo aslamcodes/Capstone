@@ -98,3 +98,11 @@ export interface Review {
   reviewedById: number;
   reviewedBy: UserProfile;
 }
+
+export enum CourseStatusEnum {
+  Live,
+  Draft,
+  Archived,
+  Outdated,
+  Review,
+}

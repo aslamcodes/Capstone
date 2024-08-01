@@ -310,5 +310,25 @@ namespace EduQuest.Features.Courses
                 throw;
             }
         }
+
+        [HttpGet("courses-by-status")]
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<List<CourseDTO>>> GetCoursesByStatus([FromQuery] CourseStatusEnum status)
+        {
+            try
+            {
+                var courses = await courseService.GetCoursesByStatus(status);
+
+                return Ok(courses);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

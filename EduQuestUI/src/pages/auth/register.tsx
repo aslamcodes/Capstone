@@ -46,17 +46,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[50vh] my-12">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-72 mx-auto flex flex-col bg-base-100 gap-4 p-4 border border-gray-300 rounded-lg mt-4"
+        className="md:max-w-[40vw] mx-auto flex flex-col bg-base-100 gap-4 p-4 border border-gray-300 rounded-lg mt-4"
       >
         <h1 className="text-2xl font-bold">Register</h1>
         <div className="flex flex-col gap-2 items-start">
           <label>First Name</label>
           <input
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full"
             {...register("firstName", { required: true })}
           />
           {errors.firstName && (
@@ -67,7 +67,7 @@ export default function RegisterPage() {
           <label>Last Name</label>
           <input
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full"
             {...register("lastName")}
           />
         </div>
@@ -75,7 +75,7 @@ export default function RegisterPage() {
           <label>Email</label>
           <input
             type="email"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full"
             {...register("email", { required: true })}
           />
           {errors.email && (
@@ -87,14 +87,14 @@ export default function RegisterPage() {
           <label>Password</label>
           <input
             type="password"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full "
             {...register("password", { required: true })}
           />
           {errors.password && (
             <span className="text-error">Password is required</span>
           )}
         </div>
-        <button className="btn btn-primary">Submit</button>
+        <button className="btn btn-outline">Submit</button>
         <Link to={"/"} className="text-">
           Don't have an account? Register
         </Link>

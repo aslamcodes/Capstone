@@ -54,7 +54,18 @@ const Home = () => {
               return c.courseCategoryId == currentCategory;
             })
             .map((course) => (
-              <CourseCard type="view" course={course} />
+              <CourseCard
+                course={course}
+                key={course.id}
+                actions={[
+                  {
+                    actionTitle: "View Course",
+                    action: (id) => {
+                      navigate(`/course-description/${id}`);
+                    },
+                  },
+                ]}
+              />
             ))}
         </div>
       </div>
