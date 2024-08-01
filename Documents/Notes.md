@@ -41,3 +41,21 @@
 # Udemy - User Research
 My main complaint would be that they never remove dead courses. There are many courses that someone put up years ago, never once updated, and that hasn't made any sales. I think it would be great if Udemy would contact those instructors to say "improve your course or we'll take it off the platform in 90 days." Of course instructors deserve the opportunity to re-design their courses, but dead courses with absent instructors make picking the right course harder for students, and can be a negative experience for the unlucky students who give them a try.
 
+# Frontend correction
+- Price tiers should be listed![[Pasted image 20240801143318.png]]
+- Adding a objective with a field value testing![[Pasted image 20240801143430.png]]
+- No responses to save button on course info edit, its better if save button is a floating action![[Pasted image 20240801143519.png]]
+- Toggling between tabs, and sections I added vanishes, only returned after refreshing
+- Course level not showing even after saving  ![[Pasted image 20240801143839.png]]
+- Status not updating after save press  ![[Pasted image 20240801144102.png]]
+- ![[Pasted image 20240801144155.png]] - Course Descirpiont page hero ![[Pasted image 20240801144326.png]]
+- -Paying for order not repsonsive ![[Pasted image 20240801144352.png]]
+- Initial course page is this for student, should there be something helpful![[Pasted image 20240801144435.png]]
+- Video Icons for article on sectiondrops![[Pasted image 20240801144518.png]]
+- Loggout isnt affecting course page![[Pasted image 20240801144554.png]]
+- Course description![[Pasted image 20240801144613.png]]
+- Search results and this weird description  ![[Pasted image 20240801144705.png]]\
+- Clicking on search results doesnt navigate
+- No way knowing if a user bought a course, there should be endpoint
+- Courses on review is displayed and not with the profile picture
+- ![[Pasted image 20240801144905.png]]
