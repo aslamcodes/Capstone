@@ -4,6 +4,7 @@ import { GoCommentDiscussion } from "react-icons/go";
 import useAnswersForQuestion from "../../hooks/fetchers/useAnswers";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
+import useUserProfile from "../../hooks/fetchers/useUserProfile";
 
 const Answers: FC<{ questionId: number }> = ({ questionId }) => {
   const { answers, isLoading, error } = useAnswersForQuestion(questionId);
@@ -11,6 +12,7 @@ const Answers: FC<{ questionId: number }> = ({ questionId }) => {
   const [answer, setAnswer] = useState<string>("");
 
   const { user } = useAuthContext();
+  const { user: userProfile } = useUserProfile();
 
   const handleAnswer = async () => {
     const { data } = await axios.post<Answer>(
@@ -31,8 +33,8 @@ const Answers: FC<{ questionId: number }> = ({ questionId }) => {
       {
         ...data,
         answeredBy: {
-          firstName: "dummy",
-          lastName: "bava",
+          firstName: userProfile?.firstName as string,
+          lastName: userProfile?.lastName as string,
         },
       },
       ...localAnswers,

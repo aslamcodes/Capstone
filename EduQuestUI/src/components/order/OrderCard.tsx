@@ -6,7 +6,6 @@ import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";
 import Loader from "../common/Loader";
-import { set } from "lodash";
 import { useNavigate } from "react-router-dom";
 
 const OrderCard: FC<{

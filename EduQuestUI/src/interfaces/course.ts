@@ -77,7 +77,10 @@ export interface Question {
   contentId: number;
   questionText: string;
   postedById: number;
-  postedBy: UserProfile;
+  postedBy: {
+    firstName: string;
+    lastName: string;
+  };
   postedOn: string;
   upvotes: number;
 }
@@ -88,7 +91,10 @@ export interface Answer {
   answerText: string;
   answeredById: number;
   answeredOn: string;
-  answeredBy: UserProfile;
+  answeredBy: {
+    firstName: string;
+    lastName: string;
+  };
 }
 
 export interface Review {
