@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduQuest.Features.StudentCourses
 {
-    public class StudentCourseRepo(EduQuestContext context) : BaseRepo<int, StudentCourse>(context)
+    public class StudentCourseRepo(EduQuestContext context) : BaseRepo<int, Entities.StudentCourseRepo>(context)
     {
-        public override async Task<List<StudentCourse>> GetAll()
+        public override async Task<List<Entities.StudentCourseRepo>> GetAll()
         {
             var courses = await context.StudentCourses.AsNoTracking().Include(sc => sc.Course).ToListAsync();
 

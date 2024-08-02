@@ -18,7 +18,7 @@ namespace EduQuest.Commons
 
         public DbSet<Payment> Payments { get; set; }
 
-        public DbSet<StudentCourse> StudentCourses { get; set; }
+        public DbSet<StudentCourseRepo> StudentCourses { get; set; }
 
         public DbSet<Video> Videos { get; set; }
 
@@ -62,7 +62,7 @@ namespace EduQuest.Commons
             modelBuilder.Entity<Course>()
                         .HasMany(c => c.Students)
                         .WithMany(u => u.CoursesEnrolled)
-                        .UsingEntity<StudentCourse>();
+                        .UsingEntity<StudentCourseRepo>();
 
             #endregion
 

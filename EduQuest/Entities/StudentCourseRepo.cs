@@ -2,7 +2,7 @@
 
 namespace EduQuest.Entities
 {
-    public class StudentCourse : BaseEntity
+    public class StudentCourseRepo : BaseEntity
     {
         public int StudentId { get; set; }
         public int CourseId { get; set; }

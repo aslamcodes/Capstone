@@ -2,11 +2,12 @@ using EduQuest.Commons;
 using EduQuest.Entities;
 using EduQuest.Features.StudentCourses;
 using Microsoft.EntityFrameworkCore;
+using StudentCourseRepo = EduQuest.Entities.StudentCourseRepo;
 
 namespace EduQuestTests.Courses;
 
 [TestFixture]
-public class StudentCourseTests
+public class StudentCourseRepoTests
 {
     [SetUp]
     public void Setup()
@@ -16,7 +17,7 @@ public class StudentCourseTests
             .Options;
 
         _context = new EduQuestContext(options);
-        _studentCourseRepo = new StudentCourseRepo(_context);
+        _studentCourseRepo = new EduQuest.Features.StudentCourses.StudentCourseRepo(_context);
     }
 
     [TearDown]
@@ -27,7 +28,7 @@ public class StudentCourseTests
     }
 
     private EduQuestContext _context;
-    private StudentCourseRepo _studentCourseRepo;
+    private EduQuest.Features.StudentCourses.StudentCourseRepo _studentCourseRepo;
 
     [Test]
     public async Task GetAll_ReturnsAllStudentCoursesWithCourses()
@@ -35,16 +36,16 @@ public class StudentCourseTests
         // Arrange
         var courses = new[]
         {
-            new Course { Id = 1, Name = "Course 1" },
-            new Course { Id = 2, Name = "Course 2" }
+            new Course { Id = 1, Name = "Course 1", Description = "Test" },
+            new Course { Id = 2, Name = "Course 2" , Description = "Test" }
         };
         _context.Courses.AddRange(courses);
 
         var studentCourses = new[]
         {
-            new StudentCourse { Id = 1, CourseId = 1, StudentId = 1, Course = courses[0] },
-            new StudentCourse { Id = 2, CourseId = 2, StudentId = 1, Course = courses[1] },
-            new StudentCourse { Id = 3, CourseId = 1, StudentId = 2, Course = courses[0] }
+            new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1, Course = courses[0] },
+            new StudentCourseRepo { Id = 2, CourseId = 2, StudentId = 1, Course = courses[1] },
+            new StudentCourseRepo { Id = 3, CourseId = 1, StudentId = 2, Course = courses[0] }
         };
         _context.StudentCourses.AddRange(studentCourses);
         await _context.SaveChangesAsync();
@@ -63,11 +64,11 @@ public class StudentCourseTests
     public async Task Add_AddsStudentCourseToDatabase()
     {
         // Arrange
-        var course = new Course { Id = 1, Name = "Test Course" };
+        var course = new Course { Id = 1, Name = "Test Course", Description = "asdasd"};
         _context.Courses.Add(course);
         await _context.SaveChangesAsync();
 
-        var studentCourse = new StudentCourse { CourseId = 1, StudentId = 1 };
+        var studentCourse = new StudentCourseRepo { CourseId = 1, StudentId = 1 };
 
         // Act
         var result = await _studentCourseRepo.Add(studentCourse);
@@ -81,10 +82,10 @@ public class StudentCourseTests
     public async Task GetByKey_ReturnsCorrectStudentCourse()
     {
         // Arrange
-        var course = new Course { Id = 1, Name = "Test Course" };
+        var course = new Course { Id = 1, Name = "Test Course", Description = "Test" };
         _context.Courses.Add(course);
 
-        var studentCourse = new StudentCourse { Id = 1, CourseId = 1, StudentId = 1 };
+        var studentCourse = new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1 };
         _context.StudentCourses.Add(studentCourse);
         await _context.SaveChangesAsync();
 
@@ -102,10 +103,10 @@ public class StudentCourseTests
     public async Task Update_UpdatesStudentCourseInDatabase()
     {
         // Arrange
-        var course = new Course { Id = 1, Name = "Test Course" };
+        var course = new Course { Id = 1, Name = "Test Course",  Description = "Test" };
         _context.Courses.Add(course);
 
-        var studentCourse = new StudentCourse { Id = 1, CourseId = 1, StudentId = 1 };
+        var studentCourse = new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1 };
         _context.StudentCourses.Add(studentCourse);
         await _context.SaveChangesAsync();
 
@@ -123,10 +124,10 @@ public class StudentCourseTests
     public async Task Delete_RemovesStudentCourseFromDatabase()
     {
         // Arrange
-        var course = new Course { Id = 1, Name = "Test Course" };
+        var course = new Course { Id = 1, Name = "Test Course", Description = "asdasd"};
         _context.Courses.Add(course);
 
-        var studentCourse = new StudentCourse { Id = 1, CourseId = 1, StudentId = 1 };
+        var studentCourse = new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1, };
         _context.StudentCourses.Add(studentCourse);
         await _context.SaveChangesAsync();
 
