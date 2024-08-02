@@ -11,7 +11,7 @@ namespace EduQuest.Features.Videos
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoController(ControllerValidator validator, IVideoService videoService, BlobServiceClient blobServiceClient, IMapper mapper, SecretClient secretClient) : Controller
+    public class VideoController(IControllerValidator validator, IVideoService videoService, BlobServiceClient blobServiceClient, IMapper mapper, SecretClient secretClient) : Controller
     {
         [HttpGet]
         [Authorize]

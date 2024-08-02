@@ -10,7 +10,7 @@ namespace EduQuest.Commons
     public class ControllerValidator(ICourseService courseService,
                                      IOrderService orderService,
                                      IContentService contentService,
-                                     ISectionService sectionService)
+                                     ISectionService sectionService) : IControllerValidator
     {
         public async Task ValidateEducatorPrivilegeForCourse(IEnumerable<Claim> claims, int courseId)
         {
@@ -54,7 +54,7 @@ namespace EduQuest.Commons
             return;
         }
 
-        public static int GetUserIdFromClaims(IEnumerable<Claim> claims)
+        public int GetUserIdFromClaims(IEnumerable<Claim> claims)
         {
 
             var claimArr = claims as Claim[] ?? claims.ToArray();

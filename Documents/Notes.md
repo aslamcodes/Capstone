@@ -61,3 +61,4 @@ My main complaint would be that they never remove dead courses. There are many c
 - [x] not with the profile picture
 - ![[Pasted image 20240801144905.png]]
 -  [ ]  ![[Pasted image 20240801162339.png]]
+- ![[Pasted image 20240802102556.png]] - buggy course info pages

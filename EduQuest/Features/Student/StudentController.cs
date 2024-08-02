@@ -8,7 +8,7 @@ namespace EduQuest.Features.Student
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController(IStudentService studentService, ControllerValidator validator) : ControllerBase
+    public class StudentController(IStudentService studentService, IControllerValidator validator) : ControllerBase
     {
         [Authorize]
         [HttpGet("recommended-courses")]
@@ -33,7 +33,7 @@ namespace EduQuest.Features.Student
             try
             {
 
-                var userOwnsCourse = await studentService.UserOwnsCourse(ControllerValidator.GetUserIdFromClaims(User.Claims), courseId);
+                var userOwnsCourse = await studentService.UserOwnsCourse(validator.GetUserIdFromClaims(User.Claims), courseId);
 
                 return Ok(userOwnsCourse);
             }

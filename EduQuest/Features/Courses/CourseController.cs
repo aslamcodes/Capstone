@@ -18,7 +18,7 @@ namespace EduQuest.Features.Courses
         ICourseService courseService,
         ISectionService sectionService,
         IContentService contentService,
-        ControllerValidator validator,
+        IControllerValidator validator,
         BlobServiceClient blobService,
         IMapper mapper) : Controller
     {
@@ -154,7 +154,7 @@ namespace EduQuest.Features.Courses
         {
             try
             {
-                var studentId = ControllerValidator.GetUserIdFromClaims(User.Claims);
+                var studentId = validator.GetUserIdFromClaims(User.Claims);
                 var courses = await courseService.GetCoursesForStudent(studentId);
                 return Ok(courses);
             }

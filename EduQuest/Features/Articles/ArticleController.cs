@@ -7,7 +7,7 @@ namespace EduQuest.Features.Articles
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ArticleController(IArticleService articleService, ControllerValidator validator) : ControllerBase
+    public class ArticleController(IArticleService articleService, IControllerValidator validator) : ControllerBase
     {
         [HttpGet("ForContent")]
         public async Task<ActionResult<ArticleDto>> GetArticleByContentId([FromQuery] int contentId)

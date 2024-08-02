@@ -14,7 +14,7 @@ namespace EduQuest.Features.Users
     public class UserController(
         IUserService userService,
         IMapper mapper,
-        ControllerValidator validator,
+        IControllerValidator validator,
         BlobServiceClient blobServiceClient,
         ILogger<UserController> _logger) : ControllerBase
     {
@@ -86,7 +86,7 @@ namespace EduQuest.Features.Users
         {
             try
             {
-                var userId = ControllerValidator.GetUserIdFromClaims(User.Claims);
+                var userId = validator.GetUserIdFromClaims(User.Claims);
                 var profileContainer = blobServiceClient.GetBlobContainerClient("profiles");
                 var blob = profileContainer.GetBlobClient($"{userId}-profile.jpg");
                 if (await blob.ExistsAsync())

@@ -9,7 +9,7 @@ namespace EduQuest.Features.Reviews
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReviewsController(IReviewService reviewService, ICourseService courseService, ControllerValidator validator, IMapper mapper) : Controller
+    public class ReviewsController(IReviewService reviewService, ICourseService courseService, IControllerValidator validator, IMapper mapper) : Controller
     {
         [HttpGet("For-Courses")]
         public async Task<IActionResult> GetReviewsByCourse(int courseId)

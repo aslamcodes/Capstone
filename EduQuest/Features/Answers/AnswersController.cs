@@ -9,7 +9,7 @@ namespace EduQuest.Features.Answers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AnswersController(IAnswerService answerService, IMapper mapper, ControllerValidator validator) : Controller
+    public class AnswersController(IAnswerService answerService, IMapper mapper, IControllerValidator validator) : Controller
     {
         [HttpGet("For-Question")]
         [Authorize]

@@ -106,9 +106,9 @@ namespace EduQuest
 
             #endregion
 
-            builder.Services.AddScoped<ControllerValidator>();
 
             #region Services
+            builder.Services.AddScoped<IControllerValidator, ControllerValidator>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();

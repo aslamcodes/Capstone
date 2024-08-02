@@ -1,5 +1,6 @@
 ﻿namespace EduQuest.Features.Users
 {
+    [ExcludeFromDescription]
     public class UserProfileUpdateDto
     {
         public int Id { get; set; }

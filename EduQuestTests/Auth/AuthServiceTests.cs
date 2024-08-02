@@ -1,6 +1,7 @@
 ﻿using EduQuest.Commons;
 using EduQuest.Features.Auth;
 using EduQuest.Features.Auth.DTOS;
+using EduQuest.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
@@ -44,7 +45,7 @@ namespace EduQuestTests.Auth
 
 
             TokenService = new TokenService(mockConfig.Object);
-            //AuthService = new AuthService(new UserService(new UserRepo(GetContext())), TokenService);
+            // AuthService = new AuthService(new UserServkice(new UserRepo(GetContext()) , ), TokenService);
         }
 
         [Test]
