@@ -71,15 +71,31 @@ public class CourseRepositoryTests
         // Arrange
         var courses = new List<Course>
         {
-            new EduQuest.Entities.Course()
+            new Course()
             {
-                Id = 1, Name = "Course 1", Students = new List<User> { new User { Id = 1, FirstName = "Student 1" } }
+                Id = 1, Name = "Course 1", Description = "test Description",
+                Students = new List<User>
+                {
+                    new User
+                    {
+                        Id = 1, FirstName = "User 1", LastName = "Test", Email = "tes1t@test.com", Password = [],
+                        PasswordHashKey = [], ProfilePictureUrl = "1231"
+                    }
+                }
             },
             new Course
             {
-                Id = 2, Name = "Course 2", Students = new List<User> { new User { Id = 2, FirstName = "Student 2" } }
+                Id = 2, Name = "Course 2", Description = "test Description",
+                Students = new List<User>
+                {
+                    new User
+                    {
+                        Id = 2, FirstName = "User 2", LastName = "Test", Email = "tes12@test.com", Password = [],
+                        PasswordHashKey = [], ProfilePictureUrl = "1231"
+                    }
+                }
             },
-            new Course { Id = 3, Name = "Course 3", Students = new List<User>() }
+            new Course { Id = 3, Name = "Course 3", Description = "test Description", Students = new List<User>() }
         };
         await _context.Courses.AddRangeAsync(courses);
         await _context.SaveChangesAsync();
@@ -166,15 +182,24 @@ public class CourseRepositoryTests
     public async Task GetByStatus_ShouldReturnCoursesWithSpecificStatus()
     {
         // Arrange
-        var educator = new User { Id = 1, FirstName = "Educator 1" };
+        var educator = new User { Id = 1, FirstName = "Educator 1" , LastName = "Test", Email = "tes1t@test.com", Password = [], PasswordHashKey = [], ProfilePictureUrl = "1231" };
         var courses = new List<Course>
         {
             new Course
             {
-                Id = 1, Name = "Course 1", CourseStatus = CourseStatusEnum.Live, Educator = educator
+                Description = "Test", Id = 1, Name = "Course 1", CourseStatus = CourseStatusEnum.Live,
+                Educator = educator
             },
-            new Course { Id = 2, Name = "Course 2", CourseStatus = CourseStatusEnum.Draft, Educator = educator },
-            new Course { Id = 3, Name = "Course 3", CourseStatus = CourseStatusEnum.Live, Educator = educator }
+            new Course
+            {
+                Id = 2, Name = "Course 2", CourseStatus = CourseStatusEnum.Draft, Educator = educator,
+                Description = "Test"
+            },
+            new Course
+            {
+                Id = 3, Name = "Course 3", CourseStatus = CourseStatusEnum.Live, Educator = educator,
+                Description = "Test"
+            }
         };
         await _context.Courses.AddRangeAsync(courses);
         await _context.SaveChangesAsync();
