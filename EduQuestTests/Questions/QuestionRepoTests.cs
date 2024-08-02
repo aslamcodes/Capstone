@@ -33,15 +33,15 @@ public class QuestionRepoTests
     public async Task GetQuestionsByContent_ReturnsCorrectQuestions()
     {
         // Arrange
-        var user1 = new User { Id = 1, FirstName = "User 1" };
-        var user2 = new User { Id = 2, FirstName = "User 2" };
+        var user1 = new User { Id = 1, FirstName = "User 1", LastName = "Test", Email = "tes1t@test.com", Password = [], PasswordHashKey = [], ProfilePictureUrl = "1231"};
+        var user2 = new User { Id = 2, FirstName = "User 2", LastName = "Test", Email = "tes2t@test.com", Password = [], PasswordHashKey = [], ProfilePictureUrl = "1231"};
         _context.Users.AddRange(user1, user2);
 
         var questions = new List<Question>
         {
-            new() { Id = 1, ContentId = 1, QuestionText = "Question 1", PostedBy = user1 },
-            new() { Id = 2, ContentId = 1, QuestionText = "Question 2", PostedBy = user1 },
-            new() { Id = 3, ContentId = 2, QuestionText = "Question 3", PostedBy = user2 }
+            new() { Id = 1, ContentId = 1, QuestionText = "Question 1", PostedBy = user1, },
+            new() { Id = 2, ContentId = 1, QuestionText = "Question 2", PostedBy = user1, },
+            new() { Id = 3, ContentId = 2, QuestionText = "Question 3", PostedBy = user2, }
         };
         _context.Questions.AddRange(questions);
         await _context.SaveChangesAsync();

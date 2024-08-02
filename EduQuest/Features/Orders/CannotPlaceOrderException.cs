@@ -3,7 +3,7 @@
 namespace EduQuest.Features.Orders
 {
     [Serializable]
-    internal class CannotPlaceOrderException : Exception
+    public class CannotPlaceOrderException : Exception
     {
         public CannotPlaceOrderException()
         {
