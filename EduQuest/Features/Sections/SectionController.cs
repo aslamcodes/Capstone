@@ -2,6 +2,7 @@
 using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Features.Contents;
 using EduQuest.Features.Contents.Dto;
+using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,6 +70,10 @@ namespace EduQuest.Features.Sections
 
                 return section;
             }
+            catch (ReferenceConstraintException)
+            {
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Invalid course id"));
+            }
             catch (EntityNotFoundException)
             {
                 return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Course not found"));
@@ -79,7 +84,6 @@ namespace EduQuest.Features.Sections
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -97,6 +101,10 @@ namespace EduQuest.Features.Sections
                 var updatedSection = await sectionService.Update(section);
 
                 return Ok(updatedSection);
+            }
+            catch (ReferenceConstraintException ex)
+            {
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Invalid course id"));
             }
             catch (EntityNotFoundException ex)
             {

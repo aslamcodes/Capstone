@@ -3,6 +3,7 @@ using EduQuest.Features.Articles;
 using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Features.Contents.Dto;
 using EduQuest.Features.Videos;
+using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace EduQuest.Features.Contents
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -44,6 +45,10 @@ namespace EduQuest.Features.Contents
 
                 return Ok(updatedContent);
             }
+            catch (ReferenceConstraintException ex)
+            {
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Invalid Section Id"));
+            }
             catch (EntityNotFoundException ex)
             {
                 return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
@@ -54,8 +59,7 @@ namespace EduQuest.Features.Contents
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -82,8 +86,7 @@ namespace EduQuest.Features.Contents
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -99,14 +102,22 @@ namespace EduQuest.Features.Contents
 
                 if (content.ContentType == ContentTypeEnum.Article.ToString())
                 {
-                    await articleService.Add(new ArticleDto { ContentId = content.Id, Title = content.Title, Body = "", Description = "" });
+                    await articleService.Add(new ArticleDto
+                        { ContentId = content.Id, Title = content.Title, Body = "", Description = "" });
                 }
                 else if (content.ContentType == ContentTypeEnum.Video.ToString())
                 {
-                    await videoService.Add(new VideoDto { ContentId = content.Id, DurationHours = 0, DurationMinutes = 0, DurationSeconds = 0, Url = "" });
+                    await videoService.Add(new VideoDto
+                    {
+                        ContentId = content.Id, DurationHours = 0, DurationMinutes = 0, DurationSeconds = 0, Url = ""
+                    });
                 }
 
                 return Ok(content);
+            }
+            catch (ReferenceConstraintException ex)
+            {
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Invalid Section Id"));
             }
             catch (UnAuthorisedUserExeception ex)
             {
@@ -119,8 +130,7 @@ namespace EduQuest.Features.Contents
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 

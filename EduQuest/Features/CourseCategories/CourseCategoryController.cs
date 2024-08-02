@@ -10,9 +10,16 @@ namespace EduQuest.Features.CourseCategories
         [HttpGet]
         public async Task<ActionResult<IList<CourseCategory>>> GetCourseCategories()
         {
-            var categories = await categoryService.GetAll();
+            try
+            {
+                var categories = await categoryService.GetAll();
 
-            return Ok(categories);
+                return Ok(categories);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

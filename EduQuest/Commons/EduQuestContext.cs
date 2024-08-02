@@ -1,4 +1,5 @@
 ﻿using EduQuest.Entities;
+using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduQuest.Commons
@@ -36,6 +37,11 @@ namespace EduQuest.Commons
         public DbSet<CourseSkill> CourseSkills { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseExceptionProcessor();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

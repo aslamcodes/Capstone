@@ -28,11 +28,16 @@ namespace EduQuest.Features.Notes
             }
             catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, "Not enough permissions"));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -47,13 +52,18 @@ namespace EduQuest.Features.Notes
 
                 return Ok(note);
             }
-            catch (EntityNotFoundException ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -69,17 +79,18 @@ namespace EduQuest.Features.Notes
 
                 return Ok(updatedNote);
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -97,17 +108,18 @@ namespace EduQuest.Features.Notes
 
                 return Ok(deletedNote);
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -150,9 +162,18 @@ namespace EduQuest.Features.Notes
 
                 return Ok(notes);
             }
+            catch (UnAuthorisedUserExeception)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
+            }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
     }

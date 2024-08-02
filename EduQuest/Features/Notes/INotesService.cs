@@ -5,6 +5,6 @@ namespace EduQuest.Features.Notes
 {
     public interface INotesService : IBaseService<Note, NoteDto>
     {
-        Task<NoteDto> GetNotesForContent(int contentId);
+        Task<NoteDto?> GetNotesForContent(int contentId);
     }
 }

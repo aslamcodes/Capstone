@@ -127,6 +127,14 @@ namespace EduQuest.Features.Videos
 
                 return Ok(updatedVideo);
             }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
             catch (Exception ex)
             {
                 return StatusCode(500);

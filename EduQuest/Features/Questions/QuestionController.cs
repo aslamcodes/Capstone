@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using EduQuest.Commons;
+using EduQuest.Features.Auth.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Questions
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QuestionController(IQuestionService questionService, IMapper mapper, ControllerValidator validator) : ControllerBase
+    public class QuestionController(IQuestionService questionService, IMapper mapper, ControllerValidator validator)
+        : ControllerBase
     {
         [HttpGet("For-Content")]
         public async Task<ActionResult<QuestionDto>> GetQuestionsForContent([FromQuery] int contentId)
@@ -14,15 +16,21 @@ namespace EduQuest.Features.Questions
             try
             {
                 await validator.ValidateUserPrivilegeForContent(User.Claims, contentId);
-
                 var questions = await questionService.GetQuestionsForContent(contentId);
-
                 return Ok(questions);
+            }
+            catch (UnAuthorisedUserExeception)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -31,13 +39,9 @@ namespace EduQuest.Features.Questions
         {
             try
             {
-                if (ControllerValidator.GetUserIdFromClaims(User.Claims) != questionDto.PostedById)
-                {
-                    return Unauthorized(
-                        new ErrorModel(StatusCodes.Status401Unauthorized, "Unauthorized access to the resource")
-                        );
-                };
+                await validator.ValidateUserPrivilageForUserId(User.Claims, questionDto.PostedById);
 
+              
                 var question = await questionService.Add(new QuestionDto
                 {
                     ContentId = questionDto.ContentId,
@@ -45,13 +49,19 @@ namespace EduQuest.Features.Questions
                     PostedOn = DateTime.Now,
                     QuestionText = questionDto.QuestionText,
                 });
-
                 return Ok(question);
+            }  catch (UnAuthorisedUserExeception)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -61,29 +71,23 @@ namespace EduQuest.Features.Questions
             try
             {
                 var question = await questionService.GetById(id);
-
-                if (ControllerValidator.GetUserIdFromClaims(User.Claims) != question.PostedById)
-                {
-                    return Unauthorized(
-                        new ErrorModel(StatusCodes.Status401Unauthorized, "Unauthorized access to the resource")
-                    );
-                }
-
+                await validator.ValidateUserPrivilageForUserId(User.Claims, question.PostedById);
                 await questionService.DeleteById(id);
-
                 return Ok(question);
+            }
+            catch (UnAuthorisedUserExeception)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
             catch (EntityNotFoundException)
             {
-                return NotFound(
-                                   new ErrorModel(StatusCodes.Status404NotFound, "Resource not found")
-                                                  );
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+               return StatusCode(500);
             }
         }
-
     }
 }

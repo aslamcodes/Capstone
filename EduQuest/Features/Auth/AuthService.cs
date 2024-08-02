@@ -32,7 +32,7 @@ namespace EduQuest.Features.Auth
             HMACSHA512 hMACSHA = new();
 
 
-            Entities.User existingUser;
+            User existingUser;
 
             try
             {
@@ -57,6 +57,7 @@ namespace EduQuest.Features.Auth
 
             var user = new User()
             {
+                ProfilePictureUrl = "",
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,

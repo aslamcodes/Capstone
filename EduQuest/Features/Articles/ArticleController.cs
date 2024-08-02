@@ -30,7 +30,7 @@ namespace EduQuest.Features.Articles
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -47,7 +47,7 @@ namespace EduQuest.Features.Articles
 
                 return Ok(addedArticle);
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnAuthorisedUserExeception ex)
             {
                 return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
             }
@@ -57,7 +57,7 @@ namespace EduQuest.Features.Articles
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -75,7 +75,7 @@ namespace EduQuest.Features.Articles
 
                     return Ok(updatedArticle);
                 }
-                catch (UnauthorizedAccessException ex)
+                catch (UnAuthorisedUserExeception ex)
                 {
                     return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
                 }
@@ -85,7 +85,7 @@ namespace EduQuest.Features.Articles
                 }
                 catch (Exception)
                 {
-                    throw;
+                    return StatusCode(500);
                 }
             }
 

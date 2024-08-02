@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using EduQuest.Commons;
+using EduQuest.Features.Auth.Exceptions;
+using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +9,7 @@ namespace EduQuest.Features.Answers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AnswersController(IAnswerService answerService, IMapper mapper) : Controller
+    public class AnswersController(IAnswerService answerService, IMapper mapper, ControllerValidator validator) : Controller
     {
         [HttpGet("For-Question")]
         [Authorize]
@@ -14,14 +17,13 @@ namespace EduQuest.Features.Answers
         {
             try
             {
-                //TODO: Assert validity of the user to perform this action
                 var answers = await answerService.GetAnswersForQuestion(questionId);
 
                 return Ok(answers);
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -31,15 +33,25 @@ namespace EduQuest.Features.Answers
         {
             try
             {
-                //TODO: Assert validity of the user to perform this action  
+                await validator.ValidateUserPrivilageForUserId(User.Claims, answerDto.AnsweredById);
 
                 var answer = await answerService.Add(mapper.Map<AnswerDto>(answerDto));
 
                 return Ok(answer);
             }
+            catch (UnAuthorisedUserExeception)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "You are not authorised to perform this action"));
+            }
+            catch (ReferenceConstraintException)
+            {
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest,
+                    "The question you are trying to answer does not exist"));
+            }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
     }

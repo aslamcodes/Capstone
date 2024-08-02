@@ -6,6 +6,7 @@ using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Features.Contents;
 using EduQuest.Features.Courses.Dto;
 using EduQuest.Features.Sections;
+using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,12 +14,13 @@ namespace EduQuest.Features.Courses
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseController(ICourseService courseService,
-                                  ISectionService sectionService,
-                                  IContentService contentService,
-                                  ControllerValidator validator,
-                                  BlobServiceClient blobService,
-                                  IMapper mapper) : Controller
+    public class CourseController(
+        ICourseService courseService,
+        ISectionService sectionService,
+        IContentService contentService,
+        ControllerValidator validator,
+        BlobServiceClient blobService,
+        IMapper mapper) : Controller
     {
         [HttpPost]
         [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
@@ -29,19 +31,26 @@ namespace EduQuest.Features.Courses
             try
             {
                 await validator.ValidateEducatorPrevilege(User.Claims, request.EducatorId);
-
                 var course = await courseService.Add(mapper.Map<CourseDTO>(request));
-
                 return Ok(course);
+            }
+            catch (ReferenceConstraintException ex)
+            {
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest,
+                    "Invalid category id or educator id"));
             }
             catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, "Not having enought permissions"));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -51,14 +60,11 @@ namespace EduQuest.Features.Courses
             try
             {
                 var sections = await sectionService.GetSectionForCourse(courseId);
-
                 return Ok(sections);
-
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -67,23 +73,19 @@ namespace EduQuest.Features.Courses
         {
             try
             {
-                if (courseId == 0)
-                    throw new EntityNotFoundException("Course Id is required");
-
+                if (courseId == 0) throw new EntityNotFoundException("Course Id is required");
                 var course = await courseService.GetById(courseId);
-
                 return Ok(course);
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
-
 
         [HttpPut]
         [Authorize(Policy = "Educator")]
@@ -93,22 +95,26 @@ namespace EduQuest.Features.Courses
             {
                 await validator.ValidateEducatorPrevilege(User.Claims, course.EducatorId);
                 await validator.ValidateEducatorPrivilegeForCourse(User.Claims, course.Id);
-
-                var UpdatedCourse = await courseService.Update(course);
-
-                return Ok(UpdatedCourse);
+                var updatedCourse = await courseService.Update(course);
+                return Ok(updatedCourse);
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (ReferenceConstraintException ex)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest,
+                    "Invalid category id or educator id"));
             }
-            catch (EntityNotFoundException ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -119,29 +125,27 @@ namespace EduQuest.Features.Courses
             try
             {
                 await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
-
                 var removedSections = await sectionService.DeleteSectionsForCourse(courseId);
-
                 foreach (var section in removedSections)
                 {
                     await contentService.DeleteBySection(section.Id);
                 }
 
                 var deletedCourse = await courseService.DeleteById(courseId);
-
                 return Ok(deletedCourse);
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -150,20 +154,13 @@ namespace EduQuest.Features.Courses
         {
             try
             {
-
                 var studentId = ControllerValidator.GetUserIdFromClaims(User.Claims);
-
                 var courses = await courseService.GetCoursesForStudent(studentId);
-
                 return Ok(courses);
-            }
-            catch (UnAuthorisedUserExeception ex)
-            {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -173,16 +170,15 @@ namespace EduQuest.Features.Courses
             try
             {
                 var courses = await courseService.GetCoursesForEducator(educatorId);
-
                 return Ok(courses);
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -193,9 +189,7 @@ namespace EduQuest.Features.Courses
             try
             {
                 await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
-
                 var validity = await courseService.GetCourseValidity(courseId);
-
                 return Ok(validity);
             }
             catch (UnAuthorisedUserExeception ex)
@@ -208,10 +202,9 @@ namespace EduQuest.Features.Courses
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
-
 
         [HttpPut("Submit-For-Review")]
         [Authorize(Policy = "Educator")]
@@ -220,45 +213,42 @@ namespace EduQuest.Features.Courses
             try
             {
                 await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
-
                 var validity = await courseService.GetCourseValidity(courseId);
-
-                if (!validity.IsValid) return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Course not passed validity check"));
-
+                if (!validity.IsValid)
+                    return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest,
+                        "Course not passed validity check"));
                 var course = await courseService.SetCourseUnderReview(courseId);
-
                 return Ok(course);
             }
-            catch (UnAuthorisedUserExeception ex)
-            {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
-            }
-            catch (InvalidCourseStatusException ex)
+           catch (InvalidCourseStatusException ex)
             {
                 return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, ex.Message));
             }
-            catch (EntityNotFoundException ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
         [HttpPut("Course-Thumbnail")]
         [Authorize(Policy = "Educator")]
-        public async Task<ActionResult<CourseDTO>> SetCourseThumbnail([FromQuery] int courseId, [FromForm] IFormFile thumbnail)
+        public async Task<ActionResult<CourseDTO>> SetCourseThumbnail([FromQuery] int courseId,
+            [FromForm] IFormFile thumbnail)
         {
             try
             {
                 await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
-
                 BlobContainerClient profileContainer = blobService.GetBlobContainerClient("course-images");
-
                 BlobClient blob = profileContainer.GetBlobClient($"{courseId}-profile.jpg");
-
                 if (await blob.ExistsAsync())
                 {
                     await blob.DeleteAsync();
@@ -272,42 +262,37 @@ namespace EduQuest.Features.Courses
                 }
 
                 var fileUrl = blob.Uri.AbsoluteUri;
-
                 var course = await courseService.GetById(courseId);
-
                 course.CourseThumbnailPicture = fileUrl;
-
                 var updatedCourse = await courseService.Update(course);
-
                 return Ok(updatedCourse);
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
-
-
         }
+
         [HttpGet("search")]
         public async Task<ActionResult<List<CourseDTO>>> SearchCourse([FromQuery] string query)
         {
             try
             {
                 var courses = await courseService.SearchCourse(query);
-
                 return Ok(courses);
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -318,7 +303,6 @@ namespace EduQuest.Features.Courses
             try
             {
                 var courses = await courseService.GetCoursesByStatus(status);
-
                 return Ok(courses);
             }
             catch (EntityNotFoundException ex)
@@ -327,10 +311,9 @@ namespace EduQuest.Features.Courses
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
-
 
         [HttpPut("set-course-live")]
         [Authorize(Policy = "Admin")]
@@ -339,13 +322,15 @@ namespace EduQuest.Features.Courses
             try
             {
                 var course = await courseService.SetCourseLive(courseId);
-
                 return Ok(course);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -356,15 +341,16 @@ namespace EduQuest.Features.Courses
             try
             {
                 var course = await courseService.SetCourseOutdated(courseId);
-
                 return Ok(course);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
-
     }
 }

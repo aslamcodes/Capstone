@@ -21,18 +21,18 @@ namespace EduQuest.Features.Orders
 
                 return Ok(order);
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -52,18 +52,18 @@ namespace EduQuest.Features.Orders
             {
                 return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, ex.Message));
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -79,18 +79,18 @@ namespace EduQuest.Features.Orders
 
                 return Ok(order);
             }
-            catch (UnAuthorisedUserExeception ex)
+            catch (UnAuthorisedUserExeception)
             {
-                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
+                    "Unauthorized access to the resource"));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
-                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, "Resource not found"));
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -100,16 +100,16 @@ namespace EduQuest.Features.Orders
         {
             try
             {
-                int userId = ControllerValidator.GetUserIdFromClaims(User.Claims);
+                var userId = ControllerValidator.GetUserIdFromClaims(User.Claims);
 
-                List<OrderDto> orders = await orderService.GetOrdersForUser(userId);
+                var orders = await orderService.GetOrdersForUser(userId);
 
                 return Ok(orders);
             }
+        
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
 
         }
