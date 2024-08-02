@@ -25,7 +25,7 @@ using Microsoft.Extensions.Azure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using StudentCourseRepo = EduQuest.Entities.StudentCourseRepo;
+using StudentCourse = EduQuest.Entities.StudentCourse;
 
 namespace EduQuest
 {
@@ -133,7 +133,7 @@ namespace EduQuest
             builder.Services.AddScoped<IRepository<int, User>, UserRepo>();
             builder.Services.AddScoped<IRepository<int, Order>, OrderRepo>();
             builder.Services.AddScoped<IRepository<int, Payment>, PaymentRepo>();
-            builder.Services.AddScoped<IRepository<int, StudentCourseRepo>, Features.StudentCourses.StudentCourseRepo>();
+            builder.Services.AddScoped<IRepository<int, StudentCourse>, StudentCourseRepo>();
             builder.Services.AddScoped<IRepository<int, CourseCategory>, CategoryRepo>();
 
             builder.Services.AddScoped<IAnswerRepo, AnswerRepo>();

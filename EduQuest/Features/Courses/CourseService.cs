@@ -7,7 +7,7 @@ using EduQuest.Features.Sections;
 namespace EduQuest.Features.Courses
 
 {
-    public class CourseService(ICourseRepo courseRepo, IRepository<int, User> userRepo, IRepository<int, StudentCourseRepo> studentCourse, ISectionService sectionService, IMapper mapper) : BaseService<Course, CourseDTO>(courseRepo, mapper), ICourseService
+    public class CourseService(ICourseRepo courseRepo, IRepository<int, User> userRepo, IRepository<int, StudentCourse> studentCourse, ISectionService sectionService, IMapper mapper) : BaseService<Course, CourseDTO>(courseRepo, mapper), ICourseService
     {
         public override async Task<CourseDTO> Add(CourseDTO entity)
         {
@@ -23,7 +23,7 @@ namespace EduQuest.Features.Courses
         {
             var course = await courseRepo.GetByKey(courseId);
 
-            await studentCourse.Add(new StudentCourseRepo { StudentId = studentId, CourseId = courseId });
+            await studentCourse.Add(new StudentCourse { StudentId = studentId, CourseId = courseId });
 
             return mapper.Map<CourseDTO>(course);
         }

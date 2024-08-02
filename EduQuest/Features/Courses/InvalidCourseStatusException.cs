@@ -3,7 +3,7 @@
 namespace EduQuest.Features.Courses
 {
     [Serializable]
-    internal class InvalidCourseStatusException : Exception
+    public class InvalidCourseStatusException : Exception
     {
         public InvalidCourseStatusException()
         {

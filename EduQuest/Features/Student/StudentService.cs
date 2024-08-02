@@ -6,7 +6,7 @@ using EduQuest.Features.Courses.Dto;
 
 namespace EduQuest.Features.Student
 {
-    public class StudentService(ICourseService courseService, IRepository<int, StudentCourseRepo> studentCourseRepo, IMapper mapper) : IStudentService
+    public class StudentService(ICourseService courseService, IRepository<int, StudentCourse> studentCourseRepo, IMapper mapper) : IStudentService
     {
 
 

@@ -2,12 +2,11 @@ using EduQuest.Commons;
 using EduQuest.Entities;
 using EduQuest.Features.StudentCourses;
 using Microsoft.EntityFrameworkCore;
-using StudentCourseRepo = EduQuest.Entities.StudentCourseRepo;
 
 namespace EduQuestTests.Courses;
 
 [TestFixture]
-public class StudentCourseRepoTests
+public class StudentCourseTests
 {
     [SetUp]
     public void Setup()
@@ -17,7 +16,7 @@ public class StudentCourseRepoTests
             .Options;
 
         _context = new EduQuestContext(options);
-        _studentCourseRepo = new EduQuest.Features.StudentCourses.StudentCourseRepo(_context);
+        _studentCourseRepo = new StudentCourseRepo(_context);
     }
 
     [TearDown]
@@ -28,7 +27,7 @@ public class StudentCourseRepoTests
     }
 
     private EduQuestContext _context;
-    private EduQuest.Features.StudentCourses.StudentCourseRepo _studentCourseRepo;
+    private IStudentCourseRepo _studentCourseRepo;
 
     [Test]
     public async Task GetAll_ReturnsAllStudentCoursesWithCourses()
@@ -43,9 +42,9 @@ public class StudentCourseRepoTests
 
         var studentCourses = new[]
         {
-            new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1, Course = courses[0] },
-            new StudentCourseRepo { Id = 2, CourseId = 2, StudentId = 1, Course = courses[1] },
-            new StudentCourseRepo { Id = 3, CourseId = 1, StudentId = 2, Course = courses[0] }
+            new StudentCourse { Id = 1, CourseId = 1, StudentId = 1, Course = courses[0] },
+            new StudentCourse { Id = 2, CourseId = 2, StudentId = 1, Course = courses[1] },
+            new StudentCourse { Id = 3, CourseId = 1, StudentId = 2, Course = courses[0] }
         };
         _context.StudentCourses.AddRange(studentCourses);
         await _context.SaveChangesAsync();
@@ -68,7 +67,7 @@ public class StudentCourseRepoTests
         _context.Courses.Add(course);
         await _context.SaveChangesAsync();
 
-        var studentCourse = new StudentCourseRepo { CourseId = 1, StudentId = 1 };
+        var studentCourse = new StudentCourse { CourseId = 1, StudentId = 1 };
 
         // Act
         var result = await _studentCourseRepo.Add(studentCourse);
@@ -85,7 +84,7 @@ public class StudentCourseRepoTests
         var course = new Course { Id = 1, Name = "Test Course", Description = "Test" };
         _context.Courses.Add(course);
 
-        var studentCourse = new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1 };
+        var studentCourse = new StudentCourse { Id = 1, CourseId = 1, StudentId = 1 };
         _context.StudentCourses.Add(studentCourse);
         await _context.SaveChangesAsync();
 
@@ -106,7 +105,7 @@ public class StudentCourseRepoTests
         var course = new Course { Id = 1, Name = "Test Course",  Description = "Test" };
         _context.Courses.Add(course);
 
-        var studentCourse = new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1 };
+        var studentCourse = new StudentCourse { Id = 1, CourseId = 1, StudentId = 1 };
         _context.StudentCourses.Add(studentCourse);
         await _context.SaveChangesAsync();
 
@@ -127,7 +126,7 @@ public class StudentCourseRepoTests
         var course = new Course { Id = 1, Name = "Test Course", Description = "asdasd"};
         _context.Courses.Add(course);
 
-        var studentCourse = new StudentCourseRepo { Id = 1, CourseId = 1, StudentId = 1, };
+        var studentCourse = new StudentCourse { Id = 1, CourseId = 1, StudentId = 1, };
         _context.StudentCourses.Add(studentCourse);
         await _context.SaveChangesAsync();
 

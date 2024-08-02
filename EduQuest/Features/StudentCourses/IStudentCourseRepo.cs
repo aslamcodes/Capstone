@@ -1,6 +1,9 @@
-﻿namespace EduQuest.Features.StudentCourses
+﻿using EduQuest.Commons;
+using EduQuest.Entities;
+
+namespace EduQuest.Features.StudentCourses
 {
-    public interface IStudentCourseRepo
+    public interface IStudentCourseRepo: IRepository<int, StudentCourse>
     {
 
     }
