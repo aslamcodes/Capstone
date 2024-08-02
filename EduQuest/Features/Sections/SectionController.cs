@@ -116,8 +116,7 @@ namespace EduQuest.Features.Sections
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
 
         }

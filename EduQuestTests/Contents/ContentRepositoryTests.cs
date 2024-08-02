@@ -116,6 +116,7 @@ public class ContentRepositoryTests
             { Id = 1, Title = "Test Content", SectionId = 1, ContentType = ContentTypeEnum.Video };
         await _context.Contents.AddAsync(content);
         await _context.SaveChangesAsync();
+        _context.Entry(content).State = EntityState.Detached;
 
         // Act
         var result = await _repo.Delete(1);

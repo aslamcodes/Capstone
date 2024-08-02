@@ -1,5 +1,8 @@
-﻿namespace EduQuest.Features.Orders
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace EduQuest.Features.Orders
 {
+    [ExcludeFromCodeCoverage]
     public class OrderDto
     {
         public int Id { get; set; }

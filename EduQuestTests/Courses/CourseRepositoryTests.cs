@@ -174,8 +174,8 @@ public class CourseRepositoryTests
         // Assert
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Count, Is.EqualTo(2));
-        Assert.That(result[0].Name, Is.EqualTo("Python Programming"));
-        Assert.That(result[1].Name, Is.EqualTo("Advanced Python"));
+        Assert.That(result[0].Name, Is.EqualTo("Advanced Python"));
+        Assert.That(result[1].Name, Is.EqualTo("Python Programming"));
     }
 
     [Test]

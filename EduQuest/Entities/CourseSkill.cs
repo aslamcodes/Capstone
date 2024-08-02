@@ -1,7 +1,9 @@
-﻿using EduQuest.Commons;
+﻿using System.Diagnostics.CodeAnalysis;
+using EduQuest.Commons;
 
 namespace EduQuest.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class CourseSkill : BaseEntity
     {
         public int Id { get; set; }

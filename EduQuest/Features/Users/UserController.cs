@@ -33,7 +33,7 @@ namespace EduQuest.Features.Users
             }
             catch (Exception)
             {
-                throw;
+              return  StatusCode(500);
             }
         }
 
@@ -52,7 +52,7 @@ namespace EduQuest.Features.Users
             }
             catch (Exception)
             {
-                throw;
+              return  StatusCode(500);
             }
         }
 
@@ -76,7 +76,7 @@ namespace EduQuest.Features.Users
             }
             catch (Exception)
             {
-                throw;
+               return StatusCode(500);
             }
         }
 
@@ -152,7 +152,7 @@ namespace EduQuest.Features.Users
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(500);
             }
         }
     }

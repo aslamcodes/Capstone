@@ -61,8 +61,10 @@ public class ReviewRepoTests
     public async Task GetReviewsByCourse_ReturnsCorrectReviews()
     {
         // Arrange
-        var user1 = new User { Id = 1, FirstName = "John" };
-        var user2 = new User { Id = 2, FirstName = "Jane" };
+        var user1 = new User { Id = 1, FirstName = "John",  LastName = "Test", Email = "tes1t@test.com", Password = [],
+            PasswordHashKey = [], ProfilePictureUrl = "1231", };
+        var user2 = new User { Id = 2, FirstName = "Jane" , LastName = "Test", Email = "tes12t@test.com", Password = [],
+            PasswordHashKey = [], ProfilePictureUrl = "1231"};
         _context.Users.AddRange(user1, user2);
 
         var reviews = new[]

@@ -6,9 +6,20 @@ using Microsoft.EntityFrameworkCore;
 namespace EduQuestTests.CatergoryTests;
 
 [TestFixture]
-public class CategoryRepoTests
+public class CategoryRepoTests : IDisposable, IAsyncDisposable
 {
     private EduQuestContext _context;
+
+    public void Dispose()
+    {
+        _context.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _context.DisposeAsync();
+    }
+
     private CategoryRepo _repo;
 
     [SetUp]
@@ -20,12 +31,7 @@ public class CategoryRepoTests
         _repo = new CategoryRepo(_context);
     }
 
-    [TearDown]
-    public void TearDown()
-    {
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
-    }
+    
 
     [Test]
     public async Task Add_ShouldAddCourseCategoryToDatabase()

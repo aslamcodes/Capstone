@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EduQuest.Features.Courses
 {
+    [ExcludeFromCodeCoverage]
     public class CourseRequestDTO
     {
         public string Name { get; set; }

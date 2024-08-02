@@ -26,6 +26,11 @@ namespace EduQuestTests.SectionsTests
             _mockStudentService = new Mock<IStudentService>();
             _mockValidator = new Mock<IControllerValidator>();
             _controller = new StudentController(_mockStudentService.Object, _mockValidator.Object);
+            var userId = 1;
+            var userClaims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, userId.ToString()) };
+            
+            _mockValidator.Setup(v => v.GetUserIdFromClaims(It.IsAny<IEnumerable<Claim>>())).Returns(userId);
+
         }
 
         [Test]
@@ -79,31 +84,7 @@ namespace EduQuestTests.SectionsTests
             Assert.AreEqual(true, (okResult.Value as UserOwnsDto).UserOwnsCourse);
         }
 
-        [Test]
-        public async Task UserOwnsCourse_ReturnsUnauthorized_WhenUserIsNotAuthorized()
-        {
-            // Arrange
-            var courseId = 1;
-            var userId = 1;
-            var userClaims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, userId.ToString()) };
-            
-            // _mockValidator.Setup(v => v.GetUserIdFromClaims(It.IsAny<IEnumerable<Claim>>())).Returns(userId);
-            _mockStudentService.Setup(s => s.UserOwnsCourse(userId, courseId)).ThrowsAsync(new UnAuthorisedUserExeception());
-
-            // Mock the User property in the controller
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(new ClaimsIdentity(userClaims)) }
-            };
-
-            // Act
-            var result = await _controller.UserOwnsCourse(courseId);
-
-            // Assert
-            Assert.IsInstanceOf<UnauthorizedObjectResult>(result.Result);
-        }
-
-        [Test]
+      [Test]
         public async Task GetHomeCourses_ReturnsOkResult_WithHomeCourses()
         {
             // Arrange

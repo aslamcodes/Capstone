@@ -1,4 +1,5 @@
 
+using System.Diagnostics.CodeAnalysis;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using EduQuest.Commons;
@@ -29,6 +30,7 @@ using StudentCourse = EduQuest.Entities.StudentCourse;
 
 namespace EduQuest
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static void Main(string[] args)

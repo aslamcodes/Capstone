@@ -1,5 +1,8 @@
-﻿namespace EduQuest.Features.Videos
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace EduQuest.Features.Videos
 {
+    [ExcludeFromCodeCoverage]
     public class VideoRequestDto
     {
         public int ContentId { get; set; }

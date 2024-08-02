@@ -1,7 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace EduQuest.Features.Payments
 {
+    [ExcludeFromCodeCoverage]
     [Serializable]
     public class CannotMakePaymentException : Exception
     {

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using EduQuest.Entities;
 using EduQuest.Features.Answers;
 using EduQuest.Features.Articles;
@@ -17,6 +18,7 @@ using EduQuest.Features.Videos;
 
 namespace EduQuest.Config
 {
+    [ExcludeFromCodeCoverage]
     public class MappingProfile : Profile
     {
         public MappingProfile()

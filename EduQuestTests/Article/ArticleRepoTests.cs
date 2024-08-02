@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EduQuestTests
+namespace EduQuestTests.Articles
 {
     public class ArticleRepoTests
     {
