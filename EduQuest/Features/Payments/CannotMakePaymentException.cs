@@ -3,7 +3,7 @@
 namespace EduQuest.Features.Payments
 {
     [Serializable]
-    internal class CannotMakePaymentException : Exception
+    public class CannotMakePaymentException : Exception
     {
         public CannotMakePaymentException()
         {

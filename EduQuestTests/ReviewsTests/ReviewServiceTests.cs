@@ -4,7 +4,7 @@ using EduQuest.Entities;
 using EduQuest.Features.Reviews;
 using AutoMapper;
 
-namespace EduQuest.Tests
+namespace EduQuestTests.ReviewsTests
 {
     [TestFixture]
     public class ReviewServiceTests

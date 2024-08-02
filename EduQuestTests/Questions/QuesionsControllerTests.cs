@@ -5,14 +5,10 @@ using EduQuest.Features.Questions;
 using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Commons;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using System;
 using EduQuest.Entities;
 
-namespace EduQuest.Tests
+namespace EduQuestTests.Questions
 {
     [TestFixture]
     public class QuestionControllerTests
