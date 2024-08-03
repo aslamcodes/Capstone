@@ -13,5 +13,15 @@ export default function useCourse(courseId: number) {
     params: { courseId },
   });
 
-  return { course: data, isLoading, error };
+  return {
+    course: data
+      ? {
+          ...data,
+          courseThumbnailPicture:
+            data.courseThumbnailPicture + "?" + Date.now(),
+        }
+      : data,
+    isLoading,
+    error,
+  };
 }

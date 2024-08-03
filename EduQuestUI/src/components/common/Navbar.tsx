@@ -78,7 +78,11 @@ const Navbar = () => {
                       <img
                         alt="Tailwind CSS Navbar component"
                         className="w-32 h-22"
-                        src={userProfile?.profilePictureUrl as string}
+                        src={
+                          (userProfile?.profilePictureUrl +
+                            "?" +
+                            Date.now()) as string
+                        }
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-base-300 text-base-content flex items-center justify-center">

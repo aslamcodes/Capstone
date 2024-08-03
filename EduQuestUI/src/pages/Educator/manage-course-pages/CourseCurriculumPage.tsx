@@ -75,7 +75,11 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
   }
 
   if (error) {
-    return <div>{JSON.stringify(error)}</div>;
+    return (
+      <p className="alert alert-error">
+        {error.response?.data?.message || error.message}
+      </p>
+    );
   }
 
   const handleOrderChange = async (sectionId: number, orderId: number) => {

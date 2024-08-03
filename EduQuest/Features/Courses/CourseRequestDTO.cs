@@ -20,8 +20,8 @@ namespace EduQuest.Features.Courses
 
         public float Price { get; set; }
 
-        [RegularExpression("^(Begginer|Intermediate|Advanced)$",
-            ErrorMessage = "Invalid value. Allowed values are: Begginer, Intermediate, Advanced.")]
+        [RegularExpression("^(Beginner|Intermediate|Advanced)$",
+            ErrorMessage = "Invalid value. Allowed values are: Beginner, Intermediate, Advanced.")]
         public string Level { get; set; }
     }
 }

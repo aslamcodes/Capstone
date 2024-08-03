@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import SectionDrop from "../../components/Course/SectionDrop";
 import { useState } from "react";
 import useSections from "../../hooks/fetchers/useSections";
@@ -6,6 +6,7 @@ import Loader from "../../components/common/Loader";
 import ContentViewer from "../../components/Course/ContentViewer";
 import ContentTabs from "../../components/Course/ContentTabs";
 import { useAuthContext } from "../../contexts/auth/authReducer";
+import useUserOwnsCourse from "../../hooks/fetchers/useUserOwnsCourse";
 
 const CoursePage = () => {
   const { courseId } = useParams();
@@ -13,9 +14,12 @@ const CoursePage = () => {
   const navigate = useNavigate();
   const [currentContentId, setCurrentContentId] = useState<number | null>(null);
 
+  const { isUserOwns, isLoading: checkingCourseOwnership } = useUserOwnsCourse(
+    Number(courseId)
+  );
   const { isLoading, sections } = useSections(courseId as string);
 
-  if (isLoading) {
+  if (isLoading || checkingCourseOwnership) {
     return <Loader />;
   }
 
@@ -25,6 +29,20 @@ const CoursePage = () => {
 
   if (!user) {
     navigate("/login");
+    return;
+  }
+
+  if (!isUserOwns) {
+    return (
+      <div>
+        <div className="alert alert-error">
+          Please Purchase the course to watch its content
+        </div>
+        <Link to={`/course-description/${courseId}`}>
+          <button className="btn btn-block">Go to Course</button>
+        </Link>
+      </div>
+    );
   }
 
   return (

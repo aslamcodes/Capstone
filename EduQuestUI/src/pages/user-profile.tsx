@@ -22,10 +22,12 @@ const UserProfile = () => {
 
   useEffect(() => {
     setUserProfile(user);
-    setPreviewUrl(user?.profilePictureUrl as string);
+    setPreviewUrl((user?.profilePictureUrl + "?" + Date.now()) as string);
   }, [user]);
 
   const handleUpdate = async () => {
+    if (!authUser) navigate("/");
+
     try {
       setIsUpdating(true);
       await handleUserProfileImageUpdate();
@@ -91,7 +93,10 @@ const UserProfile = () => {
     });
   };
 
-  if (!authUser) navigate("/login");
+  if (!authUser) {
+    navigate("/login");
+    return;
+  }
 
   if (isLoading)
     return (

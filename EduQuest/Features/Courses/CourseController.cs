@@ -246,9 +246,16 @@ namespace EduQuest.Features.Courses
         {
             try
             {
+                
+                if (thumbnail.ContentType is not "image/jpeg" and not "image/png" and not "image/jpg")
+                {
+                    return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Invalid file type"));
+                }
+                
                 await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
                 BlobContainerClient profileContainer = blobService.GetBlobContainerClient("course-images");
                 BlobClient blob = profileContainer.GetBlobClient($"{courseId}-profile.jpg");
+                
                 if (await blob.ExistsAsync())
                 {
                     await blob.DeleteAsync();
@@ -262,9 +269,10 @@ namespace EduQuest.Features.Courses
                 }
 
                 var fileUrl = blob.Uri.AbsoluteUri;
-                var course = await courseService.GetById(courseId);
-                course.CourseThumbnailPicture = fileUrl;
-                var updatedCourse = await courseService.Update(course);
+                var updatedCourse = await courseService.SetCourseProfile(courseId, fileUrl);
+                // var course = await courseService.GetById(courseId);
+                // course.CourseThumbnailPicture = fileUrl;
+                // var updatedCourse = await courseService.Update(course);
                 return Ok(updatedCourse);
             }
             catch (UnAuthorisedUserExeception)

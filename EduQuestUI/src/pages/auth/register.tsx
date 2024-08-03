@@ -33,10 +33,8 @@ export default function RegisterPage() {
   if (user) {
     customToast("Registered", {
       type: "success",
-      onClose: () => {
-        navigate("/");
-      },
     });
+    navigate("/");
   }
 
   if (error) {

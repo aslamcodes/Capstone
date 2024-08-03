@@ -124,5 +124,16 @@ namespace EduQuest.Features.Courses
 
             return mapper.Map<CourseDTO>(updatedCourse);
         }
+
+        public async Task<CourseDTO> SetCourseProfile(int courseId, string fileUrl)
+        {
+            var course =await courseRepo.GetByKey(courseId);
+            
+            course.CourseThumbnailPicture = fileUrl;
+            
+            var updatedCourse= await courseRepo.Update(course);
+
+            return mapper.Map<CourseDTO>(updatedCourse);
+        }
     }
 }

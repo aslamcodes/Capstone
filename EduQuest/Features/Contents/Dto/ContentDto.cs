@@ -16,8 +16,6 @@ namespace EduQuest.Features.Contents.Dto
         [Range(1, int.MaxValue, ErrorMessage = "SectionId must be a positive integer.")]
         public int SectionId { get; set; }
         
-        [Required(ErrorMessage = "OrderIndex is required.")]
-        [Range(0, int.MaxValue, ErrorMessage = "OrderIndex must be a non-negative integer.")]
         public int OrderIndex { get; set; }
         
         [Required(ErrorMessage = "ContentType is required.")]

@@ -1,11 +1,13 @@
 import MDEditor, { title } from "@uiw/react-md-editor";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../common/Loader";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Article } from "../../interfaces/course";
 import { customToast } from "../../utils/toast";
+import { getErrorMessage } from "../../utils/error";
+import { FaLaravel } from "react-icons/fa";
 
 const AritlceEditor = () => {
   const { user } = useAuthContext();
@@ -14,6 +16,12 @@ const AritlceEditor = () => {
 
   const [isSaving, setIsSaving] = useState(false);
   const [article, setArticle] = useState<Article | null>(null);
+  const navigate = useNavigate();
+
+  if (!user) {
+    navigate("/login");
+    return;
+  }
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -34,33 +42,35 @@ const AritlceEditor = () => {
     fetchContent();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (article) handleSave();
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [article]);
-
   const handleSave = async () => {
-    setIsSaving(true);
+    try {
+      setIsSaving(true);
 
-    await axios.put(
-      "/api/Article",
-      {
-        id: article?.id,
-        contentId: article?.contentId,
-        body: article?.body,
-        title: article?.title,
-        description: article?.description,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+      await axios.put(
+        "/api/Article",
+        {
+          id: article?.id,
+          contentId: article?.contentId,
+          body: article?.body,
+          title: article?.title,
+          description: article?.description,
         },
-      }
-    );
-    setIsSaving(false);
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      customToast("Saved", {
+        type: "success",
+      });
+    } catch (error) {
+      customToast(getErrorMessage(error), {
+        type: "error",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (

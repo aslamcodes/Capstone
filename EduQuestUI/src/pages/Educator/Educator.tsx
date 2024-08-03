@@ -11,9 +11,15 @@ const Educator = () => {
   const { user } = useAuthContext();
   const ref = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
+
   var { courses, coursesLoading, error } = useEducatorCourses(
     user?.id as number
   );
+
+  if (!user || !user.isEducator) {
+    navigate("/");
+    return;
+  }
 
   if (!courses) {
     return <div>No courses found</div>;

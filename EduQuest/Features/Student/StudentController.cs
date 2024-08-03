@@ -51,6 +51,31 @@ namespace EduQuest.Features.Student
             }
         }
 
+        [HttpGet("user-manages-course")]
+        [Authorize]
+        public async Task<ActionResult<bool>> UserManagesCourse([FromQuery] int courseId)
+        {
+            try
+            {
+
+                var userOwnsCourse = await studentService.UserManagesCourse(validator.GetUserIdFromClaims(User.Claims), courseId);
+
+                return Ok(userOwnsCourse);
+            }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(StatusCodes.Status500InternalServerError, ex.Message));
+            }
+        }
+
 
         [HttpGet("home-courses")]
         public async Task<ActionResult<List<CourseDTO>>> GetHomeCourses([FromQuery] int studentId)

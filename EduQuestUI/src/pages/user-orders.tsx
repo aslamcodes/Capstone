@@ -4,9 +4,19 @@ import { GoNumber } from "react-icons/go";
 import { BiCalendar } from "react-icons/bi";
 import axios from "axios";
 import OrderCard from "../components/order/OrderCard";
+import { useAuthContext } from "../contexts/auth/authReducer";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const UserOrders: React.FC = () => {
   const { orders } = useOrders();
+
+  const { user } = useAuthContext();
+
+  const navigate = useNavigate();
+
+  if (!user) {
+    navigate("/login");
+  }
 
   return (
     <div className="container mx-auto p-4">

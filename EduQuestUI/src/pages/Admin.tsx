@@ -17,11 +17,12 @@ const Admin = () => {
     customToast("Please login to view this page", { type: "info" });
   }
 
-  if (!user?.isAdmin) {
-    navigate("/");
+  if (!user || !user.isAdmin) {
+    navigate("/login");
     customToast("You are not authorized to view this page", {
       type: "error",
     });
+    return;
   }
 
   return (

@@ -33,10 +33,8 @@ export default function LoginPage() {
   if (user) {
     customToast("Logged in", {
       type: "success",
-      onClose: () => {
-        navigate("/");
-      },
     });
+    navigate("/");
   }
 
   if (error) {

@@ -38,6 +38,19 @@ namespace EduQuest.Features.Student
             return recommendedCourses;
         }
 
+        public async Task<UserOwnsDto> UserManagesCourse(int educatorId, int courseId)
+        {
+            var educatorCourses = await courseService.GetCoursesForEducator(educatorId);
+
+            var userManagesCourse = educatorCourses.Any(c => c.Id == courseId);
+
+            return new UserOwnsDto()
+            {
+                UserOwnsCourse = userManagesCourse,
+                CourseId = courseId,
+            };
+        }
+
         public async Task<UserOwnsDto> UserOwnsCourse(int studentId, int courseId)
         {
             var enrolledCourses = await courseService.GetCoursesForStudent(studentId);

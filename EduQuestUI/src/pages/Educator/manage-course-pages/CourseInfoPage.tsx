@@ -15,6 +15,7 @@ import Divider from "../../../components/common/divider";
 import { ImImage } from "react-icons/im";
 import Loader from "../../../components/common/Loader";
 import { customToast } from "../../../utils/toast";
+import { getErrorMessage } from "../../../utils/error";
 
 type Inputs = {
   name: string;
@@ -58,8 +59,10 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
 
   const [courseImage, setCourseImage] = useState<File | null>(null);
 
-  const [coursePreview, setCoursePreview] = useState<string>(
+  const [coursePreview, setCoursePreview] = useState<string | null>(
     initialCourse?.courseThumbnailPicture
+      ? initialCourse?.courseThumbnailPicture + "?" + Date.now()
+      : null
   );
 
   const {
@@ -82,6 +85,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
+      handleImageUpload();
       setIsSaving(true);
       const payload = {
         ...data,
@@ -94,7 +98,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
           headers: { Authorization: `Bearer ${user?.token}` },
         });
         setIsSaving(false);
-        customToast("Updates Saved!", {
+        customToast("Course Details Updated!", {
           type: "success",
         });
         return onSave(res.data);
@@ -111,9 +115,9 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
       customToast("Updates Saved!", {
         type: "success",
       });
-    } catch {
+    } catch (error) {
       setIsSaving(false);
-      customToast("Error Saving the Updates", {
+      customToast(getErrorMessage(error, "Error Saving Course Details"), {
         type: "error",
       });
     }
@@ -121,6 +125,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
 
   const handleImageUpload = useCallback(async () => {
     try {
+      if (!courseImage) return;
       setIsSaving(true);
       const formData = new FormData();
       formData.append("thumbnail", courseImage as Blob);
@@ -134,8 +139,13 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
           },
         }
       );
-    } catch {
-      customToast("Failed to upload the image", { type: "error" });
+    } catch (error: any) {
+      customToast(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to upload the image",
+        { type: "error" }
+      );
     } finally {
       setIsSaving(false);
     }
@@ -165,7 +175,6 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
             if (file) {
               setCourseImage(file);
               setCoursePreview(URL.createObjectURL(file));
-              handleImageUpload();
             }
           }}
         />
@@ -178,6 +187,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
           className="input input-bordered"
           {...register("name", { required: true })}
         />
+        {errors.name && <FormError message="Name is Required" />}
       </FormGroup>
       <FormGroup>
         <FormLabel>Course Description</FormLabel>
@@ -186,6 +196,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
           className="textarea textarea-bordered"
           {...register("description", { required: true })}
         />
+        {errors.description && <FormError message="Description is Required" />}
       </FormGroup>
       <FormGroup>
         <FormLabel>Price</FormLabel>
@@ -204,11 +215,12 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
       </FormGroup>
       <FormGroup>
         <FormLabel>Level</FormLabel>
+        <input type="text" />
         <select
           className="select select-bordered"
           {...register("level", { required: true })}
         >
-          <option value="Begginer">Begginer</option>
+          <option value="Beginner">Beginner</option>
           <option value="Intermediate">Intermediate</option>
           <option value="Advanced">Advanced</option>
         </select>

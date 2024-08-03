@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useCourse from "../../hooks/fetchers/useCourse";
 import axios, { AxiosError } from "axios";
@@ -9,6 +9,7 @@ import CourseDescription from "./ContentDescription";
 import { CourseReviews } from "./review";
 import { customToast } from "../../utils/toast";
 import useUserOwnsCourse from "../../hooks/fetchers/useUserOwnsCourse";
+import useEducatorProfile from "../../hooks/fetchers/useEducatorProfile";
 
 const CourseLanding = () => {
   const { courseId } = useParams();
@@ -20,6 +21,7 @@ const CourseLanding = () => {
     error,
   } = useSections(courseId as string);
   const { user } = useAuthContext();
+  const { educatorProfile } = useEducatorProfile(course?.educatorId as number);
 
   const navigate = useNavigate();
 
@@ -32,12 +34,13 @@ const CourseLanding = () => {
   }
 
   if (!course) {
-    return <div>Course not found</div>;
+    return <p className="alert alert-info">Course not found</p>;
   }
 
   if (!user) {
     customToast("Please login to view this page", { type: "info" });
-    return navigate("/login");
+    navigate("/login");
+    return;
   }
 
   const handleBuyCourse = async () => {
@@ -66,20 +69,28 @@ const CourseLanding = () => {
 
   return (
     <div>
-      <div>
-        <h1 className="text-4xl font-bold"></h1>
-        <p></p>
-      </div>
-
-      <div className="hero bg-base-200 min-h-screen">
+      <div className="hero bg-base-200 min-h-[80vh] rounded-lg">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <img
             src={course.courseThumbnailPicture as string}
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-lg rounded-lg shadow-2xl"
           />
           <div>
             <h1 className="text-5xl font-bold">{course.name}</h1>
-            <p className="py-6 break-all">{course.description}</p>
+            <p className="py-3 font-semibold break-all">
+              <span>By</span>
+              {educatorProfile?.profilePictureUrl ? (
+                <img
+                  className="inline w-8 h-8 rounded-full mx-2"
+                  src={educatorProfile?.profilePictureUrl}
+                />
+              ) : (
+                <div className=" w-8 h-8 rounded-full mx-2"></div>
+              )}
+              {educatorProfile?.firstName} {educatorProfile?.lastName}
+            </p>
+            <p className="py-4 break-all">{course.description}</p>
+
             <p className="py-6 break-all text-2xl font-bold">
               Rs. {course.price}
             </p>
@@ -95,7 +106,7 @@ const CourseLanding = () => {
             ) : (
               <button
                 disabled={isBuying}
-                className="btn btn-primary"
+                className="btn btn-lg glow-on-hover"
                 onClick={handleBuyCourse}
               >
                 Buy Course
