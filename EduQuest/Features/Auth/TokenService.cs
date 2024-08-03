@@ -30,18 +30,12 @@ namespace EduQuest.Features.Auth
         }
         public string GetUserRole(Entities.User user)
         {
-            if (user.IsEducator)
-            {
-                return "Educator";
-            }
-            else if (user.IsAdmin)
+            if (user.IsAdmin)
             {
                 return "Admin";
             }
-            else
-            {
-                return "Student";
-            }
+
+            return user.IsEducator ? "Educator" : "Student";
         }
     }
 }

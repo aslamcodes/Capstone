@@ -71,12 +71,14 @@ const CourseLanding = () => {
     <div>
       <div className="hero bg-base-200 min-h-[80vh] rounded-lg">
         <div className="hero-content flex-col lg:flex-row-reverse">
-          <img
-            src={course.courseThumbnailPicture as string}
-            className="max-w-lg rounded-lg shadow-2xl"
-          />
+          {course.courseThumbnailPicture && (
+            <img
+              src={course.courseThumbnailPicture as string}
+              className="max-w-lg rounded-lg shadow-2xl"
+            />
+          )}
           <div>
-            <h1 className="text-5xl font-bold">{course.name}</h1>
+            <h1 className="text-2xl md:text-5xl font-bold">{course.name}</h1>
             <p className="py-3 font-semibold break-all">
               <span>By</span>
               {educatorProfile?.profilePictureUrl ? (

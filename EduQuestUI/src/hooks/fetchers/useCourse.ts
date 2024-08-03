@@ -17,8 +17,9 @@ export default function useCourse(courseId: number) {
     course: data
       ? {
           ...data,
-          courseThumbnailPicture:
-            data.courseThumbnailPicture + "?" + Date.now(),
+          courseThumbnailPicture: data.courseThumbnailPicture
+            ? data.courseThumbnailPicture + "?" + Date.now()
+            : null,
         }
       : data,
     isLoading,

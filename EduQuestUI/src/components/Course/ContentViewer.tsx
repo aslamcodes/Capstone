@@ -3,6 +3,10 @@ import useContent from "../../hooks/fetchers/useContent";
 import VideoViewer from "./VideoViewer";
 import ArticleViewer from "./ArticleViewer";
 import { FcNoVideo } from "react-icons/fc";
+import { getErrorMessage } from "../../utils/error";
+import { GrArticle } from "react-icons/gr";
+import { BiVideo } from "react-icons/bi";
+import { MdArticle } from "react-icons/md";
 
 interface ContentViewerProps {
   contentId: number | null;
@@ -29,7 +33,8 @@ const ContentViewer: FC<ContentViewerProps> = ({ contentId }) => {
     );
   }
 
-  if (error) return <div>{error.response.data?.message}</div>;
+  if (error)
+    return <div className="alert alert-error">{getErrorMessage(error)}</div>;
 
   return (
     <div>
@@ -41,7 +46,14 @@ const ContentViewer: FC<ContentViewerProps> = ({ contentId }) => {
             <VideoViewer contentId={contentId} />
           )}
         </div>
-        <h1 className="text-2xl font-bold">{content.title}</h1>
+        <div className="flex items-center pb-8 gap-1">
+          {content.contentType === "Article" ? (
+            <MdArticle size={28} />
+          ) : (
+            <BiVideo size={24} className="mt-1" />
+          )}
+          <h1 className="text-2xl font-bold">{content.title}</h1>
+        </div>
       </div>
     </div>
   );

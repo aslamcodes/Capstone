@@ -46,7 +46,9 @@ const SectionDrop: FC<SectionProps> = ({
     >
       <input type="checkbox" />
 
-      <div className="collapse-title text-xl font-medium">{title}</div>
+      <div className="collapse-title text-lg md:text-xl font-medium">
+        {title}
+      </div>
       <div className="collapse-content">
         <p>{description}</p>
         <div className="mt-4">

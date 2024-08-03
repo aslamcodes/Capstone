@@ -87,8 +87,8 @@ const OrderPage = () => {
   if (!order) return <div className="text-center">Order not found</div>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Order Details</h1>
+    <div className="container mx-auto">
+      <h1 className="text-xl md:text-2xl font-bold mb-6">Order Details</h1>
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Order #{order.id}</h2>
@@ -115,7 +115,7 @@ const OrderPage = () => {
                 {isPaying ? <Loader /> : "Cancel"}
               </button>
               <button
-                className="btn btn-outline bg-base-content text-base-100"
+                className="btn btn-md md:btn-md btn-outline bg-base-content text-base-100"
                 onClick={handlePayment}
                 disabled={isLoading}
               >
