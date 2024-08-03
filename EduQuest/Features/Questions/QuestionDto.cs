@@ -1,4 +1,6 @@
-﻿namespace EduQuest.Features.Questions
+﻿using EduQuest.Features.Users;
+
+namespace EduQuest.Features.Questions
 {
     public class QuestionDto
     {

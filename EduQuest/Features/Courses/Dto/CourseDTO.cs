@@ -6,7 +6,12 @@ namespace EduQuest.Features.Courses.Dto
     [ExcludeFromCodeCoverage]
     public class CourseDTO
     {
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Id must be a positive integer.")]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
+        [StringLength(200, MinimumLength = 1, ErrorMessage = "Name must be between 1 and 200 characters.")]
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -24,12 +29,14 @@ namespace EduQuest.Features.Courses.Dto
 
         public string? CourseThumbnailPicture { get; set; }
 
+        [Required(ErrorMessage = "Educator Id is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Educator Id must be a positive integer.")]
         public int EducatorId { get; set; }
         public float Price { get; set; }
-
         public string CourseStatus { get; set; }
 
-        [RegularExpression("^(Begginer|Intermediate|Advanced)$", ErrorMessage = "Invalid value. Allowed values are: Begginer, Intermediate, Advanced.")]
+        [RegularExpression("^(Begginer|Intermediate|Advanced)$",
+            ErrorMessage = "Invalid value. Allowed values are: Begginer, Intermediate, Advanced.")]
         public string Level { get; set; }
     }
 }

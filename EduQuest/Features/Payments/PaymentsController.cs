@@ -40,8 +40,7 @@ namespace EduQuest.Features.Payments
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
 
         }

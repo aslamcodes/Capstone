@@ -12,7 +12,7 @@ namespace EduQuest.Features.Reviews
     public class ReviewsController(IReviewService reviewService, ICourseService courseService, IControllerValidator validator, IMapper mapper) : Controller
     {
         [HttpGet("For-Courses")]
-        public async Task<IActionResult> GetReviewsByCourse(int courseId)
+        public async Task<ActionResult<List<ReviewDto>>> GetReviewsByCourse(int courseId)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace EduQuest.Features.Reviews
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateReview(ReviewRequestDto reviewDto)
+        public async Task<ActionResult<ReviewDto>> CreateReview(ReviewRequestDto reviewDto)
         {
             try
             {

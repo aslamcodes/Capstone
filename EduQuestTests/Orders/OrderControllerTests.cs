@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace EduQuest.Tests.Features.Orders
+namespace EduQuestTests.Orders
 {
     [TestFixture]
     public class OrderControllerTests

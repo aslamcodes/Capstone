@@ -1,13 +1,12 @@
-using NUnit.Framework;
-using Moq;
-using AutoMapper;
-using EduQuest.Features.Reviews;
-using EduQuest.Features.Courses;
-using EduQuest.Features.Auth.Exceptions;
-using EduQuest.Commons;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using EduQuest.Entities;
+using AutoMapper;
+using EduQuest.Commons;
+using EduQuest.Features.Auth.Exceptions;
+using EduQuest.Features.Courses;
+using EduQuest.Features.Reviews;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 
 namespace EduQuestTests.ReviewsTests
 {
@@ -17,7 +16,7 @@ namespace EduQuestTests.ReviewsTests
         private Mock<IReviewService> _mockReviewService;
         private Mock<ICourseService> _mockCourseService;
         private Mock<IControllerValidator> _mockValidator;
-        private IMapper _mapper;
+        private Mock<IMapper> _mockMapper;
         private ReviewsController _controller;
 
         public void Dispose()
@@ -31,137 +30,142 @@ namespace EduQuestTests.ReviewsTests
             _mockReviewService = new Mock<IReviewService>();
             _mockCourseService = new Mock<ICourseService>();
             _mockValidator = new Mock<IControllerValidator>();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<ReviewRequestDto, ReviewDto>();
-                cfg.CreateMap<ReviewDto, Review>();
-            });
-            _mapper = config.CreateMapper();
-
-            _controller = new ReviewsController(_mockReviewService.Object, _mockCourseService.Object,
-                _mockValidator.Object, _mapper);
+            _mockMapper = new Mock<IMapper>();
+            _controller = new ReviewsController(
+                _mockReviewService.Object,
+                _mockCourseService.Object,
+                _mockValidator.Object,
+                _mockMapper.Object
+            );
         }
 
         [Test]
-        public async Task GetReviewsByCourse_ShouldReturnOkResultWithReviews()
+        public async Task GetReviewsByCourse_ReturnsOkResult_WithReviews()
         {
             // Arrange
             int courseId = 1;
-            var reviews = new List<ReviewDto>
+            var expectedReviews = new List<ReviewDto> { new ReviewDto(), new ReviewDto() };
+            _mockReviewService.Setup(s => s.GetReviewsByCourse(courseId)).ReturnsAsync(expectedReviews);
+
+            // Act
+            var result = await _controller.GetReviewsByCourse(courseId);
+
+            // Assert
+            Assert.That(result.Result, Is.InstanceOf<OkObjectResult>());
+            var okResult = result.Result as OkObjectResult;
+            Assert.That(okResult?.Value, Is.EqualTo(expectedReviews));
+        }
+
+        [Test]
+        public async Task GetReviewsByCourse_ReturnsInternalServerError_WhenExceptionOccurs()
+        {
+            // Arrange
+            int courseId = 1;
+            _mockReviewService.Setup(s => s.GetReviewsByCourse(courseId)).ThrowsAsync(new Exception());
+
+            // Act
+            var result = await _controller.GetReviewsByCourse(courseId);
+
+            // Assert
+            Assert.That(result.Result, Is.InstanceOf<StatusCodeResult>());
+            var statusCodeResult = result.Result as StatusCodeResult;
+            Assert.That(statusCodeResult?.StatusCode, Is.EqualTo(500));
+        }
+
+        [Test]
+        public async Task CreateReview_ReturnsOkResult_WithCreatedReview()
+        {
+            // Arrange
+            var reviewRequestDto = new ReviewRequestDto { CourseId = 1 };
+            var mappedReviewDto = new ReviewDto();
+            var createdReviewDto = new ReviewDto();
+            _mockMapper.Setup(m => m.Map<ReviewDto>(reviewRequestDto)).Returns(mappedReviewDto);
+            _mockReviewService.Setup(s => s.Add(mappedReviewDto)).ReturnsAsync(createdReviewDto);
+
+            _controller.ControllerContext = new ControllerContext
             {
-                new ReviewDto { Id = 1, CourseId = courseId, ReviewedById = 1 },
-                new ReviewDto { Id = 2, CourseId = courseId, ReviewedById = 2 }
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(new ClaimsIdentity()) }
             };
 
-            _mockReviewService.Setup(service => service.GetReviewsByCourse(courseId)).ReturnsAsync(reviews);
-
             // Act
-            var result = await _controller.GetReviewsByCourse(courseId);
+            var result = await _controller.CreateReview(reviewRequestDto);
 
             // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(reviews, okResult.Value);
+            Assert.That(result.Result, Is.InstanceOf<OkObjectResult>());
+            var okResult = result.Result as OkObjectResult;
+            Assert.That(okResult?.Value, Is.EqualTo(createdReviewDto));
         }
 
         [Test]
-        public async Task GetReviewsByCourse_ShouldReturnStatusCode500OnException()
+        public async Task CreateReview_ReturnsUnauthorized_WhenUnAuthorisedUserExceptionOccurs()
         {
             // Arrange
-            int courseId = 1;
-            _mockReviewService.Setup(service => service.GetReviewsByCourse(courseId)).ThrowsAsync(new Exception());
-
-            // Act
-            var result = await _controller.GetReviewsByCourse(courseId);
-
-            // Assert
-            var statusCodeResult = result as StatusCodeResult;
-            Assert.IsNotNull(statusCodeResult);
-            Assert.AreEqual(500, statusCodeResult.StatusCode);
-        }
-
-        [Test]
-        public async Task CreateReview_ShouldReturnOkResultWithReview()
-        {
-            // Arrange
-            var reviewRequestDto = new ReviewRequestDto { CourseId = 1, ReviewedById = 1 };
-            var reviewDto = new ReviewDto { Id = 1, CourseId = 1, ReviewedById = 1 };
-
+            var reviewRequestDto = new ReviewRequestDto { CourseId = 1 };
             _mockValidator.Setup(v =>
                     v.ValidateStudentPrivilegeForCourse(It.IsAny<IEnumerable<Claim>>(), reviewRequestDto.CourseId))
-                .Returns(Task.CompletedTask);
+                .ThrowsAsync(new UnAuthorisedUserExeception());
 
-            _mockReviewService.Setup(service => service.Add(It.IsAny<ReviewDto>())).ReturnsAsync(reviewDto);
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(new ClaimsIdentity()) }
+            };
 
             // Act
             var result = await _controller.CreateReview(reviewRequestDto);
 
             // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(reviewDto, okResult.Value);
+            Assert.That(result.Result, Is.InstanceOf<UnauthorizedObjectResult>());
+            var unauthorizedResult = result.Result as UnauthorizedObjectResult;
+            Assert.That(unauthorizedResult?.Value, Is.InstanceOf<ErrorModel>());
+            var errorModel = unauthorizedResult.Value as ErrorModel;
+            Assert.That(errorModel?.Status, Is.EqualTo(StatusCodes.Status401Unauthorized));
+            Assert.That(errorModel.Message, Is.EqualTo("Unauthorized"));
         }
 
         [Test]
-        public async Task CreateReview_ShouldReturnUnauthorizedOnUnAuthorisedUserExeception()
+        public async Task CreateReview_ReturnsNotFound_WhenEntityNotFoundExceptionOccurs()
         {
             // Arrange
-            var reviewRequestDto = new ReviewRequestDto { CourseId = 1, ReviewedById = 1 };
+            var reviewRequestDto = new ReviewRequestDto { CourseId = 1 };
+            _mockMapper.Setup(m => m.Map<ReviewDto>(reviewRequestDto)).Returns(new ReviewDto());
+            _mockReviewService.Setup(s => s.Add(It.IsAny<ReviewDto>())).ThrowsAsync(new EntityNotFoundException("Not found"));
 
-            _mockValidator.Setup(v =>
-                    v.ValidateStudentPrivilegeForCourse(It.IsAny<IEnumerable<Claim>>(), reviewRequestDto.CourseId))
-                .Throws(new UnAuthorisedUserExeception());
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(new ClaimsIdentity()) }
+            };
 
             // Act
             var result = await _controller.CreateReview(reviewRequestDto);
 
             // Assert
-            var unauthorizedResult = result as ObjectResult;
-            Assert.IsNotNull(unauthorizedResult);
-            Assert.AreEqual(401, unauthorizedResult.StatusCode);
-            Assert.AreEqual("Unauthorized", (unauthorizedResult.Value as ErrorModel)?.Message);
+            Assert.That(result.Result, Is.InstanceOf<NotFoundObjectResult>());
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.That(notFoundResult?.Value, Is.InstanceOf<ErrorModel>());
+            var errorModel = notFoundResult.Value as ErrorModel;
+            Assert.That(errorModel?.Status, Is.EqualTo(StatusCodes.Status404NotFound));
+            Assert.That(errorModel.Message, Is.EqualTo("Not found"));
         }
 
         [Test]
-        public async Task CreateReview_ShouldReturnNotFoundOnEntityNotFoundException()
+        public async Task CreateReview_ReturnsInternalServerError_WhenExceptionOccurs()
         {
             // Arrange
-            var reviewRequestDto = new ReviewRequestDto { CourseId = 1, ReviewedById = 1 };
+            var reviewRequestDto = new ReviewRequestDto { CourseId = 1 };
+            _mockMapper.Setup(m => m.Map<ReviewDto>(reviewRequestDto)).Throws(new Exception());
 
-            _mockValidator.Setup(v =>
-                    v.ValidateStudentPrivilegeForCourse(It.IsAny<IEnumerable<Claim>>(), reviewRequestDto.CourseId))
-                .Throws(new EntityNotFoundException("Not Found"));
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(new ClaimsIdentity()) }
+            };
 
             // Act
             var result = await _controller.CreateReview(reviewRequestDto);
 
             // Assert
-            var notFoundResult = result as ObjectResult;
-            Assert.IsNotNull(notFoundResult);
-            Assert.AreEqual(404, notFoundResult.StatusCode);
-            Assert.AreEqual("Not Found", (notFoundResult.Value as ErrorModel)?.Message);
-        }
-
-        [Test]
-        public async Task CreateReview_ShouldReturnStatusCode500OnException()
-        {
-            // Arrange
-            var reviewRequestDto = new ReviewRequestDto { CourseId = 1, ReviewedById = 1 };
-
-            _mockValidator.Setup(v =>
-                    v.ValidateStudentPrivilegeForCourse(It.IsAny<IEnumerable<Claim>>(), reviewRequestDto.CourseId))
-                .Throws(new Exception());
-
-            // Act
-            var result = await _controller.CreateReview(reviewRequestDto);
-
-            // Assert
-            var statusCodeResult = result as StatusCodeResult;
-            Assert.IsNotNull(statusCodeResult);
-            Assert.AreEqual(500, statusCodeResult.StatusCode);
+            Assert.That(result.Result, Is.InstanceOf<StatusCodeResult>());
+            var statusCodeResult = result.Result as StatusCodeResult;
+            Assert.That(statusCodeResult?.StatusCode, Is.EqualTo(500));
         }
     }
 }
