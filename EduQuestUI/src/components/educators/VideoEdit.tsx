@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useCallback, useEffect } from "react";
-import { GoVideo } from "react-icons/go";
+import { GoUpload, GoVideo } from "react-icons/go";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useVideoForContent from "../../hooks/fetchers/useVideo";
 import { Link } from "react-router-dom";
@@ -110,8 +110,8 @@ const VideoEdit = ({ contentId }: { contentId: number }) => {
             }
           }}
         ></input>
-        <GoVideo />
-        <p>Upload Video</p>
+        <GoUpload />
+        <p>Upload</p>
       </div>
     </div>
   );

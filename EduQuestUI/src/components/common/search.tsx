@@ -4,8 +4,9 @@ import debounce from "lodash/debounce";
 import { Link } from "react-router-dom";
 import { Course } from "../../interfaces/course";
 import Loader from "./Loader";
+import { IoClose, IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
 
-const SearchBar = () => {
+const SearchBar = ({ onClose = () => {} }: { onClose?: () => void }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,13 +55,18 @@ const SearchBar = () => {
       className="w-full max-w-xl mx-auto relative"
       onFocus={() => setShowResult(true)}
     >
-      <div className="">
+      <div className="relative">
         <input
           type="text"
           placeholder="Search courses"
           value={query}
           onChange={handleInputChange}
           className="input input-bordered w-full pr-10"
+        />
+        <IoCloseCircle
+          className="md:hidden absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+          size={22}
+          onClick={onClose}
         />
         {isLoading && <Loader />}
       </div>

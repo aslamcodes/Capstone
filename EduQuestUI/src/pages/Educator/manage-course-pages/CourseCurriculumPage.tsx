@@ -177,7 +177,7 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
           )}
           {!showAddSectionForm && (
             <button
-              className="btn mt-10 w-full"
+              className="btn btn-sm md:btn-md mt-10 w-full"
               onClick={() => setShowAddSectionForm(true)}
             >
               Add Section

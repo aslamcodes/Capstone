@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <Navbar />
-      <div className="mt-20 mx-2 px-4">
+      <div className="my-20 mx-2 px-4">
         <Outlet />
         <ToastContainer className={"z-50"} />
       </div>

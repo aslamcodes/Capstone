@@ -106,7 +106,7 @@ const UserProfile = () => {
     );
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[80vw] mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[80vw] mb-10 mx-auto">
       <div className="flex flex-col gap-3 items-center">
         {userProfile?.profilePictureUrl || previewUrl ? (
           <img

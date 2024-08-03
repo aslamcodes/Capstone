@@ -152,196 +152,212 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
   }, [initialCourse?.id, user?.token, courseImage]);
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormTitle>Course Details</FormTitle>
-      <FormGroup>
-        <FormLabel>Course Image</FormLabel>
-        {coursePreview ? (
-          <img
-            src={coursePreview}
-            alt="Course Thumbnail"
-            className="rounded-lg h-48 max-w-xl object-cover"
+    <div className="mb-24">
+      <Form className="" onSubmit={handleSubmit(onSubmit)}>
+        <FormTitle>Course Details</FormTitle>
+        <FormGroup>
+          <FormLabel>Course Image</FormLabel>
+          {coursePreview ? (
+            <img
+              src={coursePreview}
+              alt="Course Thumbnail"
+              className="rounded-lg h-48 max-w-xl object-cover"
+            />
+          ) : (
+            <div className="h-48 w-xl bg-base-content rounded-lg flex items-center justify-center object-contain">
+              <ImImage className="text-base-300" size={30} />
+            </div>
+          )}
+          <input
+            type="file"
+            className="file-input"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setCourseImage(file);
+                setCoursePreview(URL.createObjectURL(file));
+              }
+            }}
           />
-        ) : (
-          <div className="h-48 w-xl bg-base-content rounded-lg flex items-center justify-center object-contain">
-            <ImImage className="text-base-300" size={30} />
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>Course Name</FormLabel>
+          <input
+            type="text"
+            placeholder="Course Name"
+            className="input input-bordered"
+            {...register("name", { required: true })}
+          />
+          {errors.name && <FormError message="Name is Required" />}
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>Course Description</FormLabel>
+          <textarea
+            placeholder="Course Description"
+            className="textarea textarea-bordered"
+            {...register("description", { required: true })}
+          />
+          {errors.description && (
+            <FormError message="Description is Required" />
+          )}
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>Price</FormLabel>
+          <select
+            className="select select-bordered"
+            {...register("price", { required: true })}
+          >
+            <option value={0}>Free</option>
+            <option value={100}>99 Rs</option>
+            <option value={200}>199 Rs</option>
+            <option value={300}>299 Rs</option>
+            <option value={400}>399 Rs</option>
+            <option value={500}>499 Rs</option>
+          </select>
+          {errors.price && <FormError message={"Please Determine a Price"} />}
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>Level</FormLabel>
+          <select
+            className="select select-bordered"
+            {...register("level", { required: true })}
+          >
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </FormGroup>
+        <Divider />
+        <div className="space-y-2">
+          <FormTitle>Course Objectives</FormTitle>
+          <div className="alert text-base-content">
+            Add your course objectives, these will be shown to the students
+            before they enroll in your course.
           </div>
-        )}
-        <input
-          type="file"
-          className="file-input"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              setCourseImage(file);
-              setCoursePreview(URL.createObjectURL(file));
-            }
-          }}
-        />
-      </FormGroup>
-      <FormGroup>
-        <FormLabel>Course Name</FormLabel>
-        <input
-          type="text"
-          placeholder="Course Name"
-          className="input input-bordered"
-          {...register("name", { required: true })}
-        />
-        {errors.name && <FormError message="Name is Required" />}
-      </FormGroup>
-      <FormGroup>
-        <FormLabel>Course Description</FormLabel>
-        <textarea
-          placeholder="Course Description"
-          className="textarea textarea-bordered"
-          {...register("description", { required: true })}
-        />
-        {errors.description && <FormError message="Description is Required" />}
-      </FormGroup>
-      <FormGroup>
-        <FormLabel>Price</FormLabel>
-        <select
-          className="select select-bordered"
-          {...register("price", { required: true })}
-        >
-          <option value={0}>Free</option>
-          <option value={100}>99 Rs</option>
-          <option value={200}>199 Rs</option>
-          <option value={300}>299 Rs</option>
-          <option value={400}>399 Rs</option>
-          <option value={500}>499 Rs</option>
-        </select>
-        {errors.price && <FormError message={"Please Determine a Price"} />}
-      </FormGroup>
-      <FormGroup>
-        <FormLabel>Level</FormLabel>
-        <input type="text" />
-        <select
-          className="select select-bordered"
-          {...register("level", { required: true })}
-        >
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-        </select>
-      </FormGroup>
-      <Divider />
-      <FormTitle>Course Objectives</FormTitle>
-      <div className="alert text-base-content">
-        Add your course objectives, these will be shown to the students before
-        they enroll in your course.
-      </div>
-      {objectiveFields.length < 4 && (
-        <p className="alert alert-warning text-error-content">
-          Please Add atleast 4 objectives for your course
-        </p>
-      )}
-      <FormGroup>
-        {objectiveFields.map((field, index) => (
-          <div key={field.id} className="flex gap-2">
-            <input
-              type="text"
-              className="input input-bordered"
-              {...register(`objectives.${index}` as const, { required: true })}
-            />
+          {objectiveFields.length < 4 && (
+            <p className="alert alert-warning text-error-content">
+              Please Add atleast 4 objectives for your course
+            </p>
+          )}
+          <FormGroup>
+            {objectiveFields.map((field, index) => (
+              <div key={field.id} className="flex gap-2">
+                <input
+                  type="text"
+                  className="input input-bordered"
+                  {...register(`objectives.${index}` as const, {
+                    required: true,
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={() => removeObjective(index)}
+                  className="btn btn-error"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
             <button
               type="button"
-              onClick={() => removeObjective(index)}
-              className="btn btn-error"
+              onClick={() => appendObjective("")}
+              className="btn"
             >
-              Remove
+              Add a Objective
             </button>
+          </FormGroup>
+        </div>
+
+        <Divider />
+        <div className="space-y-2">
+          <FormTitle>Prerequisites</FormTitle>
+          <div className="alert text-base-content">
+            List the required skills, experience, tools or equipment learners
+            should have prior to taking your course. If there are no
+            requirements, use this space as an opportunity to lower the barrier
+            for beginners.
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => appendObjective("")}
-          className="btn"
-        >
-          Add a Objective
-        </button>
-      </FormGroup>
-      <Divider />
-      <FormTitle>Prerequisites</FormTitle>
-      <div className="alert text-base-content">
-        List the required skills, experience, tools or equipment learners should
-        have prior to taking your course. If there are no requirements, use this
-        space as an opportunity to lower the barrier for beginners.
-      </div>
-      {prerequisiteFields.length < 1 && (
-        <p className="alert alert-warning text-error-content">
-          Please Add atleast 1 Prerequisite for your course
-        </p>
-      )}
-      <FormGroup>
-        {prerequisiteFields.map((field, index) => (
-          <div key={field.id} className="flex gap-2">
-            <input
-              type="text"
-              className="input input-bordered"
-              {...register(`prerequisites.${index}` as const)}
-            />
+          {prerequisiteFields.length < 1 && (
+            <p className="alert alert-warning text-error-content">
+              Please Add atleast 1 Prerequisite for your course
+            </p>
+          )}
+
+          <FormGroup>
+            {prerequisiteFields.map((field, index) => (
+              <div key={field.id} className="flex gap-2">
+                <input
+                  type="text"
+                  className="input input-bordered"
+                  {...register(`prerequisites.${index}` as const)}
+                />
+                <button
+                  type="button"
+                  onClick={() => removePrerequisites(index)}
+                  className="btn btn-error"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
             <button
               type="button"
-              onClick={() => removePrerequisites(index)}
-              className="btn btn-error"
+              onClick={() => appendPrerequisites("")}
+              className="btn"
             >
-              Remove
+              Add a Prerequisite
             </button>
+          </FormGroup>
+        </div>
+
+        <Divider />
+        <div className="space-y-2">
+          <FormTitle>Who is this course for?</FormTitle>
+          <div className="alert text-base-content">
+            Write a clear description of the intended learners for your course
+            who will find your course content valuable. This will help you
+            attract the right learners to your course.
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => appendPrerequisites("")}
-          className="btn"
-        >
-          Add a Prerequisite
-        </button>
-      </FormGroup>
-      <Divider />
-      <FormTitle>Who is this course for?</FormTitle>
-      <div className="alert text-base-content">
-        Write a clear description of the intended learners for your course who
-        will find your course content valuable. This will help you attract the
-        right learners to your course.
-      </div>
-      {targetAudienceFields.length < 1 && (
-        <p className="alert alert-warning text-error-content">
-          Please Add atleast 1 Target Audience for your course
-        </p>
-      )}
-      <FormGroup>
-        {targetAudienceFields.map((field, index) => (
-          <div key={field.id} className="flex gap-2">
-            <input
-              type="text"
-              className="input input-bordered"
-              {...register(`targetAudience.${index}` as const)}
-            />
+          {targetAudienceFields.length < 1 && (
+            <p className="alert alert-warning text-error-content">
+              Please Add atleast 1 Target Audience for your course
+            </p>
+          )}
+          <FormGroup>
+            {targetAudienceFields.map((field, index) => (
+              <div key={field.id} className="flex gap-2">
+                <input
+                  type="text"
+                  className="input input-bordered"
+                  {...register(`targetAudience.${index}` as const)}
+                />
+                <button
+                  type="button"
+                  onClick={() => removeTargetAudience(index)}
+                  className="btn btn-error"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
             <button
               type="button"
-              onClick={() => removeTargetAudience(index)}
-              className="btn btn-error"
+              onClick={() => appendTargetAudience("")}
+              className="btn"
             >
-              Remove
+              Add a Target Audience
             </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => appendTargetAudience("")}
-          className="btn"
+          </FormGroup>
+        </div>
+
+        <FormButton
+          className="btn-primary fixed bottom-10 right-10 hover:bg-primary-700 hover:shadow-md"
+          disabled={isSaving}
         >
-          Add a Target Audience
-        </button>
-      </FormGroup>
-      <FormButton
-        className="btn-primary fixed bottom-10 right-10 hover:bg-primary-700 hover:shadow-md"
-        disabled={isSaving}
-      >
-        {isSaving ? <Loader size="md" type="dots"></Loader> : "Save"}
-      </FormButton>
-    </Form>
+          {isSaving ? <Loader size="md" type="dots"></Loader> : "Save"}
+        </FormButton>
+      </Form>
+    </div>
   );
 };
 

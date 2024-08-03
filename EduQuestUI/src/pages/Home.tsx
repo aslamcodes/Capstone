@@ -21,10 +21,10 @@ const Home = () => {
         {isLoading ? (
           <Loader size="md" type="bars" />
         ) : (
-          <div className="flex max-w-screen overflow-x-scroll gap-3 no-scrollbar sticky top-16 z-30 bg-base-100">
+          <div className="flex mb-4 max-w-screen overflow-x-scroll gap-3 no-scrollbar sticky top-16 z-30 bg-base-100">
             {categories?.map((category) => (
               <button
-                className={`btn font-bold mb-4 ${
+                className={`btn btn-sm md:btn-md font-semibold md:font-bold ${
                   category.id === currentCategory &&
                   "bg-base-content text-base-300"
                 }`}
@@ -41,7 +41,7 @@ const Home = () => {
             ))}
           </div>
         )}
-        <div className="grid  grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 ">
+        <div className="grid gap-2 md:gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 ">
           {courses
             ?.filter((c) => {
               if (!currentCategory) return true;

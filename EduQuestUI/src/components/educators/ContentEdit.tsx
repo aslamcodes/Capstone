@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import useVideoForContent from "../../hooks/fetchers/useVideo";
 import { toast } from "react-toastify";
 import VideoEdit from "./VideoEdit";
+import { BiPencil } from "react-icons/bi";
 
 const ContentEdit: FC<{
   content: Content;
@@ -17,7 +18,7 @@ const ContentEdit: FC<{
   const navigate = useNavigate();
 
   return (
-    <div className="w-full bg-base-300 p-4 rounded-md flex items-center justify-between">
+    <div className="w-full bg-base-300 p-1 md:p-4 rounded-md flex items-center justify-between">
       <div className="flex gap-2 items-center">
         {content.contentType === "Video" ? <GoVideo /> : <TbArticle />}
         <div>{content.title}</div>
@@ -33,8 +34,8 @@ const ContentEdit: FC<{
                 navigate(`/manage-course/content/article/${content.id}`);
               }}
             >
-              <TbArticle />
-              <p>Edit Content</p>
+              <BiPencil />
+              <p>Edit</p>
             </button>
           )}
         </div>

@@ -179,14 +179,18 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
   };
 
   return (
-    <div className="flex p-5  bg-base-100 border border-base-300 rounded-lg">
+    <div className="flex py-1 md:p-5  bg-base-100 border border-base-300 rounded-lg">
       <RiDraggable className="scale-150 m-2" />
       <div className="flex flex-col gap-4 w-full">
         <div>
-          <h3 className="font-semibold text-2xl">{initialSection.name}</h3>
-          <p className="font-normal text-md">{initialSection.description}</p>
+          <h3 className="font-semibold text-lg md:text-2xl">
+            {initialSection.name}
+          </h3>
+          <p className="font-normal text-sm md:text-md">
+            {initialSection.description}
+          </p>
         </div>
-        <div className="flex gap-5 justify-between bg-base-200 p-4 rounded-lg w-full">
+        <div className="flex gap-5 justify-between bg-base-200  p-2 md:p-3 lg:p-4 rounded-lg w-full">
           <div className="flex-grow">
             <DndContext
               collisionDetection={closestCenter}
