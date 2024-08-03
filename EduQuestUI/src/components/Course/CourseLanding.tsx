@@ -74,7 +74,7 @@ const CourseLanding = () => {
           {course.courseThumbnailPicture && (
             <img
               src={course.courseThumbnailPicture as string}
-              className="max-w-lg rounded-lg shadow-2xl"
+              className=" rounded-lg shadow-2xl"
             />
           )}
           <div>

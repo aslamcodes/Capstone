@@ -16,6 +16,7 @@ import { ImImage } from "react-icons/im";
 import Loader from "../../../components/common/Loader";
 import { customToast } from "../../../utils/toast";
 import { getErrorMessage } from "../../../utils/error";
+import { IoClose } from "react-icons/io5";
 
 type Inputs = {
   name: string;
@@ -171,6 +172,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
           <input
             type="file"
             className="file-input"
+            accept="image/*"
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) {
@@ -254,7 +256,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
                   onClick={() => removeObjective(index)}
                   className="btn btn-error"
                 >
-                  Remove
+                  <IoClose color="#fff" />
                 </button>
               </div>
             ))}
@@ -296,7 +298,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
                   onClick={() => removePrerequisites(index)}
                   className="btn btn-error"
                 >
-                  Remove
+                  <IoClose color="#fff" />
                 </button>
               </div>
             ))}
@@ -336,7 +338,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
                   onClick={() => removeTargetAudience(index)}
                   className="btn btn-error"
                 >
-                  Remove
+                  <IoClose color="#fff" />
                 </button>
               </div>
             ))}

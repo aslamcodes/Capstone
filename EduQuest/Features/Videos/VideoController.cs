@@ -76,7 +76,6 @@ namespace EduQuest.Features.Videos
             {
                 var containerClient = blobServiceClient.GetBlobContainerClient("videos");
                 var blobClient = containerClient.GetBlobClient($"{request.ContentId}-{request.FileName}");
-
                 // Generate SAS token for the blob
                 var sasBuilder = new BlobSasBuilder
                 {

@@ -56,7 +56,10 @@ namespace EduQuest.Features.Courses
             messages.Add(new ValidityCriteria { Criteria = "Course should have a description, atleast 200 letters", IsPassed = !string.IsNullOrEmpty(course.Description) && course.Description.Length > 200 });
             messages.Add(new ValidityCriteria { Criteria = "Course should have a Name", IsPassed = !string.IsNullOrEmpty(course.Name) });
             messages.Add(new ValidityCriteria { Criteria = "Course should have a Category", IsPassed = course.CourseCategoryId != 0 });
-
+            messages.Add(new ValidityCriteria { Criteria = "Course Should have a thumbnail", IsPassed = !string.IsNullOrEmpty(course.CourseThumbnailPicture) });
+            messages.Add(new ValidityCriteria {Criteria = "Course objectives should be atleast 4", IsPassed = !string.IsNullOrEmpty(course.CourseObjective) && course.CourseObjective.Split("|").ToList().Count >= 4});
+            messages.Add(new ValidityCriteria {Criteria = "Course should atleast have 1 prerequisite", IsPassed = !string.IsNullOrEmpty(course.Prerequisites) && course.Prerequisites.Split("|").ToList().Count != 0 });
+            messages.Add(new ValidityCriteria {Criteria = "Course should have atleast 1 target audience", IsPassed = !string.IsNullOrEmpty(course.TargetAudience) && course.TargetAudience.Split("|").ToList().Count != 0 });
 
             var response = new ValidityResponseDto()
             {
