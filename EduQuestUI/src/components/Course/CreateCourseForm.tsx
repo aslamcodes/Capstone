@@ -50,7 +50,6 @@ const CreateCourseForm: FC<{
       onClose();
       navigate(`/manage-course/${responseData.id}`);
     } catch (error) {
-      console.log(error);
       onClose();
       setIsLoading(false);
       customToast("Cannot create the course");

@@ -39,8 +39,6 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error] = useState<string | null>(null);
 
-  console.log(JSON.stringify(initialSection));
-
   const [showAddContentForm, setShowAddContentForm] = useState<boolean>(false);
   const [isContentLoading, setIsContentLoading] = useState<boolean>(false);
 

@@ -18,7 +18,7 @@ export const fetcherWithToken = (
 };
 
 const apiBaseUrl =
-  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.VITE_API_BASE_URL ??
   "https://eduquestbackend.azurewebsites.net";
 
 const axiosInstance = axios.create({

@@ -62,7 +62,6 @@ const ManageCoursePage = () => {
             courseId,
           },
         });
-        console.log(data);
         setManagingCourse(data);
         setIsCourseLoading(false);
       } catch (error) {

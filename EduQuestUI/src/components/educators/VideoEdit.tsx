@@ -59,13 +59,11 @@ const VideoEdit = ({ contentId }: { contentId: number }) => {
         customToast("Uploaded", {
           type: "success",
         });
-        console.log(res);
       } catch (error) {
         customToast("Cannot upload the video", {
           type: "error",
         });
         setIsUploading(false);
-        console.log(error);
       }
     },
     [videoFile]
