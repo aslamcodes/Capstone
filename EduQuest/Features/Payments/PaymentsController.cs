@@ -3,10 +3,12 @@ using EduQuest.Entities;
 using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Features.Courses;
 using EduQuest.Features.Orders;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Payments
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class PaymentsController(IPaymentService paymentService, IOrderService orderService, ICourseService courseService, IControllerValidator validator) : ControllerBase

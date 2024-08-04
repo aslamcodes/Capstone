@@ -3,12 +3,13 @@ using Azure;
 using Azure.Storage.Blobs;
 using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
-using EduQuest.Features.Questions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Users
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController(
@@ -33,7 +34,7 @@ namespace EduQuest.Features.Users
             }
             catch (Exception)
             {
-              return  StatusCode(500);
+                return StatusCode(500);
             }
         }
 
@@ -52,7 +53,7 @@ namespace EduQuest.Features.Users
             }
             catch (Exception)
             {
-              return  StatusCode(500);
+                return StatusCode(500);
             }
         }
 
@@ -76,7 +77,7 @@ namespace EduQuest.Features.Users
             }
             catch (Exception)
             {
-               return StatusCode(500);
+                return StatusCode(500);
             }
         }
 

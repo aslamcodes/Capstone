@@ -2,10 +2,12 @@
 using EduQuest.Commons;
 using EduQuest.Features.Auth.DTOS;
 using EduQuest.Features.Users;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Auth
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController(IAuthService authService, IMapper mapper, ITokenService tokenService) : Controller

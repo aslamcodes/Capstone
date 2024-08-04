@@ -68,6 +68,15 @@ namespace EduQuest
             });
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                             policy =>
+                                     {
+                                         policy.WithOrigins("https://ashy-ground-0e6a63a1e.5.azurestaticapps.net/");
+                                     });
+            });
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -153,6 +162,9 @@ namespace EduQuest
 
 
             var app = builder.Build();
+
+            app.UseCors();
+
 
             app.Map("/", async (builder) =>
             {

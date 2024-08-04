@@ -1,10 +1,12 @@
 ﻿using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Articles
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ArticleController(IArticleService articleService, IControllerValidator validator) : ControllerBase

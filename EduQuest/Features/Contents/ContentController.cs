@@ -5,10 +5,12 @@ using EduQuest.Features.Contents.Dto;
 using EduQuest.Features.Videos;
 using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Contents
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ContentController(IContentService contentService, IControllerValidator controllerValidator, IVideoService videoService, IArticleService articleService) : Controller
@@ -103,13 +105,17 @@ namespace EduQuest.Features.Contents
                 if (content.ContentType == ContentTypeEnum.Article.ToString())
                 {
                     await articleService.Add(new ArticleDto
-                        { ContentId = content.Id, Title = content.Title, Body = "", Description = "" });
+                    { ContentId = content.Id, Title = content.Title, Body = "", Description = "" });
                 }
                 else if (content.ContentType == ContentTypeEnum.Video.ToString())
                 {
                     await videoService.Add(new VideoDto
                     {
-                        ContentId = content.Id, DurationHours = 0, DurationMinutes = 0, DurationSeconds = 0, Url = ""
+                        ContentId = content.Id,
+                        DurationHours = 0,
+                        DurationMinutes = 0,
+                        DurationSeconds = 0,
+                        Url = ""
                     });
                 }
 

@@ -2,10 +2,12 @@
 using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Features.Courses.Dto;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Student
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentController(IStudentService studentService, IControllerValidator validator) : ControllerBase

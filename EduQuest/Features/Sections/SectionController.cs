@@ -4,10 +4,12 @@ using EduQuest.Features.Contents;
 using EduQuest.Features.Contents.Dto;
 using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Sections
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class SectionController(ISectionService sectionService, IContentService contentService, IControllerValidator validator) : Controller
