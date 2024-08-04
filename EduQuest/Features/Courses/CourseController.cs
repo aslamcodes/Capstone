@@ -149,6 +149,7 @@ namespace EduQuest.Features.Courses
             }
         }
 
+        [Authorize]
         [HttpGet("Student-Courses")]
         public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCoursesForStudent()
         {
@@ -220,7 +221,7 @@ namespace EduQuest.Features.Courses
                 var course = await courseService.SetCourseUnderReview(courseId);
                 return Ok(course);
             }
-           catch (InvalidCourseStatusException ex)
+            catch (InvalidCourseStatusException ex)
             {
                 return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, ex.Message));
             }
@@ -246,16 +247,16 @@ namespace EduQuest.Features.Courses
         {
             try
             {
-                
+
                 if (thumbnail.ContentType is not "image/jpeg" and not "image/png" and not "image/jpg")
                 {
                     return BadRequest(new ErrorModel(StatusCodes.Status400BadRequest, "Invalid file type"));
                 }
-                
+
                 await validator.ValidateEducatorPrivilegeForCourse(User.Claims, courseId);
                 BlobContainerClient profileContainer = blobService.GetBlobContainerClient("course-images");
                 BlobClient blob = profileContainer.GetBlobClient($"{courseId}-profile.jpg");
-                
+
                 if (await blob.ExistsAsync())
                 {
                     await blob.DeleteAsync();

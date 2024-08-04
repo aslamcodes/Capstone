@@ -1,5 +1,4 @@
-import React, { FC } from "react";
-import useUserProfile from "../../hooks/fetchers/useUserProfile";
+import { FC } from "react";
 import useEducatorProfile from "../../hooks/fetchers/useEducatorProfile";
 
 const EducatorProfile: FC<{ educatorId: number }> = ({ educatorId }) => {
@@ -7,7 +6,7 @@ const EducatorProfile: FC<{ educatorId: number }> = ({ educatorId }) => {
   return (
     <div className="flex p-4 bg-base-200 rounded-xl max-w-[32rem] gap-8">
       <img
-        src={educatorProfile?.profilePictureUrl}
+        src={educatorProfile?.profilePictureUrl as string}
         className="w-36 h-36 object-cover rounded-full"
       />
       <div className="space-y-2">

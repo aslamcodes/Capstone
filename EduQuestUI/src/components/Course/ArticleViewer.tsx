@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import useArticle from "../../hooks/fetchers/useArticle";
 import MDEditor from "@uiw/react-md-editor";
 

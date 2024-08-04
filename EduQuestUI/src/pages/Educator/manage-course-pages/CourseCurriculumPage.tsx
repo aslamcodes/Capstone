@@ -1,11 +1,10 @@
-import React, { act, FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ManageCoursePageProps } from "./manageCourseTypes";
 import useSections from "../../../hooks/fetchers/useSections";
 import SectionEdit from "../../../components/educators/SectionEdit";
 import { Section } from "../../../interfaces/course";
 import {
   closestCenter,
-  closestCorners,
   DndContext,
   DragEndEvent,
   PointerSensor,
@@ -21,21 +20,17 @@ import {
 import Sortable from "../../../components/common/dnd/Sortable";
 import axios from "axios";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
-import Loader from "../../../components/common/Loader";
 import Form, {
   FormButton,
+  FormError,
   FormGroup,
   FormTitle,
 } from "../../../components/common/Form";
-import { FieldValue, FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 
 interface CourseCurriculumProps extends ManageCoursePageProps {}
 
-const CourseCurriculum: FC<CourseCurriculumProps> = ({
-  mode,
-  onSave,
-  initialCourse,
-}) => {
+const CourseCurriculum: FC<CourseCurriculumProps> = ({ initialCourse }) => {
   const { user } = useAuthContext();
 
   const { sections, isLoading, error } = useSections(
@@ -217,6 +212,7 @@ const AddSectionForm: FC<{ onSubmit: (data: FieldValues) => void }> = ({
           className="input input-bordered"
           {...register("name", { required: true })}
         />
+        {errors.name && <FormError message="Name is Required" />}
       </FormGroup>
       <FormGroup>
         <label htmlFor="description">Section Description</label>
@@ -225,6 +221,7 @@ const AddSectionForm: FC<{ onSubmit: (data: FieldValues) => void }> = ({
           className="textarea textarea-bordered"
           {...register("description", { required: true })}
         />
+        {errors.description && <FormError message="Description is Required" />}
       </FormGroup>
       <FormGroup row>
         <FormButton type="button" title="Cancel" />

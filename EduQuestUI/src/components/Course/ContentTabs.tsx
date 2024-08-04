@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import Tabs from "../common/Tabs";
 import { Tab } from "../../interfaces/common";
 import CourseDescription from "./ContentDescription";

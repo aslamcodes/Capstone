@@ -7,7 +7,13 @@ import Form, {
   FormLabel,
   FormTitle,
 } from "../../../components/common/Form";
-import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
+import {
+  useForm,
+  SubmitHandler,
+  useFieldArray,
+  FieldArray,
+  FieldArrayPath,
+} from "react-hook-form";
 import axios from "axios";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";

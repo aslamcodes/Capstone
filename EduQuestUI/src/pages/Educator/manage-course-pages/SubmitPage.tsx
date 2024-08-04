@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ManageCoursePageProps } from "./manageCourseTypes";
 import axios from "axios";
 import useCourseValidity from "../../../hooks/fetchers/useCourseValidity";
-import { CiCircleAlert, CiCircleCheck, CiRainbow } from "react-icons/ci";
+import { CiCircleAlert, CiCircleCheck } from "react-icons/ci";
 import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";
 import { customToast } from "../../../utils/toast";

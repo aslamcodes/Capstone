@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 interface LoaderProps {
   type?: "spinner" | "dots" | "ring" | "bars";

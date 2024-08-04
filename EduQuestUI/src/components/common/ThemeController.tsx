@@ -1,5 +1,3 @@
-import React from "react";
-
 const ThemeController = () => {
   return (
     <label className="grid cursor-pointer place-items-center">

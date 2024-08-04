@@ -1,10 +1,9 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import useContent from "../../hooks/fetchers/useContent";
 import VideoViewer from "./VideoViewer";
 import ArticleViewer from "./ArticleViewer";
 import { FcNoVideo } from "react-icons/fc";
 import { getErrorMessage } from "../../utils/error";
-import { GrArticle } from "react-icons/gr";
 import { BiVideo } from "react-icons/bi";
 import { MdArticle } from "react-icons/md";
 

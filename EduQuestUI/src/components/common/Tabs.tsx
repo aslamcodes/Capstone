@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Tab } from "../../interfaces/common";
 
 type TabStyle = "boxed" | "lifted" | "bordered";

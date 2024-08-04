@@ -1,11 +1,6 @@
-import React, { useEffect } from "react";
-import useCourse from "../hooks/fetchers/useCourse";
 import { useAuthContext } from "../contexts/auth/authReducer";
 import { useNavigate } from "react-router-dom";
 import { customToast } from "../utils/toast";
-import useRecomendedCoureses from "../hooks/fetchers/useRecomendedCourses";
-import useCoursesByStatus from "../hooks/fetchers/useCoursesByStatus";
-import CourseCard from "../components/Course/CourseCard";
 import AdminTabs from "../components/admin/admin-tabs";
 
 const Admin = () => {

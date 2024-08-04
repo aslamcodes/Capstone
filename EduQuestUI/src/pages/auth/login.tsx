@@ -6,7 +6,6 @@ import {
   useAuthDispatchContext,
 } from "../../contexts/auth/authReducer";
 import Loader from "../../components/common/Loader";
-import { toast } from "react-toastify";
 import { customToast } from "../../utils/toast";
 
 type Inputs = {

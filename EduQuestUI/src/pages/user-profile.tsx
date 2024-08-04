@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useUserProfile from "../hooks/fetchers/useUserProfile";
 import { BiPencil, BiSave } from "react-icons/bi";
-import { GiTeacher } from "react-icons/gi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import axios from "axios";
 import Loader from "../components/common/Loader";

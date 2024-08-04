@@ -1,8 +1,8 @@
 import Loader from "../../components/common/Loader";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useEducatorCourses from "../../hooks/fetchers/useEducatorCourses";
 import { BiPlus } from "react-icons/bi";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import CreateCourseForm from "../../components/Course/CreateCourseForm";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import CourseCard from "../../components/Course/CourseCard";

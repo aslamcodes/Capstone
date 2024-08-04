@@ -1,9 +1,8 @@
 import axios from "axios";
 import React, { useCallback, useEffect } from "react";
-import { GoUpload, GoVideo } from "react-icons/go";
+import { GoUpload } from "react-icons/go";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useVideoForContent from "../../hooks/fetchers/useVideo";
-import { Link } from "react-router-dom";
 import { customToast } from "../../utils/toast";
 import Loader from "../common/Loader";
 import { BiLink } from "react-icons/bi";

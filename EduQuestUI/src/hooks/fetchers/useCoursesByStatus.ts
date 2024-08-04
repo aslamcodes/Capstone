@@ -1,5 +1,3 @@
-import useSWRImmutable from "swr/immutable";
-import { fetcherWithToken } from "../../utils/fetcher";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Course, CourseStatusEnum } from "../../interfaces/course";
 import useFetchAxios from "./useFetchAxios";

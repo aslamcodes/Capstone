@@ -5,7 +5,6 @@ import {
   useAuthDispatchContext,
 } from "../../contexts/auth/authReducer";
 import { register as registerUser } from "../../contexts/auth/actions";
-import { useEffect } from "react";
 import { customToast } from "../../utils/toast";
 type Inputs = {
   email: string;
@@ -21,7 +20,7 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const { user, isLoading, error } = useAuthContext();
+  const { user, error } = useAuthContext();
 
   const dispatch = useAuthDispatchContext();
   const navigate = useNavigate();

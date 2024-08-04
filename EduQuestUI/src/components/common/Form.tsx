@@ -1,4 +1,4 @@
-import React, { FC, FormHTMLAttributes, PropsWithChildren } from "react";
+import { FC, FormHTMLAttributes, PropsWithChildren } from "react";
 
 interface FormProps extends FormHTMLAttributes<HTMLFormElement> {}
 

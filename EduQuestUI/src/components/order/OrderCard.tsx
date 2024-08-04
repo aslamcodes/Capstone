@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Order } from "../../interfaces/order";
 import { GoNumber } from "react-icons/go";
 import { BiCalendar } from "react-icons/bi";

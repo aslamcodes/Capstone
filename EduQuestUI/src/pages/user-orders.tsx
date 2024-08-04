@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useOrders from "../hooks/fetchers/useOrders";
-import { GoNumber } from "react-icons/go";
-import { BiCalendar } from "react-icons/bi";
-import axios from "axios";
 import OrderCard from "../components/order/OrderCard";
 import { useAuthContext } from "../contexts/auth/authReducer";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserOrders: React.FC = () => {
   const { orders } = useOrders();
