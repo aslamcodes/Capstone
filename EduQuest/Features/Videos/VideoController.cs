@@ -11,7 +11,7 @@ namespace EduQuest.Features.Videos
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoController(ControllerValidator validator, IVideoService videoService, BlobServiceClient blobServiceClient, IMapper mapper, SecretClient secretClient) : Controller
+    public class VideoController(IControllerValidator validator, IVideoService videoService, BlobServiceClient blobServiceClient, IMapper mapper, SecretClient secretClient) : Controller
     {
         [HttpGet]
         [Authorize]
@@ -76,7 +76,6 @@ namespace EduQuest.Features.Videos
             {
                 var containerClient = blobServiceClient.GetBlobContainerClient("videos");
                 var blobClient = containerClient.GetBlobClient($"{request.ContentId}-{request.FileName}");
-
                 // Generate SAS token for the blob
                 var sasBuilder = new BlobSasBuilder
                 {

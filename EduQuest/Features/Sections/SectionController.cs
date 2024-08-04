@@ -10,7 +10,7 @@ namespace EduQuest.Features.Sections
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SectionController(ISectionService sectionService, IContentService contentService, ControllerValidator validator) : Controller
+    public class SectionController(ISectionService sectionService, IContentService contentService, IControllerValidator validator) : Controller
     {
 
         [HttpGet("Contents")]
@@ -44,7 +44,7 @@ namespace EduQuest.Features.Sections
 
                 var section = await sectionService.GetById(sectionId);
 
-                return section;
+                return Ok((section));
             }
             catch (EntityNotFoundException)
             {
@@ -68,7 +68,7 @@ namespace EduQuest.Features.Sections
 
                 var section = await sectionService.Add(request);
 
-                return section;
+                return Ok(section);
             }
             catch (ReferenceConstraintException)
             {
@@ -116,8 +116,7 @@ namespace EduQuest.Features.Sections
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
 
         }

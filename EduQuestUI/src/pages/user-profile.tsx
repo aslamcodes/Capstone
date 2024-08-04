@@ -22,10 +22,12 @@ const UserProfile = () => {
 
   useEffect(() => {
     setUserProfile(user);
-    setPreviewUrl(user?.profilePictureUrl as string);
+    setPreviewUrl(user?.profilePictureUrl ? user?.profilePictureUrl : null);
   }, [user]);
 
   const handleUpdate = async () => {
+    if (!authUser) navigate("/");
+
     try {
       setIsUpdating(true);
       await handleUserProfileImageUpdate();
@@ -91,7 +93,10 @@ const UserProfile = () => {
     });
   };
 
-  if (!authUser) navigate("/login");
+  if (!authUser) {
+    navigate("/login");
+    return;
+  }
 
   if (isLoading)
     return (
@@ -101,20 +106,33 @@ const UserProfile = () => {
     );
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[80vw] mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[80vw] mb-10 mx-auto">
       <div className="flex flex-col gap-3 items-center">
-        {userProfile?.profilePictureUrl || previewUrl ? (
-          <img
-            src={previewUrl as string}
-            alt="profile"
-            className="w-32 h-32 rounded-full object-cover"
+        <div className="relative overflow-hidden">
+          {userProfile?.profilePictureUrl || previewUrl ? (
+            <img
+              src={previewUrl as string}
+              alt="profile"
+              className="w-32 h-32 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-32 h-32 rounded-full bg-slate-500 flex items-center justify-center text-white font-bold text-2xl ">
+              {user?.firstName[0]}
+              {user?.lastName[0]}
+            </div>
+          )}
+          <input
+            type="file"
+            className="absolute bg-black left-0 top-0 h-full file-input opacity-0"
+            accept="image/*"
+            disabled={!isEditing}
+            onChange={(e) => {
+              setUserProfileImage(e.target.files?.[0] as File);
+              setPreviewUrl(URL.createObjectURL(e.target.files?.[0] as File));
+            }}
           />
-        ) : (
-          <div className="w-32 h-32 rounded-full bg-slate-500 flex items-center justify-center text-white font-bold text-2xl ">
-            {user?.firstName[0]}
-            {user?.lastName[0]}
-          </div>
-        )}
+        </div>
+
         <p className="text-xl font-bold ">
           {user?.firstName} {user?.lastName}
         </p>

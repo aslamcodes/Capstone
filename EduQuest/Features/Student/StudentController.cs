@@ -8,7 +8,7 @@ namespace EduQuest.Features.Student
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController(IStudentService studentService, ControllerValidator validator) : ControllerBase
+    public class StudentController(IStudentService studentService, IControllerValidator validator) : ControllerBase
     {
         [Authorize]
         [HttpGet("recommended-courses")]
@@ -33,7 +33,32 @@ namespace EduQuest.Features.Student
             try
             {
 
-                var userOwnsCourse = await studentService.UserOwnsCourse(ControllerValidator.GetUserIdFromClaims(User.Claims), courseId);
+                var userOwnsCourse = await studentService.UserOwnsCourse(validator.GetUserIdFromClaims(User.Claims), courseId);
+
+                return Ok(userOwnsCourse);
+            }
+            catch (UnAuthorisedUserExeception ex)
+            {
+                return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized, ex.Message));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(StatusCodes.Status404NotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(StatusCodes.Status500InternalServerError, ex.Message));
+            }
+        }
+
+        [HttpGet("user-manages-course")]
+        [Authorize]
+        public async Task<ActionResult<bool>> UserManagesCourse([FromQuery] int courseId)
+        {
+            try
+            {
+
+                var userOwnsCourse = await studentService.UserManagesCourse(validator.GetUserIdFromClaims(User.Claims), courseId);
 
                 return Ok(userOwnsCourse);
             }

@@ -11,9 +11,15 @@ const Educator = () => {
   const { user } = useAuthContext();
   const ref = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
+
   var { courses, coursesLoading, error } = useEducatorCourses(
     user?.id as number
   );
+
+  if (!user || !user.isEducator) {
+    navigate("/");
+    return;
+  }
 
   if (!courses) {
     return <div>No courses found</div>;
@@ -48,8 +54,11 @@ const Educator = () => {
 
       <div className="space-y-3">
         <div className="flex justify-between my-3">
-          <h1 className="text-2xl font-bold">Your Courses</h1>
-          <button className="btn" onClick={handleOnCreateCourse}>
+          <h1 className="text-lg md:text-2xl font-bold">Your Courses</h1>
+          <button
+            className="btn btn-sm md:btn-md"
+            onClick={handleOnCreateCourse}
+          >
             <BiPlus /> Create Course
           </button>
         </div>

@@ -114,9 +114,9 @@ const OrderCard: FC<{
         </div>
         <div className="card-actions justify-end mt-4">
           {orderInState.orderStatus === "Pending" && (
-            <div className="flex gap-2">
+            <div className="flex btn-sm md:btn-md gap-2">
               <button
-                className="btn btn-outline"
+                className="btn  btn-sm md:btn-md btn-outline"
                 disabled={isPaying}
                 onClick={handleCancel}
               >
@@ -124,7 +124,7 @@ const OrderCard: FC<{
               </button>
               <button
                 disabled={isPaying}
-                className="btn btn-outline bg-base-content text-base-100 "
+                className="btn btn-sm md:btn-md  btn-outline bg-base-content text-base-100 "
                 onClick={handlePayment}
               >
                 {isPaying ? <Loader></Loader> : "Pay"}
@@ -134,7 +134,7 @@ const OrderCard: FC<{
           {orderInState.orderStatus === "Completed" && (
             <button
               disabled={isPaying}
-              className="btn btn-outline"
+              className="btn btn-outline btn-sm md:btn-md"
               onClick={() => {
                 navigate(`/myCourses/${orderInState.orderedCourseId}`);
               }}

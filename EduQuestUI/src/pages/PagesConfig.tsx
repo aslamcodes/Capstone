@@ -12,6 +12,7 @@ import OrderPage from "../components/order/OrderPage";
 import UserProfile from "./user-profile";
 import Admin from "./Admin";
 import UserOrders from "./user-orders";
+import ErrorPage from "./ErrorPage";
 
 export const pages = [
   {
@@ -20,12 +21,12 @@ export const pages = [
     children: [
       { path: "/", element: <Home /> },
       { path: "/course-description/:courseId", element: <CourseLanding /> },
+      { path: "/orders", element: <UserOrders /> },
       { path: "/order/:orderId", element: <OrderPage /> },
       { path: "/myCourses", element: <MyCourses /> },
       { path: "/myCourses/:courseId", element: <CoursePage /> },
       { path: "/profile", element: <UserProfile /> },
       { path: "/admin", element: <Admin /> },
-      { path: "/orders", element: <UserOrders /> },
       {
         path: "/manage-course/content/article/:contentId",
         element: <AritlceEditor />,
@@ -41,5 +42,9 @@ export const pages = [
         element: <RegisterPage />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ];

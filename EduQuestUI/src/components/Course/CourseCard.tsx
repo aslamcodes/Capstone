@@ -6,7 +6,7 @@ const CourseCard: FC<{
   actions: { actionTitle: string; action: (courseId: number) => void }[];
 }> = ({ course, actions }) => {
   return (
-    <div className="card bg-base-100 w-72 shadow-xl  ">
+    <div className="card bg-base-100 shadow-xl  ">
       {course.courseThumbnailPicture ? (
         <img
           src={course.courseThumbnailPicture}

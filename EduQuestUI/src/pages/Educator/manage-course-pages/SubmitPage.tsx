@@ -28,7 +28,11 @@ const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
   }
 
   if (error) {
-    return <div>{error.response.data?.message}</div>;
+    return (
+      <div className="alert alert-error">
+        {error.response?.data?.message || error.message}
+      </div>
+    );
   }
 
   const handleSubmit = async () => {

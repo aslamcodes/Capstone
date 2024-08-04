@@ -60,4 +60,6 @@ My main complaint would be that they never remove dead courses. There are many c
 - [x] Courses on review is displayed an
 - [x] not with the profile picture
 - ![[Pasted image 20240801144905.png]]
--  [ ]  ![[Pasted image 20240801162339.png]]
+- [x]  ![[Pasted image 20240801162339.png]]
+ ![[Pasted image 20240802102556.png]
+ - [x] buggy course info pages

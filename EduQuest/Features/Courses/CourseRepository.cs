@@ -14,20 +14,21 @@ namespace EduQuest.Features.Courses
         public async Task<List<Course>> GetBySearch(string query)
         {
             var results = await context.Courses
-         .Where(item =>
-             (item.Name != null && item.Name.ToLower().Contains(query)) ||
-             (item.Description != null && item.Description.ToLower().Contains(query)))
-         .Select(item => new
-         {
-             Item = item,
-             RelevanceScore = (item.Name != null && item.Name.ToLower().Contains(query) ? 2 : 0)
-                             + (item.Description != null && item.Description.ToLower().Contains(query) ? 1 : 0)
-         })
-         .OrderByDescending(x => x.RelevanceScore)
-         .ThenBy(x => x.Item.Name)
-         .Select(x => x.Item)
-         .Take(10)
-         .ToListAsync();
+                .Where(item => item.CourseStatus == CourseStatusEnum.Live)
+                .Where(item =>
+                    (item.Name != null && item.Name.ToLower().Contains(query)) ||
+                    (item.Description != null && item.Description.ToLower().Contains(query)))
+                .Select(item => new
+                {
+                    Item = item,
+                    RelevanceScore = (item.Name != null && item.Name.ToLower().Contains(query) ? 2 : 0)
+                                     + (item.Description != null && item.Description.ToLower().Contains(query) ? 1 : 0)
+                })
+                .OrderByDescending(x => x.RelevanceScore)
+                .ThenBy(x => x.Item.Name)
+                .Select(x => x.Item)
+                .Take(10)
+                .ToListAsync();
 
             return results;
         }
@@ -35,12 +36,11 @@ namespace EduQuest.Features.Courses
         public async Task<List<Course>> GetByStatus(CourseStatusEnum status)
         {
             var courses = await context.Courses.Include(c => c.Educator)
-                                  .Where(c => c.CourseStatus == status)
-                                  .AsNoTracking()
-                                  .ToListAsync();
+                .Where(c => c.CourseStatus == status)
+                .AsNoTracking()
+                .ToListAsync();
 
             return courses;
-
         }
     }
 }

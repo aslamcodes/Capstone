@@ -75,7 +75,11 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
   }
 
   if (error) {
-    return <div>{JSON.stringify(error)}</div>;
+    return (
+      <p className="alert alert-error">
+        {error.response?.data?.message || error.message}
+      </p>
+    );
   }
 
   const handleOrderChange = async (sectionId: number, orderId: number) => {
@@ -173,7 +177,7 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({
           )}
           {!showAddSectionForm && (
             <button
-              className="btn mt-10 w-full"
+              className="btn btn-sm md:btn-md mt-10 w-full"
               onClick={() => setShowAddSectionForm(true)}
             >
               Add Section

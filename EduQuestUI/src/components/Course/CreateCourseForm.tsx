@@ -32,7 +32,7 @@ const CreateCourseForm: FC<{
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
-      var { data } = await axios.post(
+      var { data: responseData } = await axios.post(
         "/api/Course",
         { ...data, educatorId: user?.id },
         {
@@ -47,10 +47,11 @@ const CreateCourseForm: FC<{
 
       setIsLoading(false);
       onClose();
-      navigate(`/manage-course/${data.id}`);
+      navigate(`/manage-course/${responseData.id}`);
     } catch (error) {
       console.log(error);
       onClose();
+      setIsLoading(false);
       customToast("Cannot create the course");
     }
   };
@@ -65,12 +66,13 @@ const CreateCourseForm: FC<{
           className="input input-bordered"
           {...register("name", { required: true })}
         />
+        {errors.name && <FormError message={"Please pick a name"} />}
       </FormGroup>
       <FormGroup>
         <FormLabel>Description</FormLabel>
         <textarea
           className="textarea textarea-bordered"
-          {...register("description", { required: true })}
+          {...register("description")}
         />
       </FormGroup>
       <FormGroup>
@@ -92,30 +94,37 @@ const CreateCourseForm: FC<{
       </FormGroup>
       <FormGroup>
         <FormLabel>Price</FormLabel>
-        <select
-          className="select select-bordered"
-          {...register("price", { required: true })}
-        >
+        <select className="select select-bordered" {...register("price")}>
           <option value={0}>Free</option>
-          <option value={100}>99 Rs</option>
-          <option value={200}>199 Rs</option>
-          <option value={300}>299 Rs</option>
-          <option value={400}>399 Rs</option>
-          <option value={500}>499 Rs</option>
+          <option value={99}>99 Rs</option>
+          <option value={199}>199 Rs</option>
+          <option value={299}>299 Rs</option>
+          <option value={399}>399 Rs</option>
+          <option value={499}>499 Rs</option>
         </select>
-        {errors.price && <FormError message={"Please Determine a Price"} />}
+        {errors.price && (
+          <FormError
+            message={"Please Determine a Price, can be changed later"}
+          />
+        )}
       </FormGroup>
 
       <FormGroup>
         <FormLabel>Level</FormLabel>
         <select
           className="select select-bordered"
+          defaultValue={"Beginner"}
           {...register("level", { required: true })}
         >
-          <option value="Begginer">Begginer</option>
+          <option value="Beginner">Begginer</option>
           <option value="Intermediate">Intermediate</option>
           <option value="Advanced">Advanced</option>
         </select>
+        {errors.level && (
+          <FormError
+            message={"Please Determine a Course level, can be changed later"}
+          />
+        )}
       </FormGroup>
       <button
         type="submit"

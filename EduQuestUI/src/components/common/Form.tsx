@@ -4,14 +4,14 @@ interface FormProps extends FormHTMLAttributes<HTMLFormElement> {}
 
 const Form: FC<PropsWithChildren<FormProps>> = ({ children, ...props }) => {
   return (
-    <form className="space-y-5 max-w-screen-lg rounded-box p-6" {...props}>
+    <form className="space-y-5 max-w-screen-lg rounded-box md:p-6" {...props}>
       {children}
     </form>
   );
 };
 
 export const FormTitle: FC<PropsWithChildren> = ({ children }) => {
-  return <h1 className="text-2xl font-bold ">{children}</h1>;
+  return <h1 className="text-xl md:text-2xl font-bold ">{children}</h1>;
 };
 
 export const FormControl: FC<PropsWithChildren> = ({ children }) => {

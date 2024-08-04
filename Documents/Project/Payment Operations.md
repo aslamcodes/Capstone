@@ -1,6 +1,6 @@
 ---
 Scope: Backend
-Status: Todo
+Status: Somewhat
 ---
 # Todo
 - [ ] Get all payments

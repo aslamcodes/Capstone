@@ -7,7 +7,7 @@ namespace EduQuest.Features.Orders
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController(IOrderService orderService, ControllerValidator validator) : ControllerBase
+    public class OrderController(IOrderService orderService, IControllerValidator validator) : ControllerBase
     {
         [HttpGet]
         [Authorize]
@@ -100,7 +100,7 @@ namespace EduQuest.Features.Orders
         {
             try
             {
-                var userId = ControllerValidator.GetUserIdFromClaims(User.Claims);
+                var userId = validator.GetUserIdFromClaims(User.Claims);
 
                 var orders = await orderService.GetOrdersForUser(userId);
 

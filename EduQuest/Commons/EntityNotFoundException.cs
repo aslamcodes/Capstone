@@ -1,7 +1,7 @@
 ﻿namespace EduQuest.Commons
 {
     [Serializable]
-    internal class EntityNotFoundException : Exception
+    public class EntityNotFoundException : Exception
     {
         private readonly string _message;
         public EntityNotFoundException()

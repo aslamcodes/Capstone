@@ -18,5 +18,6 @@ namespace EduQuest.Features.Courses
         Task<List<CourseDTO>> SearchCourse(string query);
         Task<List<CourseDTO>> GetCoursesByStatus(CourseStatusEnum status);
         Task<CourseDTO> SetCourseOutdated(int courseId);
+        Task<CourseDTO> SetCourseProfile(int courseId, string fileUrl);
     }
 }

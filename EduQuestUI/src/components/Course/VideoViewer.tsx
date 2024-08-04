@@ -17,23 +17,18 @@ const VideoViewer: FC<ContentViewerProps> = ({ contentId }) => {
 
   if (error) return <div>{error.response.data?.message}</div>;
 
-  // if (!video || video.url === "") {
-  //   return (
-  //     <div className="w-full h-96 bg-black rounded flex flex-col items-center justify-center text-white">
-  //       <BiVideoOff color="#fff" size={32} />
-  //       <p>Author Have not yet uploaded video to this content</p>
-  //     </div>
-  //   );
-  // }
+  if (!video || video.url === "") {
+    return (
+      <div className="w-full h-96 bg-black rounded flex flex-col items-center justify-center text-white">
+        <BiVideoOff color="#fff" size={32} />
+        <p>Author Have not yet uploaded video to this content</p>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full">
-      <VideoPlayer
-        type="Youtube"
-        url={
-          "https://eduqueststorage.blob.core.windows.net/videos/23-videoplayback.mp4"
-        }
-      />
+      <VideoPlayer type="Youtube" url={video.url} />
     </div>
   );
 };

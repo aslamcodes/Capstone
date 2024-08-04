@@ -1,4 +1,5 @@
 
+using System.Diagnostics.CodeAnalysis;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using EduQuest.Commons;
@@ -25,9 +26,11 @@ using Microsoft.Extensions.Azure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using StudentCourse = EduQuest.Entities.StudentCourse;
 
 namespace EduQuest
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static void Main(string[] args)
@@ -106,9 +109,9 @@ namespace EduQuest
 
             #endregion
 
-            builder.Services.AddScoped<ControllerValidator>();
 
             #region Services
+            builder.Services.AddScoped<IControllerValidator, ControllerValidator>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();

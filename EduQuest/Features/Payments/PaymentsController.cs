@@ -9,7 +9,7 @@ namespace EduQuest.Features.Payments
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentsController(IPaymentService paymentService, IOrderService orderService, ICourseService courseService, ControllerValidator validator) : ControllerBase
+    public class PaymentsController(IPaymentService paymentService, IOrderService orderService, ICourseService courseService, IControllerValidator validator) : ControllerBase
     {
         [HttpPost("Make-Payment")]
         public async Task<ActionResult<Payment>> MakePaymentForOrder([FromQuery] int orderId)
@@ -40,8 +40,7 @@ namespace EduQuest.Features.Payments
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(500);
             }
 
         }

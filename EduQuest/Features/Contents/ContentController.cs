@@ -11,7 +11,7 @@ namespace EduQuest.Features.Contents
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ContentController(IContentService contentService, ControllerValidator controllerValidator, IVideoService videoService, IArticleService articleService) : Controller
+    public class ContentController(IContentService contentService, IControllerValidator controllerValidator, IVideoService videoService, IArticleService articleService) : Controller
     {
         [HttpGet]
         public async Task<ActionResult<ContentDto>> GetContent([FromQuery] int contentId)

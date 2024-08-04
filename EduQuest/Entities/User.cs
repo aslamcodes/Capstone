@@ -21,7 +21,7 @@ namespace EduQuest.Entities
         public bool IsAdmin { get; set; } = false;
 
         public string ProfilePictureUrl { get; set; }
-
+        
         public UserStatusEnum Status { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
@@ -32,7 +32,6 @@ namespace EduQuest.Entities
         public IEnumerable<Course> CoursesCreated { get; set; }
 
         public IEnumerable<Note> Notes { get; set; }
-
 
 
     }

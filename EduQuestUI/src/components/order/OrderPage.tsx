@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import useOrder from "../../hooks/fetchers/useOrder";
-import { useParams, Navigate, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";
 import Loader from "../common/Loader";
+import { getErrorMessage } from "../../utils/error";
 
 const OrderPage = () => {
   const { user } = useAuthContext();
@@ -22,10 +23,11 @@ const OrderPage = () => {
   }, [order]);
 
   if (!orderId) {
-    return <Navigate to="/orders" replace />;
+    navigate("/orders");
+    return;
   }
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) navigate("/login");
 
   const handlePayment = async () => {
     if (!order) return;
@@ -37,7 +39,7 @@ const OrderPage = () => {
         {},
         {
           params: { orderId: order.id },
-          headers: { Authorization: `Bearer ${user.token}` },
+          headers: { Authorization: `Bearer ${user?.token}` },
         }
       );
 
@@ -61,7 +63,7 @@ const OrderPage = () => {
         {},
         {
           params: { orderId: order.id },
-          headers: { Authorization: `Bearer ${user.token}` },
+          headers: { Authorization: `Bearer ${user?.token}` },
         }
       );
 
@@ -78,17 +80,15 @@ const OrderPage = () => {
 
   if (isLoading)
     return <div className="text-center">Loading order details...</div>;
+
   if (error)
-    return (
-      <div className="text-center text-error">
-        Error loading order: {error.message}
-      </div>
-    );
+    return <div className="alert alert-error">{getErrorMessage(error)}</div>;
+
   if (!order) return <div className="text-center">Order not found</div>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Order Details</h1>
+    <div className="container mx-auto">
+      <h1 className="text-xl md:text-2xl font-bold mb-6">Order Details</h1>
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Order #{order.id}</h2>
@@ -115,7 +115,7 @@ const OrderPage = () => {
                 {isPaying ? <Loader /> : "Cancel"}
               </button>
               <button
-                className="btn btn-outline bg-base-content text-base-100"
+                className="btn btn-md md:btn-md btn-outline bg-base-content text-base-100"
                 onClick={handlePayment}
                 disabled={isLoading}
               >

@@ -7,7 +7,7 @@ namespace EduQuest.Features.Questions
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QuestionController(IQuestionService questionService, IMapper mapper, ControllerValidator validator)
+    public class QuestionController(IQuestionService questionService, IMapper mapper, IControllerValidator validator)
         : ControllerBase
     {
         [HttpGet("For-Content")]

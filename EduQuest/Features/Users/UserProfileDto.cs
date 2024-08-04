@@ -1,5 +1,8 @@
-﻿namespace EduQuest.Features.Questions
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace EduQuest.Features.Users
 {
+    [ExcludeFromCodeCoverage]
     public class UserProfileDto
     {
         public int Id { get; set; }

@@ -10,6 +10,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "../../components/common/Loader";
 import { useAuthContext } from "../../contexts/auth/authReducer";
+import { customToast } from "../../utils/toast";
+import { getErrorMessage } from "../../utils/error";
+import useUserManagesCourse from "../../hooks/fetchers/useUserManagesCourse";
 
 interface CourseTab extends Tab {
   value: "course_info" | "course_curriculum" | "submit";
@@ -33,9 +36,13 @@ const ManageCoursePage = () => {
   const [activeTab, setActiveTab] = useState<CourseTab["value"]>("course_info");
   const [managingCourse, setManagingCourse] = useState<Course | null>(null);
   const [isCourseLoading, setIsCourseLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
   const { courseId } = useParams();
   const { user } = useAuthContext();
   const navigate = useNavigate();
+
+  const { isUserManages, isLoading: checkingCourseOwnership } =
+    useUserManagesCourse(Number(courseId));
   const mode: ManageCoursePageProps["mode"] = courseId
     ? "updating"
     : "creating";
@@ -47,15 +54,24 @@ const ManageCoursePage = () => {
     }
 
     const fetch = async () => {
-      setIsCourseLoading(true);
-      // try catch
-      const { data } = await axios.get<Course>(`/api/Course/`, {
-        params: {
-          courseId,
-        },
-      });
-      setManagingCourse(data);
-      setIsCourseLoading(false);
+      try {
+        setIsCourseLoading(true);
+        const { data } = await axios.get<Course>(`/api/Course/`, {
+          params: {
+            courseId,
+          },
+        });
+        console.log(data);
+        setManagingCourse(data);
+        setIsCourseLoading(false);
+      } catch (error) {
+        setError(error);
+        customToast(getErrorMessage(error, "Error saving course"), {
+          type: "error",
+        });
+      } finally {
+        setIsCourseLoading(false);
+      }
     };
 
     fetch();
@@ -63,10 +79,23 @@ const ManageCoursePage = () => {
 
   if (!user) {
     navigate("/login");
+    return;
   }
 
-  if (isCourseLoading) {
+  if (isCourseLoading || checkingCourseOwnership) {
     return <Loader />;
+  }
+
+  if (error) {
+    return (
+      <p className="alert alert-error">
+        {getErrorMessage(error, "Problem loading the course")}
+      </p>
+    );
+  }
+
+  if (!isUserManages) {
+    return <p className="alert alert-error">Cannot Manage this course</p>;
   }
 
   return (

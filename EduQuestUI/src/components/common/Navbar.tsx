@@ -7,30 +7,47 @@ import { logout } from "../../contexts/auth/actions";
 import useUserProfile from "../../hooks/fetchers/useUserProfile";
 import Loader from "./Loader";
 import SearchBar from "./search";
+import { FaSearch } from "react-icons/fa";
+import { useState } from "react";
 
 const Navbar = () => {
   const { user } = useAuthContext();
   const { user: userProfile, isLoading } = useUserProfile();
-
+  const [isSearching, setIsSearching] = useState(false);
   const dispatch = useAuthDispatchContext();
   const location = useLocation();
+
+  if (isSearching) {
+    return (
+      <div className="fixed left-0 right-0 top-0 z-50 flex items-center p-1">
+        <SearchBar onClose={() => setIsSearching(false)} />
+      </div>
+    );
+  }
+
   return (
     <div className="navbar bg-base-100 fixed left-0 right-0 top-0 z-50  backdrop-filter backdrop-blur-lg  bg-opacity-95  justify-between ">
-      <div className="space-x-4">
+      <div className="lg:space-x-4">
         <div className="">
           <Link to={"/"} className="btn btn-ghost text-xl">
             EduQuest
           </Link>
         </div>
-        <div className="form-control">
+        <div className="form-control hidden md:block">
           <SearchBar />
         </div>
       </div>
-      <div className="space-x-4">
+      <div className="space-x-2 md:space-x-4 ">
+        <FaSearch
+          className="md:hidden"
+          onClick={() => {
+            setIsSearching(true);
+          }}
+        />
         {user?.isEducator && (
           <div>
             <div
-              className="tooltip  tooltip-bottom"
+              className="tooltip  tooltip-bottom hidden md:block"
               data-tip="Goes to Educator view, where courses can be managed"
             >
               <button className="btn btn-ghost">
@@ -43,7 +60,7 @@ const Navbar = () => {
         {user?.isAdmin && (
           <div>
             <div
-              className="tooltip  tooltip-bottom"
+              className="tooltip  tooltip-bottom hidden md:block"
               data-tip="Goes to Admin view, where courses can be managed"
             >
               <button className="btn btn-ghost">
@@ -78,7 +95,11 @@ const Navbar = () => {
                       <img
                         alt="Tailwind CSS Navbar component"
                         className="w-32 h-22"
-                        src={userProfile?.profilePictureUrl as string}
+                        src={
+                          (userProfile?.profilePictureUrl +
+                            "?" +
+                            Date.now()) as string
+                        }
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-base-300 text-base-content flex items-center justify-center">
@@ -109,6 +130,19 @@ const Navbar = () => {
                 <li onClick={() => logout(dispatch)}>
                   <a>Logout</a>
                 </li>
+
+                {user.isEducator && (
+                  <li className="md:hidden">
+                    <Link to={"/Educator"}>Manage Courses</Link>
+                  </li>
+                )}
+
+                {user.isAdmin && (
+                  <li className="md:hidden">
+                    <Link to={"/admin"}>Admin</Link>
+                  </li>
+                )}
+
                 <li>
                   <Link to={"/myCourses"}>My Courses </Link>
                 </li>

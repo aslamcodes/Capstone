@@ -1,5 +1,8 @@
-﻿namespace EduQuest.Features.Users
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace EduQuest.Features.Users
 {
+    [ExcludeFromCodeCoverage]
     [Serializable]
     public class UserNotFoundException : Exception
     {

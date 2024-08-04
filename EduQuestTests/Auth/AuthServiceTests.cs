@@ -1,150 +1,128 @@
-﻿using EduQuest.Commons;
+﻿using System.Security.Cryptography;
+using System.Text;
+using EduQuest.Entities;
 using EduQuest.Features.Auth;
 using EduQuest.Features.Auth.DTOS;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using EduQuest.Features.Users;
 using Moq;
 
 namespace EduQuestTests.Auth
 {
-    class AuthServiceTests
+    [TestFixture]
+    public class AuthServiceTests
     {
-        private ITokenService TokenService;
-        private IAuthService AuthService;
-        private EduQuestContext context;
-
-        private EduQuestContext GetContext()
-        {
-            return context;
-        }
-
-        private void SetContext(EduQuestContext value)
-        {
-            context = value;
-        }
+        private Mock<IUserService> _mockUserService;
+        private Mock<ITokenService> _mockTokenService;
+        private AuthService _authService;
 
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
-            Mock<IConfigurationSection> configurationJWTSection = new();
-            configurationJWTSection.Setup(x => x.Value).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
-
-            Mock<IConfigurationSection> congigTokenSection = new();
-            congigTokenSection.Setup(x => x.GetSection("key")).Returns(configurationJWTSection.Object);
-
-            Mock<IConfiguration> mockConfig = new();
-            mockConfig.Setup(x => x.GetSection("TokenKey")).Returns(congigTokenSection.Object);
-
-            var options = new DbContextOptionsBuilder<EduQuestContext>()
-               .UseInMemoryDatabase(databaseName: "EduQuest")
-               .Options;
-
-            SetContext(new EduQuestContext(options));
-            GetContext().Database.EnsureCreated();
-
-
-            TokenService = new TokenService(mockConfig.Object);
-            //AuthService = new AuthService(new UserService(new UserRepo(GetContext())), TokenService);
+            _mockUserService = new Mock<IUserService>();
+            _mockTokenService = new Mock<ITokenService>();
+            _authService = new AuthService(_mockUserService.Object, _mockTokenService.Object);
         }
 
         [Test]
-        public async Task AuthUserTest()
+        public async Task Login_ReturnsUser_WhenCredentialsAreCorrect()
         {
-            #region Arrange
-            RegisterRequestDto registerDto = new()
+            // Arrange
+            var email = "test@example.com";
+            var password = "password123";
+            var user = new User()
             {
-                Email = "johsa@gmail.com",
-                FirstName = "joh",
-                Password = "1234",
-                LastName = "sa"
+                Email = email,
+                PasswordHashKey = Encoding.UTF8.GetBytes("testkey"),
+                Password =
+                    new HMACSHA512(Encoding.UTF8.GetBytes("testkey")).ComputeHash(Encoding.UTF8.GetBytes(password))
             };
+            _mockUserService.Setup(service => service.GetByEmailAsync(email)).ReturnsAsync(user);
 
-            AuthRequestDto loginRequest = new()
-            {
-                Email = "johsa@gmail.com",
-                Password = "1234"
-            };
-            #endregion
+            var loginRequest = new AuthRequestDto { Email = email, Password = password };
 
-            #region Act
-            var registerResult = await AuthService.Register(registerDto);
-            var loginResult = await AuthService.Login(loginRequest);
-            #endregion
+            // Act
+            var result = await _authService.Login(loginRequest);
 
-            #region Assert
-
-            Assert.Multiple(() =>
-            {
-
-                Assert.That(loginResult, Is.Not.Null);
-                Assert.That(registerResult, Is.Not.Null);
-            });
-            Assert.Multiple(() =>
-            {
-                Assert.That(registerResult.FirstName, Is.Not.Null);
-                Assert.That(loginResult.Email, Is.Not.Null);
-            });
-
-
-            #endregion
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(email, result.Email);
         }
 
         [Test]
-        public async Task AuthUseFailTest()
+        public void Login_ThrowsInvalidCredsException_WhenPasswordIsIncorrect()
         {
-            #region Arrange
-            RegisterRequestDto registerDto = new()
+            // Arrange
+            var email = "test@example.com";
+            var password = "password123";
+            var user = new User
             {
-                Email = "johsa@gmail.com",
-                FirstName = "joh",
-                Password = "1234",
-                LastName = "sa"
+                Email = email,
+                PasswordHashKey = Encoding.UTF8.GetBytes("testkey"),
+                Password = new HMACSHA512(Encoding.UTF8.GetBytes("testkey")).ComputeHash(
+                    Encoding.UTF8.GetBytes("wrongpassword"))
             };
+            _mockUserService.Setup(service => service.GetByEmailAsync(email)).ReturnsAsync(user);
 
-            #endregion
+            var loginRequest = new AuthRequestDto { Email = email, Password = password };
 
-            #region Act
-            var registerResult = await AuthService.Register(registerDto);
-            #endregion
-
-            #region Assert
-
-            Assert.ThrowsAsync<UserAlreadyExistsException>(async () => await AuthService.Register(registerDto));
-
-            #endregion
+            // Act & Assert
+            Assert.ThrowsAsync<InvalideCredsException>(() => _authService.Login(loginRequest));
         }
-
 
         [Test]
-        public async Task AuthUserTestFail()
+        public async Task Register_ReturnsUser_WhenRegistrationIsSuccessful()
         {
-            #region Arrange
-            RegisterRequestDto registerDto = new()
+            // Arrange
+            var email = "test@example.com";
+            var password = "password123";
+            var registerRequest = new RegisterRequestDto
             {
-                Email = "johsa@gmail.com",
-                FirstName = "joh",
-                Password = "1234",
-                LastName = "sa"
+                Email = email,
+                Password = password,
+                FirstName = "Test",
+                LastName = "User"
             };
 
-            AuthRequestDto loginRequest = new()
+            _mockUserService.Setup(service => service.GetByEmailAsync(email))
+                .ThrowsAsync(new UserNotFoundException());
+
+            var createdUser = new User
             {
-                Email = "johsa@gmail.com",
-                Password = "12314"
+                Email = email,
+                FirstName = "Test",
+                LastName = "User",
+                ProfilePictureUrl = ""
             };
-            #endregion
+            _mockUserService.Setup(service => service.AddAsync(It.IsAny<User>())).ReturnsAsync(createdUser);
 
-            #region Act
-            var registerResult = await AuthService.Register(registerDto);
+            // Act
+            var result = await _authService.Register(registerRequest);
 
-            #endregion
-
-            #region Assert
-
-
-            Assert.ThrowsAsync<InvalideCredsException>(async () => await AuthService.Login(loginRequest));
-            #endregion
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(email, result.Email);
+            Assert.AreEqual("Test", result.FirstName);
+            Assert.AreEqual("User", result.LastName);
         }
 
+        [Test]
+        public void Register_ThrowsUserAlreadyExistsException_WhenUserAlreadyExists()
+        {
+            // Arrange
+            var email = "test@example.com";
+            var registerRequest = new RegisterRequestDto
+            {
+                Email = email,
+                Password = "password123",
+                FirstName = "Test",
+                LastName = "User"
+            };
+
+            var existingUser = new User { Email = email };
+            _mockUserService.Setup(service => service.GetByEmailAsync(email)).ReturnsAsync(existingUser);
+
+            // Act & Assert
+            Assert.ThrowsAsync<UserAlreadyExistsException>(() => _authService.Register(registerRequest));
+        }
     }
 }

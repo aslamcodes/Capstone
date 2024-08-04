@@ -9,7 +9,7 @@ namespace EduQuest.Features.Notes
     [Route("api/[controller]")]
     [ApiController]
     public class NotesController(INotesService noteService,
-                                 ControllerValidator validator,
+                                 IControllerValidator validator,
                                  IMapper mapper) : Controller
     {
         [HttpPost]
@@ -149,7 +149,7 @@ namespace EduQuest.Features.Notes
         {
             try
             {
-                var user = ControllerValidator.GetUserIdFromClaims(User.Claims);
+                var user = validator.GetUserIdFromClaims(User.Claims);
 
                 await validator.ValidateUserPrivilegeForContent(User.Claims, contentId);
 
