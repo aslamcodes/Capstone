@@ -27,7 +27,7 @@ export default function useFetchAxios<T, K>(
       try {
         setIsLoading(true);
         setError(null);
-        var { data } = await axios.get<T>(url, {
+        var { data } = await axiosInstance.get<T>(url, {
           headers: { ...headers },
           params: { ...params },
         });

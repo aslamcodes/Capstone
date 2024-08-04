@@ -27,6 +27,7 @@ import Form, {
   FormTitle,
 } from "../../../components/common/Form";
 import { FieldValues, useForm } from "react-hook-form";
+import axiosInstance from "../../../utils/fetcher";
 
 interface CourseCurriculumProps extends ManageCoursePageProps {}
 
@@ -80,7 +81,7 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({ initialCourse }) => {
   const handleOrderChange = async (sectionId: number, orderId: number) => {
     const section = newSections.find((section) => section.id === sectionId);
 
-    await axios.put(
+    await axiosInstance.put(
       "/api/Section",
       {
         ...section,
@@ -97,7 +98,7 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({ initialCourse }) => {
   const handleAddSection = async (data: any) => {
     // find a better way to generate unique id instread of string
     setIsAddingSection(true);
-    var { data: newSection } = await axios.post<Section>(
+    var { data: newSection } = await axiosInstance.post<Section>(
       "/api/Section",
       {
         name: data.name,

@@ -7,6 +7,7 @@ import { useAuthContext } from "../../../contexts/auth/authReducer";
 import { Course } from "../../../interfaces/course";
 import { customToast } from "../../../utils/toast";
 import Loader from "../../../components/common/Loader";
+import axiosInstance from "../../../utils/fetcher";
 
 interface SubmitCoursePageProps extends ManageCoursePageProps {}
 
@@ -38,7 +39,7 @@ const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
-      await axios.put(
+      await axiosInstance.put(
         `/api/Course/Submit-For-Review?courseId=${initialCourse?.id}`,
         {},
         {

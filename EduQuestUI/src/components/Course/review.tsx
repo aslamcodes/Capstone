@@ -4,6 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";
 import useReviews from "../../hooks/fetchers/useReviews";
+import axiosInstance from "../../utils/fetcher";
 
 export const StarRating: FC<{
   rating: number;
@@ -39,7 +40,7 @@ const Review: FC<{ courseId: number }> = ({ courseId }) => {
     try {
       if (!review)
         return customToast("Review cannot be empty", { type: "error" });
-      await axios.post(
+      await axiosInstance.post(
         "/api/Reviews",
         {
           courseId,

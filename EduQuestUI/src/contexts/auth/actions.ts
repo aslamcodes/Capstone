@@ -12,7 +12,7 @@ export const login = async (
 ) => {
   dispatch({ type: AUTH_REQUEST });
   try {
-    const { data } = await axios.post("/api/Auth/login", {
+    const { data } = await axiosInstance.post("/api/Auth/login", {
       email,
       password,
     });
@@ -33,7 +33,7 @@ export const register = async (dispatch: React.Dispatch<any>, payload: any) => {
     //   headers: { "content-type": "multipart/form-data" },
     // };
 
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       "/api/Auth/register",
       payload
       //   config

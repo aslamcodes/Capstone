@@ -11,6 +11,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import useCategories from "../../hooks/fetchers/useCategories";
 import { customToast } from "../../utils/toast";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/fetcher";
 
 const CreateCourseForm: FC<{
   onClose: () => void;
@@ -32,7 +33,7 @@ const CreateCourseForm: FC<{
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
-      var { data: responseData } = await axios.post(
+      var { data: responseData } = await axiosInstance.post(
         "/api/Course",
         { ...data, educatorId: user?.id },
         {

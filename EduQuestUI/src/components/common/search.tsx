@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Course } from "../../interfaces/course";
 import Loader from "./Loader";
 import { IoClose, IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
+import axiosInstance from "../../utils/fetcher";
 
 const SearchBar = ({ onClose = () => {} }: { onClose?: () => void }) => {
   const [query, setQuery] = useState("");
@@ -24,7 +25,7 @@ const SearchBar = ({ onClose = () => {} }: { onClose?: () => void }) => {
       setError(null);
 
       try {
-        const response = await axios.get("/api/Course/search", {
+        const response = await axiosInstance.get("/api/Course/search", {
           params: { query: searchQuery },
         });
         setResults(response.data);

@@ -10,6 +10,7 @@ import { CourseReviews } from "./review";
 import { customToast } from "../../utils/toast";
 import useUserOwnsCourse from "../../hooks/fetchers/useUserOwnsCourse";
 import useEducatorProfile from "../../hooks/fetchers/useEducatorProfile";
+import axiosInstance from "../../utils/fetcher";
 
 const CourseLanding = () => {
   const { courseId } = useParams();
@@ -44,7 +45,7 @@ const CourseLanding = () => {
   const handleBuyCourse = async () => {
     try {
       setIsBuying(true);
-      let order = await axios.post(
+      let order = await axiosInstance.post(
         "/api/Order",
         {
           orderedCourse: course.id,

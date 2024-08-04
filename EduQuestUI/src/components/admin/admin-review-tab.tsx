@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";
+import axiosInstance from "../../utils/fetcher";
 
 const AdminReviewTab = () => {
   const { user } = useAuthContext();
@@ -36,7 +37,7 @@ const AdminReviewTab = () => {
 
   const handleAuthorize = async (id: number) => {
     try {
-      await axios.put(
+      await axiosInstance.put(
         `/api/Course/set-course-live?courseId=${id}`,
         {},
         {

@@ -6,6 +6,7 @@ import useVideoForContent from "../../hooks/fetchers/useVideo";
 import { customToast } from "../../utils/toast";
 import Loader from "../common/Loader";
 import { BiLink } from "react-icons/bi";
+import axiosInstance from "../../utils/fetcher";
 
 const VideoEdit = ({ contentId }: { contentId: number }) => {
   const [videoFile, setVideoFile] = React.useState<File | null>(null);
@@ -21,7 +22,7 @@ const VideoEdit = ({ contentId }: { contentId: number }) => {
 
       try {
         setIsUploading(true);
-        const { data } = await axios.post(
+        const { data } = await axiosInstance.post(
           `/api/Video/get-upload-url`,
           {
             contentId,
@@ -34,14 +35,14 @@ const VideoEdit = ({ contentId }: { contentId: number }) => {
           }
         );
 
-        const { data: out } = await axios.put(data.uploadUrl, file, {
+        const { data: out } = await axiosInstance.put(data.uploadUrl, file, {
           headers: {
             "x-ms-blob-type": "BlockBlob",
             "Content-Type": file.type,
           },
         });
 
-        const { data: res } = await axios.post(
+        const { data: res } = await axiosInstance.post(
           `/api/Video/complete-upload`,
           {
             contentId: contentId,

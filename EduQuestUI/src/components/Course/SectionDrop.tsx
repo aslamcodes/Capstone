@@ -3,6 +3,7 @@ import SectionContent from "./SectionContent";
 import { Content } from "../../interfaces/course";
 import Loader from "../common/Loader";
 import { customToast } from "../../utils/toast";
+import axiosInstance from "../../utils/fetcher";
 
 type SectionProps = {
   name: string;
@@ -25,8 +26,9 @@ const SectionDrop: FC<SectionProps> = ({
     const fetchContents = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`/api/Section/Contents?sectionId=${id}`);
-        const data = await res.json();
+        const { data } = await axiosInstance.get<Content[]>(
+          `/api/Section/Contents?sectionId=${id}`
+        );
         setContents(data);
       } catch {
         customToast("Cannot fetch the contents", {
