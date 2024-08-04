@@ -2,6 +2,7 @@ import useSWRImmutable from "swr/immutable";
 import { fetcherWithToken } from "../../utils/fetcher";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Course } from "../../interfaces/course";
+import useFetchAxios from "./useFetchAxios";
 
 export default function useRecomendedCoureses(studentId: number) {
   const { user } = useAuthContext();
@@ -10,15 +11,14 @@ export default function useRecomendedCoureses(studentId: number) {
     data,
     isLoading: coursesLoading,
     error,
-  } = useSWRImmutable<Course[], any>(
-    [
-      `/api/Student/${
-        user ? `recommended-courses?studentId=${studentId}` : `home-courses`
-      }`,
-      user?.token,
-    ],
-    ([url, token]) => fetcherWithToken(url, token as string)
-  );
+  } = useFetchAxios<Course[], any>({
+    url: `/api/Student/${
+      user ? `recommended-courses?studentId=${studentId}` : `home-courses`
+    }`,
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  });
 
   return { courses: data, coursesLoading, error };
 }

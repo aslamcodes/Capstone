@@ -1,5 +1,6 @@
 import axios, { AxiosHeaders } from "axios";
 import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/fetcher";
 
 export default function useFetchAxios<T, K>(
   {
