@@ -1,9 +1,9 @@
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Course } from "../../interfaces/course";
 import CourseCard from "../../components/Course/CourseCard";
+import axiosInstance from "../../utils/fetcher";
 
 const MyCourses = () => {
   const { user } = useAuthContext();

@@ -1,3 +1,4 @@
+import axiosInstance from "../../utils/fetcher";
 import {
   AUTH_FAILURE,
   AUTH_LOGOUT,

@@ -7,7 +7,6 @@ import SubmitCoursePage from "./manage-course-pages/SubmitPage";
 import { ManageCoursePageProps } from "./manage-course-pages/manageCourseTypes";
 import { Course } from "../../interfaces/course";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import Loader from "../../components/common/Loader";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";

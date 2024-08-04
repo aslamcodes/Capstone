@@ -23,6 +23,7 @@ import Loader from "../../../components/common/Loader";
 import { customToast } from "../../../utils/toast";
 import { getErrorMessage } from "../../../utils/error";
 import { IoClose } from "react-icons/io5";
+import axiosInstance from "../../../utils/fetcher";
 
 type Inputs = {
   name: string;
