@@ -73,7 +73,7 @@ namespace EduQuest
                 options.AddDefaultPolicy(
                              policy =>
                                      {
-                                         policy.WithOrigins("https://ashy-ground-0e6a63a1e.5.azurestaticapps.net/");
+                                         policy.WithOrigins("https://ashy-ground-0e6a63a1e.5.azurestaticapps.net", "http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
                                      });
             });
 

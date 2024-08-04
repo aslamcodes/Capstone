@@ -20,7 +20,7 @@ export const fetcherWithToken = (
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const axiosInstance = axios.create({
-  baseURL: `${apiBaseUrl}/api`,
+  baseURL: `${apiBaseUrl}`,
 });
 
 export default axiosInstance;
