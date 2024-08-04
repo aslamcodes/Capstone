@@ -1,8 +1,10 @@
 ﻿using EduQuest.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.CourseCategories
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class CourseCategoryController(ICategoryService categoryService) : ControllerBase

@@ -8,10 +8,12 @@ using EduQuest.Features.Courses.Dto;
 using EduQuest.Features.Sections;
 using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Courses
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class CourseController(

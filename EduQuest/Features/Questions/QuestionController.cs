@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Questions
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionController(IQuestionService questionService, IMapper mapper, IControllerValidator validator)
@@ -41,7 +43,7 @@ namespace EduQuest.Features.Questions
             {
                 await validator.ValidateUserPrivilageForUserId(User.Claims, questionDto.PostedById);
 
-              
+
                 var question = await questionService.Add(new QuestionDto
                 {
                     ContentId = questionDto.ContentId,
@@ -50,7 +52,8 @@ namespace EduQuest.Features.Questions
                     QuestionText = questionDto.QuestionText,
                 });
                 return Ok(question);
-            }  catch (UnAuthorisedUserExeception)
+            }
+            catch (UnAuthorisedUserExeception)
             {
                 return Unauthorized(new ErrorModel(StatusCodes.Status401Unauthorized,
                     "Unauthorized access to the resource"));
@@ -86,7 +89,7 @@ namespace EduQuest.Features.Questions
             }
             catch (Exception)
             {
-               return StatusCode(500);
+                return StatusCode(500);
             }
         }
     }

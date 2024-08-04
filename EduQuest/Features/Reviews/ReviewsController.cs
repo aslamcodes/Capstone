@@ -3,10 +3,12 @@ using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
 using EduQuest.Features.Courses;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Reviews
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewsController(IReviewService reviewService, ICourseService courseService, IControllerValidator validator, IMapper mapper) : Controller
@@ -20,7 +22,7 @@ namespace EduQuest.Features.Reviews
 
                 return Ok(reviews);
             }
-         
+
             catch (Exception)
             {
                 return StatusCode(500);
@@ -51,7 +53,7 @@ namespace EduQuest.Features.Reviews
             {
                 return StatusCode(500);
             }
-         
+
         }
     }
 }

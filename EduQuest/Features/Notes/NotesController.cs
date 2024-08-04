@@ -2,10 +2,12 @@
 using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Notes
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class NotesController(INotesService noteService,

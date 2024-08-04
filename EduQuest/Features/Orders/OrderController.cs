@@ -1,10 +1,12 @@
 ﻿using EduQuest.Commons;
 using EduQuest.Features.Auth.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduQuest.Features.Orders
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController(IOrderService orderService, IControllerValidator validator) : ControllerBase
@@ -106,7 +108,7 @@ namespace EduQuest.Features.Orders
 
                 return Ok(orders);
             }
-        
+
             catch (Exception)
             {
                 return StatusCode(500);
