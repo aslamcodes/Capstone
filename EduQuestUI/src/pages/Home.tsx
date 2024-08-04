@@ -2,10 +2,10 @@ import React from "react";
 import { useAuthContext } from "../contexts/auth/authReducer";
 import useRecomendedCoureses from "../hooks/fetchers/useRecomendedCourses";
 import CourseCard from "../components/Course/CourseCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCategories from "../hooks/fetchers/useCategories";
 import Loader from "../components/common/Loader";
-
+import NoData from "../assets/no_data.svg";
 const Home = () => {
   const { user } = useAuthContext();
   const { categories, isLoading } = useCategories();
@@ -62,6 +62,25 @@ const Home = () => {
               />
             ))}
         </div>
+        {courses?.filter((c) => {
+          if (!currentCategory) return true;
+          return c.courseCategoryId == currentCategory;
+        })?.length === 0 && (
+          <div className="flex flex-col  gap-4 items-center justify-center w-full min-h-[60vh]">
+            <img src={NoData} className="max-w-52" />
+            <p className="text-2xl font-bold">
+              No Courses found here, <br />{" "}
+              <Link
+                to={
+                  user ? (user.isEducator ? "/educator" : "/profile") : "/login"
+                }
+                className="text-violet-900"
+              >
+                perhaps you can create one?
+              </Link>
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

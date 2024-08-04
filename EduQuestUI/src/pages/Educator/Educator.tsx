@@ -6,6 +6,7 @@ import { useRef } from "react";
 import CreateCourseForm from "../../components/Course/CreateCourseForm";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import CourseCard from "../../components/Course/CourseCard";
+import books from "../../assets/blank_canvas.svg";
 
 const Educator = () => {
   const { user } = useAuthContext();
@@ -77,6 +78,21 @@ const Educator = () => {
               key={course.id}
             ></CourseCard>
           ))}
+        </div>
+        <div>
+          {courses?.length === 0 && (
+            <div className="flex flex-col items-center justify-center gap-4 min-h-[60vh]">
+              <img src={books} className="max-w-52" />
+              <h1 className="text-xl font-bold">No Courses Found</h1>
+              <p className="text-base-content">
+                You have not created any courses yet
+              </p>
+
+              <button className="btn btn-ghost" onClick={handleOnCreateCourse}>
+                Create a Course, start influencing the world
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -73,7 +73,7 @@ const CourseLanding = () => {
           {course.courseThumbnailPicture && (
             <img
               src={course.courseThumbnailPicture as string}
-              className=" rounded-lg shadow-2xl"
+              className=" rounded-lg shadow-2xl max-w-lg"
             />
           )}
           <div>
@@ -93,8 +93,9 @@ const CourseLanding = () => {
             <p className="py-4 break-all">{course.description}</p>
 
             <p className="py-6 break-all text-2xl font-bold">
-              Rs. {course.price}
+              {course.price === 0 ? "Free" : `Rs. ${course.price}`}
             </p>
+
             {isUserOwns ? (
               <button
                 className="btn btn-outline"
@@ -122,6 +123,7 @@ const CourseLanding = () => {
           {sections ? (
             sections.map((section) => (
               <SectionDrop
+                currentContentId={null}
                 name={section.name}
                 description={section.description}
                 id={section.id}

@@ -2,7 +2,8 @@ import React from "react";
 import useOrders from "../hooks/fetchers/useOrders";
 import OrderCard from "../components/order/OrderCard";
 import { useAuthContext } from "../contexts/auth/authReducer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import NoData from "../assets/no_data.svg";
 
 const UserOrders: React.FC = () => {
   const { orders } = useOrders();
@@ -22,6 +23,20 @@ const UserOrders: React.FC = () => {
         {orders?.map((order) => (
           <OrderCard order={order} />
         ))}
+        {orders?.length === 0 && (
+          <div className="min-h-[60vh] w-screen flex flex-col gap-2 justify-center items-center text-center">
+            <img src={NoData} className="max-w-52"></img>
+            <h2 className="text-xl font-bold">No Orders Found</h2>
+            <p className="text-base-content">
+              You have not placed any orders yet
+            </p>
+            <button>
+              <Link to="/" className="btn btn-bordered">
+                Explore Courses
+              </Link>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

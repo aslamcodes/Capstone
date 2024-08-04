@@ -7,17 +7,21 @@ interface SectionContentProps {
   contentType: "Video" | "Article";
   contentId: number;
   onClick: (contentId: number) => void;
+  isActive: boolean;
 }
 
 const SectionContent: FC<SectionContentProps> = ({
   title,
   contentType,
   contentId,
+  isActive,
   onClick,
 }) => {
   return (
     <div
-      className="font-bold bg-neutral-content rounded-md p-4 cursor-pointer"
+      className={`font-bold bg-neutral-content rounded-md p-4 cursor-pointer ${
+        isActive ? "bg-slate-400 " : ""
+      }`}
       onClick={() => onClick(contentId)}
     >
       <div className="font-semibold flex items-center gap-2">

@@ -65,6 +65,7 @@ const CoursePage = () => {
             {sections ? (
               sections.map((section) => (
                 <SectionDrop
+                  currentContentId={currentContentId}
                   name={section.name}
                   description={section.description}
                   id={section.id}
@@ -77,7 +78,7 @@ const CoursePage = () => {
           </div>
         </div>
       )}
-      <button className="btn btn-sm mb-2" onClick={toggleDrawer}>
+      <button className="btn btn-sm mb-2 md:hidden" onClick={toggleDrawer}>
         Sections
       </button>
       <div className="min-h-[70vh] grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -95,6 +96,7 @@ const CoursePage = () => {
                 name={section.name}
                 description={section.description}
                 id={section.id}
+                currentContentId={currentContentId}
                 onContentChange={handleContentChange}
               />
             ))

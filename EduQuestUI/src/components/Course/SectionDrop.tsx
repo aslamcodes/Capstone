@@ -9,12 +9,14 @@ type SectionProps = {
   name: string;
   description: string;
   id: number;
+  currentContentId: number | null;
   onContentChange: (contentId: number) => void;
 };
 
 const SectionDrop: FC<SectionProps> = ({
   name: title,
   description,
+  currentContentId,
   id,
   onContentChange,
 }) => {
@@ -59,6 +61,7 @@ const SectionDrop: FC<SectionProps> = ({
             {contents.length > 0 &&
               contents.map((content) => (
                 <SectionContent
+                  isActive={content.id === currentContentId}
                   contentId={content.id}
                   contentType={content.contentType}
                   key={content.id}

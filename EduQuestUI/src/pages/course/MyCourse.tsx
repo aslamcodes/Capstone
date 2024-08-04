@@ -1,9 +1,10 @@
 import { useAuthContext } from "../../contexts/auth/authReducer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Course } from "../../interfaces/course";
 import CourseCard from "../../components/Course/CourseCard";
 import axiosInstance from "../../utils/fetcher";
+import blankCanvas from "../../assets/blank_canvas.svg";
 
 const MyCourses = () => {
   const { user } = useAuthContext();
@@ -47,6 +48,21 @@ const MyCourses = () => {
             key={course.id}
           />
         ))}
+        {courses.length === 0 && (
+          <div className="min-h-[60vh] w-screen flex flex-col gap-2 justify-center items-center text-center">
+            <img src={blankCanvas} className="max-w-52"></img>
+            <h2 className="text-xl font-bold">No Courses Found</h2>
+            <p className="text-base-content">
+              You have not enrolled in any courses yet
+            </p>
+
+            <button>
+              <Link to="/" className="btn btn-bordered">
+                Explore Courses
+              </Link>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
