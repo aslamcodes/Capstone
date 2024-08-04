@@ -1,7 +1,3 @@
-import axios from "axios";
-import useSWR from "swr";
-import { fetcher } from "../utils/fetcher";
-
 const Apitest = () => {
   return (
     <div>

@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { FC, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useAuthContext } from "../../contexts/auth/authReducer";
-import { toast } from "react-toastify";
 import { customToast } from "../../utils/toast";
 import useReviews from "../../hooks/fetchers/useReviews";
 

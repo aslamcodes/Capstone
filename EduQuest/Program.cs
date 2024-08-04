@@ -1,5 +1,4 @@
 
-using System.Diagnostics.CodeAnalysis;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using EduQuest.Commons;
@@ -25,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using StudentCourse = EduQuest.Entities.StudentCourse;
 
@@ -93,7 +93,8 @@ namespace EduQuest
 
             string storageConn = client.GetSecret("eduquest-storage").Value.Value.ToString();
 
-            string? dbConn = builder.Environment.IsDevelopment() ? builder.Configuration.GetConnectionString("default") : client.GetSecret("eduquest-db").Value.Value.ToString();
+            //string? dbConn = builder.Environment.IsDevelopment() ? builder.Configuration.GetConnectionString("default") : client.GetSecret("eduquest-db").Value.Value.ToString();
+            string? dbConn = client.GetSecret("eduquest-db").Value.Value.ToString();
 
             #region DB and Storage
             builder.Services.AddDbContext<EduQuestContext>(options =>
@@ -153,10 +154,15 @@ namespace EduQuest
 
             var app = builder.Build();
 
+            app.Map("/", async (builder) =>
+            {
+                await builder.Response.WriteAsync("Hello World");
+            });
+
+            app.UseSwagger();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
                 app.UseSwaggerUI();
             }
 

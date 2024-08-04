@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useCoursesByStatus from "../../hooks/fetchers/useCoursesByStatus";
 import { Course, CourseStatusEnum } from "../../interfaces/course";
 import Loader from "../common/Loader";

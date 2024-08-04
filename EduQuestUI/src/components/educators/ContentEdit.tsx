@@ -1,13 +1,9 @@
-import React, { FC, useCallback, useEffect } from "react";
+import { FC } from "react";
 import { Content } from "../../interfaces/course";
-import { RiCloseFill, RiCloseLargeLine } from "react-icons/ri";
-import axios from "axios";
-import { useAuthContext } from "../../contexts/auth/authReducer";
+import { RiCloseFill } from "react-icons/ri";
 import { GoVideo } from "react-icons/go";
 import { TbArticle } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import useVideoForContent from "../../hooks/fetchers/useVideo";
-import { toast } from "react-toastify";
 import VideoEdit from "./VideoEdit";
 import { BiPencil } from "react-icons/bi";
 

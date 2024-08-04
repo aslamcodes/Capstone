@@ -7,8 +7,6 @@ import ContentViewer from "../../components/Course/ContentViewer";
 import ContentTabs from "../../components/Course/ContentTabs";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useUserOwnsCourse from "../../hooks/fetchers/useUserOwnsCourse";
-import { RiGhostFill } from "react-icons/ri";
-import { FaX } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
 const CoursePage = () => {

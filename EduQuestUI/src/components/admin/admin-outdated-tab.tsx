@@ -1,5 +1,3 @@
-import React from "react";
-import { useAuthContext } from "../../contexts/auth/authReducer";
 import useCoursesByStatus from "../../hooks/fetchers/useCoursesByStatus";
 import { CourseStatusEnum } from "../../interfaces/course";
 import { useNavigate } from "react-router-dom";

@@ -1,7 +1,7 @@
-import React, { FC, useEffect } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useCourse from "../../hooks/fetchers/useCourse";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useSections from "../../hooks/fetchers/useSections";
 import SectionDrop from "./SectionDrop";
@@ -15,11 +15,9 @@ const CourseLanding = () => {
   const { courseId } = useParams();
   const { course, isLoading } = useCourse(Number(courseId));
   const [isBuying, setIsBuying] = React.useState(false);
-  const {
-    sections,
-    isLoading: sectionsLoading,
-    error,
-  } = useSections(courseId as string);
+  const { sections, isLoading: sectionsLoading } = useSections(
+    courseId as string
+  );
   const { user } = useAuthContext();
   const { educatorProfile } = useEducatorProfile(course?.educatorId as number);
 

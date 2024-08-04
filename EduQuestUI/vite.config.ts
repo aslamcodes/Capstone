@@ -7,8 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5153",
-        changeOrigin: false,
+        target: "https://eduquestbackend.azurewebsites.net",
+        changeOrigin: true,
       },
     },
   },

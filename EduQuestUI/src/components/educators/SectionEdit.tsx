@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Content, Section } from "../../interfaces/course";
-import useContentsForSection from "../../hooks/fetchers/useContent";
 import ContentEdit from "./ContentEdit";
 import { RiCloseLargeLine, RiDraggable } from "react-icons/ri";
 import axios from "axios";
@@ -37,7 +36,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
 
   const [contents, setContents] = useState<Content[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   console.log(JSON.stringify(initialSection));
 

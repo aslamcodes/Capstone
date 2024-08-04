@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useQuestion from "../../hooks/fetchers/useQuestions";
 import Loader from "../common/Loader";

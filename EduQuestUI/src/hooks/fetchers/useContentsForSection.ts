@@ -1,6 +1,5 @@
 import useSWRImmutable from "swr/immutable";
 import { useAuthContext } from "../../contexts/auth/authReducer";
-import axios from "axios";
 import { Content } from "../../interfaces/course";
 import { fetcherWithToken } from "../../utils/fetcher";
 

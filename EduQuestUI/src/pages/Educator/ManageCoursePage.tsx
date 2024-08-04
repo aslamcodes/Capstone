@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Tab } from "../../interfaces/common";
 import Tabs from "../../components/common/Tabs";
 import CourseInfo from "./manage-course-pages/CourseInfoPage";
@@ -24,13 +24,13 @@ const tabs: CourseTab[] = [
   { label: "Submit", value: "submit" },
 ];
 
-const manageCoursePages: {
-  [key in CourseTab["value"]]: React.FC<ManageCoursePageProps>;
-} = {
-  course_info: CourseInfo,
-  course_curriculum: CourseCurriculum,
-  submit: SubmitCoursePage,
-};
+// const manageCoursePages: {
+//   [key in CourseTab["value"]]: React.FC<ManageCoursePageProps>;
+// } = {
+//   course_info: CourseInfo,
+//   course_curriculum: CourseCurriculum,
+//   submit: SubmitCoursePage,
+// };
 
 const ManageCoursePage = () => {
   const [activeTab, setActiveTab] = useState<CourseTab["value"]>("course_info");

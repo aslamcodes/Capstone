@@ -1,8 +1,6 @@
-import React, { FC } from "react";
-import useContent from "../../hooks/fetchers/useContent";
+import { FC } from "react";
 import useCourse from "../../hooks/fetchers/useCourse";
 import { GoGoal } from "react-icons/go";
-import EducatorProfile from "../educators/educator-profile";
 
 const CourseDescription: FC<{
   courseId: number;

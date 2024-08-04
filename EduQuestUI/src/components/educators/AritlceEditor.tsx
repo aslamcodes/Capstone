@@ -1,5 +1,5 @@
-import MDEditor, { title } from "@uiw/react-md-editor";
-import React, { useEffect, useState } from "react";
+import MDEditor from "@uiw/react-md-editor";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../common/Loader";
 import axios from "axios";
@@ -7,7 +7,6 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Article } from "../../interfaces/course";
 import { customToast } from "../../utils/toast";
 import { getErrorMessage } from "../../utils/error";
-import { FaLaravel } from "react-icons/fa";
 
 const AritlceEditor = () => {
   const { user } = useAuthContext();
