@@ -22,6 +22,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { customToast } from "../../utils/toast";
+import axiosInstance from "../../utils/fetcher";
 
 interface SectionEditProps {
   initialSection: Section;
@@ -56,10 +57,13 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
     const fetchContents = async () => {
       try {
         setIsLoading(true);
-        const { data } = await axios.get<Content[]>("/api/Section/Contents", {
-          params: { sectionId: initialSection.id },
-          headers: { Authorization: `Bearer ${user?.token}` },
-        });
+        const { data } = await axiosInstance.get<Content[]>(
+          "/api/Section/Contents",
+          {
+            params: { sectionId: initialSection.id },
+            headers: { Authorization: `Bearer ${user?.token}` },
+          }
+        );
         setContents(data);
         setIsLoading(false);
       } catch (error) {
@@ -85,7 +89,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
 
   async function handleDeleteSection(sectionId: number) {
     try {
-      await axios.delete("/api/Section", {
+      await axiosInstance.delete("/api/Section", {
         params: { sectionId },
         headers: { Authorization: `Bearer ${user?.token}` },
       });
@@ -99,7 +103,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
   async function handleAddContent(content: FieldValues) {
     try {
       setIsContentLoading(true);
-      const { data: Content } = await axios.post<Content>(
+      const { data: Content } = await axiosInstance.post<Content>(
         "/api/Content",
         {
           sectionId: initialSection.id,
@@ -126,7 +130,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
 
   async function handleDeleteContent(contentId: number) {
     try {
-      await axios.delete("/api/Content", {
+      await axiosInstance.delete("/api/Content", {
         params: { contentId },
         headers: { Authorization: `Bearer ${user?.token}` },
       });
@@ -141,7 +145,7 @@ const SectionEdit: FC<SectionEditProps> = ({ initialSection, onDelete }) => {
   const handleOrderChange = async (contentId: number, orderId: number) => {
     const content = contents.find((content) => content.id === contentId);
     try {
-      await axios.put(
+      await axiosInstance.put(
         "/api/Content",
         {
           ...content,

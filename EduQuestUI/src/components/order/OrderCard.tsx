@@ -7,6 +7,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";
 import Loader from "../common/Loader";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/fetcher";
 
 const OrderCard: FC<{
   order: Order;
@@ -26,7 +27,7 @@ const OrderCard: FC<{
     try {
       setIsPaying(true);
 
-      await axios.post(
+      await axiosInstance.post(
         "/api/Payments/Make-Payment",
         {},
         {
@@ -48,7 +49,7 @@ const OrderCard: FC<{
   const handleCancel = async () => {
     setIsPaying(true);
     try {
-      await axios.put(
+      await axiosInstance.put(
         `/api/Order/Cancel?orderId=${order.id}`,
         {},
         {

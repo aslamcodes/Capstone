@@ -7,6 +7,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import { Article } from "../../interfaces/course";
 import { customToast } from "../../utils/toast";
 import { getErrorMessage } from "../../utils/error";
+import axiosInstance from "../../utils/fetcher";
 
 const AritlceEditor = () => {
   const { user } = useAuthContext();
@@ -25,12 +26,15 @@ const AritlceEditor = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const { data } = await axios.get<Article>(`/api/Article/ForContent`, {
-          params: { contentId },
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
+        const { data } = await axiosInstance.get<Article>(
+          `/api/Article/ForContent`,
+          {
+            params: { contentId },
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        );
 
         setArticle(data);
       } catch {
@@ -45,7 +49,7 @@ const AritlceEditor = () => {
     try {
       setIsSaving(true);
 
-      await axios.put(
+      await axiosInstance.put(
         "/api/Article",
         {
           id: article?.id,

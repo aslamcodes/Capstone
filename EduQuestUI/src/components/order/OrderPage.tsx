@@ -6,6 +6,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";
 import Loader from "../common/Loader";
 import { getErrorMessage } from "../../utils/error";
+import axiosInstance from "../../utils/fetcher";
 
 const OrderPage = () => {
   const { user } = useAuthContext();
@@ -34,7 +35,7 @@ const OrderPage = () => {
     try {
       setIsPaying(true);
 
-      await axios.post(
+      await axiosInstance.post(
         "/api/Payments/Make-Payment",
         {},
         {
@@ -58,7 +59,7 @@ const OrderPage = () => {
     if (!order) return;
     try {
       setIsPaying(true);
-      await axios.put(
+      await axiosInstance.put(
         "/api/Order/Cancel",
         {},
         {

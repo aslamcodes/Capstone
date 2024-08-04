@@ -6,6 +6,7 @@ import axios from "axios";
 import { useAuthContext } from "../../contexts/auth/authReducer";
 import useUserProfile from "../../hooks/fetchers/useUserProfile";
 import { customToast } from "../../utils/toast";
+import axiosInstance from "../../utils/fetcher";
 
 const Answers: FC<{ questionId: number }> = ({ questionId }) => {
   const { answers, isLoading, error } = useAnswersForQuestion(questionId);
@@ -18,7 +19,7 @@ const Answers: FC<{ questionId: number }> = ({ questionId }) => {
   const handleAnswer = async () => {
     try {
       setIsAnswering(true);
-      const { data } = await axios.post<Answer>(
+      const { data } = await axiosInstance.post<Answer>(
         "/api/Answers/For-Question",
         {
           answerText: answer,

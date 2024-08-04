@@ -8,6 +8,7 @@ import { BiError } from "react-icons/bi";
 import { Question } from "../../interfaces/course";
 import useUserProfile from "../../hooks/fetchers/useUserProfile";
 import { customToast } from "../../utils/toast";
+import axiosInstance from "../../utils/fetcher";
 
 const QuestionAnswer: FC<{ contentId: number }> = ({ contentId }) => {
   const [question, setQuestion] = useState("");
@@ -28,7 +29,7 @@ const QuestionAnswer: FC<{ contentId: number }> = ({ contentId }) => {
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
-      const { data } = await axios.post<Question>(
+      const { data } = await axiosInstance.post<Question>(
         `/api/Question`,
         {
           contentId: contentId,

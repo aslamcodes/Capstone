@@ -13,6 +13,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import { customToast } from "../../utils/toast";
 import { getErrorMessage } from "../../utils/error";
 import useUserManagesCourse from "../../hooks/fetchers/useUserManagesCourse";
+import axiosInstance from "../../utils/fetcher";
 
 interface CourseTab extends Tab {
   value: "course_info" | "course_curriculum" | "submit";
@@ -56,7 +57,7 @@ const ManageCoursePage = () => {
     const fetch = async () => {
       try {
         setIsCourseLoading(true);
-        const { data } = await axios.get<Course>(`/api/Course/`, {
+        const { data } = await axiosInstance.get<Course>(`/api/Course/`, {
           params: {
             courseId,
           },

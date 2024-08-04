@@ -101,7 +101,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
         targetAudience: data.targetAudience.join("|"),
       };
       if (isEditing) {
-        const res = await axios.put<Course>("/api/Course", payload, {
+        const res = await axiosInstance.put<Course>("/api/Course", payload, {
           headers: { Authorization: `Bearer ${user?.token}` },
         });
         setIsSaving(false);
@@ -110,7 +110,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
         });
         return onSave(res.data);
       }
-      const res = await axios.post<Course>(
+      const res = await axiosInstance.post<Course>(
         "/api/Course",
         { ...payload, educatorId: user?.id },
         {
@@ -136,7 +136,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
       setIsSaving(true);
       const formData = new FormData();
       formData.append("thumbnail", courseImage as Blob);
-      await axios.put(
+      await axiosInstance.put(
         `/api/Course/Course-Thumbnail?courseId=${initialCourse?.id}`,
         formData,
         {

@@ -7,6 +7,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import CourseCard from "../Course/CourseCard";
 import axios from "axios";
 import { customToast } from "../../utils/toast";
+import axiosInstance from "../../utils/fetcher";
 
 const AdminLiveTab = () => {
   const { user } = useAuthContext();
@@ -36,7 +37,7 @@ const AdminLiveTab = () => {
 
   const handleOutdated = async (id: number) => {
     try {
-      await axios.put(
+      await axiosInstance.put(
         `/api/Course/set-course-outdated?courseId=${id}`,
         {},
         {

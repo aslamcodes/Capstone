@@ -6,6 +6,7 @@ import { useAuthContext } from "../../contexts/auth/authReducer";
 import { BiError } from "react-icons/bi";
 import Loader from "../common/Loader";
 import { customToast } from "../../utils/toast";
+import axiosInstance from "../../utils/fetcher";
 
 const Notes: FC<{ contentId: number }> = ({ contentId }) => {
   const { user } = useAuthContext();
@@ -17,7 +18,7 @@ const Notes: FC<{ contentId: number }> = ({ contentId }) => {
     debounce(async (updatedNote: string) => {
       try {
         setIsSaving(true);
-        await axios.put(
+        await axiosInstance.put(
           `/api/Notes/`,
           {
             ...notes,

@@ -8,6 +8,7 @@ import { useAuthContext } from "../contexts/auth/authReducer";
 import { customToast } from "../utils/toast";
 import { useNavigate } from "react-router-dom";
 import type { UserProfile } from "../interfaces/common";
+import axiosInstance from "../utils/fetcher";
 
 const UserProfile = () => {
   const { user, isLoading } = useUserProfile();
@@ -30,7 +31,7 @@ const UserProfile = () => {
     try {
       setIsUpdating(true);
       await handleUserProfileImageUpdate();
-      await axios.put(
+      await axiosInstance.put(
         "/api/user",
         {
           id: authUser?.id,
@@ -53,7 +54,7 @@ const UserProfile = () => {
 
   const handleBecomeEducator = async () => {
     try {
-      var { data } = await axios.put<UserProfile>(
+      var { data } = await axiosInstance.put<UserProfile>(
         "/api/user/Become-Educator",
         {},
         {
@@ -84,7 +85,7 @@ const UserProfile = () => {
 
     formData.append("file", userProfileImage);
 
-    await axios.put("/api/user/User-Profile", formData, {
+    await axiosInstance.put("/api/user/User-Profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${authUser?.token}`,
