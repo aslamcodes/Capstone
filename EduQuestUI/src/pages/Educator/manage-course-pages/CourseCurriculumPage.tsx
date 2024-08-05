@@ -96,7 +96,6 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({ initialCourse }) => {
   };
 
   const handleAddSection = async (data: any) => {
-    // find a better way to generate unique id instread of string
     setIsAddingSection(true);
     var { data: newSection } = await axiosInstance.post<Section>(
       "/api/Section",
@@ -104,7 +103,7 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({ initialCourse }) => {
         name: data.name,
         description: data.description,
         courseId: initialCourse?.id,
-        orderId: newSections.length,
+        orderId: newSections.length + 1,
       },
       {
         headers: {
