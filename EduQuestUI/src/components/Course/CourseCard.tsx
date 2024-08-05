@@ -19,7 +19,7 @@ const CourseCard: FC<{
       )}
       <div className="card-body p-6">
         <p
-          className={`badge max-h-2 ${getBadgeForStatus(
+          className={`badge max-h-4 ${getBadgeForStatus(
             course.courseStatus as Course["courseStatus"]
           )} `}
         >
