@@ -90,7 +90,10 @@ const CourseLanding = () => {
               )}
               {educatorProfile?.firstName} {educatorProfile?.lastName}
             </p>
-            <p className="py-4">{course.description}</p>
+
+            <a className="py-4" href="#desc">
+              {course.description?.slice(0, 200) + "..."}
+            </a>
 
             <p className="py-6 text-2xl font-bold">
               {course.price === 0 ? "Free" : `Rs. ${course.price}`}
@@ -134,7 +137,9 @@ const CourseLanding = () => {
             <h1>This Course Dont have sections</h1>
           )}
         </div>
-        <CourseDescription courseId={Number(courseId)}></CourseDescription>
+        <section id="desc">
+          <CourseDescription courseId={Number(courseId)}></CourseDescription>
+        </section>
         <div>
           <h1 className="text-2xl font-bold">Reviews</h1>
           <CourseReviews courseId={Number(courseId)} />
