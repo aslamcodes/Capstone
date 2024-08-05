@@ -8,6 +8,7 @@ import { Course } from "../../../interfaces/course";
 import { customToast } from "../../../utils/toast";
 import Loader from "../../../components/common/Loader";
 import axiosInstance from "../../../utils/fetcher";
+import { getBadgeForStatus } from "../../../utils/common";
 
 interface SubmitCoursePageProps extends ManageCoursePageProps {}
 
@@ -98,17 +99,5 @@ const SubmitCoursePage: FC<SubmitCoursePageProps> = ({ initialCourse }) => {
     </div>
   );
 };
-
-function getBadgeForStatus(status: Course["courseStatus"]): string {
-  let map = {
-    Live: "badge-primary",
-    Draft: "badge-secondary",
-    Archived: "badge-error",
-    Outdated: "badge-warning",
-    Review: "badge-info",
-  };
-
-  return map[status];
-}
 
 export default SubmitCoursePage;
