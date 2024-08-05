@@ -18,16 +18,14 @@ const CourseCard: FC<{
         <div className="w-full h-32 bg-base-content rounded-t-lg"></div>
       )}
       <div className="card-body p-6">
-        <h2 className="card-title">
-          {course.name}{" "}
-          <span
-            className={`badge ${getBadgeForStatus(
-              course.courseStatus as Course["courseStatus"]
-            )} `}
-          >
-            {course.courseStatus}
-          </span>
-        </h2>
+        <p
+          className={`badge ${getBadgeForStatus(
+            course.courseStatus as Course["courseStatus"]
+          )} `}
+        >
+          {course.courseStatus}
+        </p>
+        <h2 className="card-title">{course.name} </h2>
         <p className="break-all">
           {course.description.length > 50
             ? course.description.slice(0, 50) + "..."

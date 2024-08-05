@@ -28,6 +28,8 @@ import Form, {
 } from "../../../components/common/Form";
 import { FieldValues, useForm } from "react-hook-form";
 import axiosInstance from "../../../utils/fetcher";
+import { customToast } from "../../../utils/toast";
+import { getErrorMessage } from "../../../utils/error";
 
 interface CourseCurriculumProps extends ManageCoursePageProps {}
 
@@ -96,25 +98,32 @@ const CourseCurriculum: FC<CourseCurriculumProps> = ({ initialCourse }) => {
   };
 
   const handleAddSection = async (data: any) => {
-    setIsAddingSection(true);
-    var { data: newSection } = await axiosInstance.post<Section>(
-      "/api/Section",
-      {
-        name: data.name,
-        description: data.description,
-        courseId: initialCourse?.id,
-        orderId: newSections.length + 1,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
+    try {
+      setIsAddingSection(true);
+      var { data: newSection } = await axiosInstance.post<Section>(
+        "/api/Section",
+        {
+          name: data.name,
+          description: data.description,
+          courseId: initialCourse?.id,
+          orderId: newSections.length + 1,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
 
-    setShowAddSectionForm(false);
-    setIsAddingSection(false);
-    setNewSections((prev) => [...prev, newSection]);
+      setShowAddSectionForm(false);
+      setIsAddingSection(false);
+      setNewSections((prev) => [...prev, newSection]);
+    } catch (error) {
+      setIsAddingSection(false);
+      customToast(getErrorMessage(error), {
+        type: "error",
+      });
+    }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
