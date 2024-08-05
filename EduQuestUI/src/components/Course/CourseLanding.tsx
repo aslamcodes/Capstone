@@ -73,12 +73,12 @@ const CourseLanding = () => {
           {course.courseThumbnailPicture && (
             <img
               src={course.courseThumbnailPicture as string}
-              className=" rounded-lg shadow-2xl max-w-lg"
+              className=" rounded-lg shadow-2xl max-w-full"
             />
           )}
           <div>
             <h1 className="text-2xl md:text-5xl font-bold">{course.name}</h1>
-            <p className="py-3 font-semibold break-all">
+            <p className="py-3 font-semibold">
               <span>By</span>
               {educatorProfile?.profilePictureUrl ? (
                 <img
@@ -90,9 +90,9 @@ const CourseLanding = () => {
               )}
               {educatorProfile?.firstName} {educatorProfile?.lastName}
             </p>
-            <p className="py-4 break-all">{course.description}</p>
+            <p className="py-4">{course.description}</p>
 
-            <p className="py-6 break-all text-2xl font-bold">
+            <p className="py-6 text-2xl font-bold">
               {course.price === 0 ? "Free" : `Rs. ${course.price}`}
             </p>
 
