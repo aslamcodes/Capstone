@@ -76,7 +76,7 @@ const CourseLanding = () => {
               className=" rounded-lg shadow-2xl max-w-full md:max-w-md"
             />
           )}
-          <div>
+          <div className="md:max-w-lg">
             <h1 className="text-2xl md:text-5xl font-bold">{course.name}</h1>
             <p className="py-3 font-semibold">
               <span>By</span>
