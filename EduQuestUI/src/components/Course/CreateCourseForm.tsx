@@ -101,6 +101,15 @@ const CreateCourseForm: FC<{
           <option value={299}>299 Rs</option>
           <option value={399}>399 Rs</option>
           <option value={499}>499 Rs</option>
+          <option value={599}>599 Rs</option>
+          <option value={699}>699 Rs</option>
+          <option value={799}>799 Rs</option>
+          <option value={899}>899 Rs</option>
+          <option value={999}>999 Rs</option>
+          <option value={1999}>1999 Rs</option>
+          <option value={3999}>3999 Rs</option>
+          <option value={5999}>5999 Rs</option>
+          <option value={13999}>13999 Rs</option>
         </select>
         {errors.price && (
           <FormError
