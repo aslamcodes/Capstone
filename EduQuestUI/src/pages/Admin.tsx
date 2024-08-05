@@ -25,7 +25,7 @@ const Admin = () => {
       <div>
         <h1 className="text-2xl font-bold">Welcome to the admin panel</h1>
         <div>
-          <p>Here you can manage courses, users, and other admin tasks </p>
+          <p>Here you can manage courses and other admin tasks </p>
         </div>
       </div>
       <AdminTabs />
