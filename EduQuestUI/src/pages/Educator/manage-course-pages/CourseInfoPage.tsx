@@ -262,7 +262,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
               <div key={field.id} className="flex gap-2">
                 <input
                   type="text"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                   {...register(`objectives.${index}` as const, {
                     required: true,
                   })}
@@ -306,7 +306,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
               <div key={field.id} className="flex gap-2">
                 <input
                   type="text"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                   {...register(`prerequisites.${index}` as const)}
                 />
                 <button
@@ -346,7 +346,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ onSave, initialCourse, mode }) => {
               <div key={field.id} className="flex gap-2">
                 <input
                   type="text"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                   {...register(`targetAudience.${index}` as const)}
                 />
                 <button
