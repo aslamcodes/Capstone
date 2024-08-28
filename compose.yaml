@@ -1,0 +1,54 @@
+name: eduquest
+
+services:
+  db:
+    container_name: eduquestDb
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+     - 8002:1433
+    environment:
+      SA_PASSWORD: Password123
+      ACCEPT_EULA: Y
+    networks:
+     - caber
+    volumes:
+     - db-data:/var/opt/mssql
+
+  server:
+    build:
+      context: ./EduQuest
+      dockerfile: Dockerfile
+    container_name: eduquest_server
+    command: npm start
+    volumes:
+      - ./server:/app
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/eduquestdb
+    depends_on:
+      - db
+    networks:
+      - backend
+      - frontend
+
+  web:
+    build:
+      context: ./EduQuestUI
+      dockerfile: Dockerfile
+    container_name: eduquest_web
+    ports:
+      - "3000:3000"  # Exposing port 3000 to the host
+    volumes:
+      - ./web:/app
+    environment:
+      VITE_BACKEND_URL: http://server:3001  # Adjust port if necessary
+    depends_on:
+      - server
+    networks:
+      - frontend
+
+networks:
+  backend:
+  frontend:
+
+volumes:
+  db_data:
