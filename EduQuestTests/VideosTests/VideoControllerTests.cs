@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Azure;
-using Azure.Security.KeyVault.Secrets;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using EduQuest.Commons;
@@ -24,7 +23,7 @@ namespace EduQuestTests.VideosTests
         private Mock<IVideoService> _mockVideoService;
         private Mock<BlobServiceClient> _mockBlobServiceClient;
         private Mock<IMapper> _mockMapper;
-        private Mock<SecretClient> _mockSecretClient;
+        // private Mock<SecretClient> _mockSecretClient;
         private VideoController _controller;
 
         [TearDown]
@@ -34,7 +33,7 @@ namespace EduQuestTests.VideosTests
             _mockVideoService.Reset();
             _mockBlobServiceClient.Reset();
             _mockMapper.Reset();
-            _mockSecretClient.Reset();
+            // _mockSecretClient.Reset();
         }
 
         [SetUp]
@@ -44,9 +43,9 @@ namespace EduQuestTests.VideosTests
             _mockVideoService = new Mock<IVideoService>();
             _mockBlobServiceClient = new Mock<BlobServiceClient>();
             _mockMapper = new Mock<IMapper>();
-            _mockSecretClient = new Mock<SecretClient>();
+            // _mockSecretClient = new Mock<SecretClient>();
 
-            _controller = new VideoController(_mockValidator.Object, _mockVideoService.Object, _mockBlobServiceClient.Object, _mockMapper.Object, _mockSecretClient.Object);
+            _controller = new VideoController(_mockValidator.Object, _mockVideoService.Object, _mockBlobServiceClient.Object, _mockMapper.Object);
         }
 
         [Test]

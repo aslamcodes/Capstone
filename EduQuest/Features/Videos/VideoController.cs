@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Security.KeyVault.Secrets;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
@@ -13,7 +12,7 @@ namespace EduQuest.Features.Videos
     [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoController(IControllerValidator validator, IVideoService videoService, BlobServiceClient blobServiceClient, IMapper mapper, SecretClient secretClient) : Controller
+    public class VideoController(IControllerValidator validator, IVideoService videoService, BlobServiceClient blobServiceClient, IMapper mapper) : Controller
     {
         [HttpGet]
         [Authorize]
@@ -88,11 +87,11 @@ namespace EduQuest.Features.Videos
                 };
                 sasBuilder.SetPermissions(BlobSasPermissions.Write);
 
-                var accountName = secretClient.GetSecret("StorageAccountName").Value.Value;
-                var accountKey = secretClient.GetSecret("StorageAccountKey").Value.Value;
-
-                var sasToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(accountName, accountKey)).ToString();
-                var uploadUrl = $"{blobClient.Uri}?{sasToken}";
+                // var accountName = secretClient.GetSecret("StorageAccountName").Value.Value;
+                // var accountKey = secretClient.GetSecret("StorageAccountKey").Value.Value;
+                //
+                // var sasToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(accountName, accountKey)).ToString();
+                var uploadUrl = $"";
 
                 // Create a record in your database
                 //await _videoService.InitiateUpload(request.ContentId, request.FileName);

@@ -16,7 +16,6 @@ COPY . .
 # Step 6: Build the application
 RUN pnpm run build
 
-RUN npm install -g serve
-CMD ["serve", "-s", "dist"]
+CMD ["pnpm", "run", "preview", "--host"]
 
-EXPOSE 3000
+EXPOSE 4173

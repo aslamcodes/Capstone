@@ -1,6 +1,5 @@
 
 using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 using EduQuest.Commons;
 using EduQuest.Entities;
 using EduQuest.Features.Answers;
@@ -73,7 +72,7 @@ namespace EduQuest
                 options.AddDefaultPolicy(
                              policy =>
                                      {
-                                         policy.WithOrigins("https://ashy-ground-0e6a63a1e.5.azurestaticapps.net", "http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
+                                         policy.WithOrigins("https://ashy-ground-0e6a63a1e.5.azurestaticapps.net", "http://localhost:5173", "http://localhost:4173", "http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
                                      });
             });
 
@@ -98,22 +97,25 @@ namespace EduQuest
             .AddPolicy("Admin", policy => policy.RequireRole("Admin"));
             #endregion
 
-            var client = new SecretClient(vaultUri: new Uri("https://eduquest-keys.vault.azure.net/"), credential: new DefaultAzureCredential());
 
-            string storageConn = client.GetSecret("eduquest-storage").Value.Value.ToString();
-
-            //string? dbConn = builder.Environment.IsDevelopment() ? builder.Configuration.GetConnectionString("default") : client.GetSecret("eduquest-db").Value.Value.ToString();
-            string? dbConn = client.GetSecret("eduquest-db").Value.Value.ToString();
+            string storageConn = builder.Configuration.GetConnectionString("storage") ?? "";
 
             #region DB and Storage
+            var dbhost = Environment.GetEnvironmentVariable("DB_HOST");
+            var dbpass = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+            var dbname = Environment.GetEnvironmentVariable("DB_NAME");
+            Console.WriteLine(dbhost);
+            Console.WriteLine(dbpass);
+            Console.WriteLine(dbname);
+            var connectionString = @$"Server={dbhost};Database={dbname};User Id=sa;Password={dbpass};TrustServerCertificate=True";
+
             builder.Services.AddDbContext<EduQuestContext>(options =>
             {
-                options.UseSqlServer(dbConn);
+                options.UseSqlServer(connectionString);
             });
 
             builder.Services.AddAzureClients(clientBuilder =>
             {
-                clientBuilder.AddSecretClient(vaultUri: new Uri("https://eduquest-keys.vault.azure.net/"));
                 clientBuilder.AddBlobServiceClient(storageConn);
             });
 
@@ -159,11 +161,12 @@ namespace EduQuest
             builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
             #endregion
 
-
-
             var app = builder.Build();
 
+
             app.UseCors();
+
+            DatabaseMigrationService.MigrateInitial(app);
 
 
             app.Map("/", async (builder) =>
@@ -185,6 +188,7 @@ namespace EduQuest
             app.MapControllers();
 
             app.Run();
+
         }
     }
 }

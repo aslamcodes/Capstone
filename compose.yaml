@@ -7,23 +7,24 @@ services:
     ports:
      - 8002:1433
     environment:
-      SA_PASSWORD: Password123
+      MSSQL_SA_PASSWORD: Password123
       ACCEPT_EULA: Y
     networks:
-     - caber
+     - backend
     volumes:
-     - db-data:/var/opt/mssql
+     - db_data:/var/opt/mssql
 
   server:
     build:
       context: ./EduQuest
       dockerfile: Dockerfile
     container_name: eduquest_server
-    command: npm start
-    volumes:
-      - ./server:/app
+    ports:
+     - 8000:8080
     environment:
-      DATABASE_URL: postgres://user:password@db:5432/eduquestdb
+      - DB_HOST=db
+      - DB_NAME=eduquestdb
+      - DB_SA_PASSWORD=Password123
     depends_on:
       - db
     networks:
@@ -36,15 +37,26 @@ services:
       dockerfile: Dockerfile
     container_name: eduquest_web
     ports:
-      - "3000:3000"  # Exposing port 3000 to the host
-    volumes:
-      - ./web:/app
+      - "3000:4173" 
     environment:
-      VITE_BACKEND_URL: http://server:3001  # Adjust port if necessary
+      VITE_API_BASE_URL: http://server:8080  # Adjust port if necessary
     depends_on:
       - server
     networks:
       - frontend
+
+  
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: eduquest_azurite
+    ports:
+      - 10000:10000  # Blob service
+      - 10001:10001  # Queue service
+      - 10002:10002  # Table service
+    networks:
+      - backend
+    volumes:
+      - azurite_data:/data
 
 networks:
   backend:
@@ -52,3 +64,5 @@ networks:
 
 volumes:
   db_data:
+  azurite_data:
+
